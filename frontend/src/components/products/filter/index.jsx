@@ -1,0 +1,158 @@
+import React, { useState } from 'react'
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+const Filter = () => {
+  
+
+  const [isFragranceOpen, setIsFragranceOpen] = useState(false);
+  const [isBrandOpen, setIsBrandOpen] = useState(false);
+  const [isGenderOpen, setIsGenderOpen] = useState(false);
+  const [isConcentrationOpen, setIsConcentrationOpen] = useState(false);
+  const [isVolumeOpen, setIsVolumeOpen] = useState(false);
+  const [isPriceOpen, setIsPriceOpen] = useState(false);
+
+  
+  const toggleFragranceArrows=()=>{
+    setIsFragranceOpen(!isFragranceOpen)
+  }
+  const toggleBrandArrows=()=>{
+    setIsBrandOpen(!isBrandOpen)
+  }
+  const toggleGenderArrows=()=>{
+    setIsGenderOpen(!isGenderOpen)
+  }
+  const toggleConcentrationArrows=()=>{
+    setIsConcentrationOpen(!isConcentrationOpen)
+  }
+  const toggleVolumeArrows=()=>{
+    setIsVolumeOpen(!isVolumeOpen)
+  }
+  const togglePriceArrows = () => {
+    setIsPriceOpen(!isPriceOpen);
+  };
+
+
+  return (
+    <div className='w-[200px] hidden md:flex flex-col justify-start '>
+      <button><p className='font-raleway text-[25px]'>All products</p></button>
+   <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+
+      <div>
+      <div className="flex justify-between items-center mb-3">
+          <p className="text-[22px] font-medium text-[#212121]">Fragrance Family</p>
+        <button onClick={toggleFragranceArrows}> {isFragranceOpen === true ?<IoIosArrowUp className="cursor-pointer"/> : <IoIosArrowDown className="cursor-pointer" />}</button> 
+        </div>
+       <div>
+       {isFragranceOpen === true ?
+        <ul className='flex flex-col items-start gap-3'>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway '>Floral</li></button> 
+         <button> <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Fresh</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Fruity</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Citrus</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Woody</li></button>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Oriental</li></button> 
+         </ul>:""}
+       </div>
+      </div>
+
+   <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+
+   <div>
+      <div className="flex justify-between items-center mb-3">
+          <p className="text-[22px] font-medium text-[#212121]">Gender</p>
+          <button onClick={toggleGenderArrows}>    {isGenderOpen === true ? <IoIosArrowUp className="cursor-pointer" /> : <IoIosArrowDown className="cursor-pointer" />} </button>
+        </div>
+       <div>
+       {isGenderOpen === true ?
+        <ul className='flex flex-col items-start gap-3'>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Woman</li></button> 
+         <button> <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Man</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Unisex</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Kids</li></button> 
+         </ul>:""}
+       </div>
+    </div>
+
+   <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+  
+   <div>
+      <div className="flex justify-between items-center mb-3">
+          <p className="text-[22px] font-medium text-[#212121]">Concentration</p>
+          <button onClick={toggleConcentrationArrows}>    {isConcentrationOpen === true ? <IoIosArrowUp className="cursor-pointer"/> : <IoIosArrowDown className="cursor-pointer" />} </button>
+        </div>
+       <div>
+       {isConcentrationOpen === true ?
+        <ul className='flex flex-col items-start gap-3'>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Eau de Parfum</li></button> 
+         <button> <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Eau de Toilette</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Eau de Cologne</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Perfume Oil</li></button> 
+         </ul>:""}
+       </div>
+      </div>
+
+   <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+
+   <div>
+      <div className="flex justify-between items-center mb-3">
+          <p className="text-[22px] font-medium text-[#212121]">Brands</p>
+          <button onClick={toggleBrandArrows}>     {isBrandOpen === true ? <IoIosArrowUp className="cursor-pointer" /> : <IoIosArrowDown className="cursor-pointer" />} </button>
+        </div>
+       <div>
+       {isBrandOpen === true ?
+        <ul className='flex flex-col items-start gap-3'>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Chanel</li></button> 
+         <button> <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Dior</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Givenchy</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Yves Saint Laurent</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Gucci</li></button>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Carolina Herrera</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Paco Rabanne</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Pilot 65</li></button> 
+         </ul>:""}
+       </div>
+      </div>
+
+   <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+
+      <div>
+      <div className="flex justify-between items-center mb-3">
+          <p className="text-[22px] font-medium text-[#212121]">Volume</p>
+          <button onClick={toggleVolumeArrows}>     {isVolumeOpen === true ? <IoIosArrowUp className="cursor-pointer" /> : <IoIosArrowDown className="cursor-pointer" />} </button>
+        </div>
+       <div>
+       {isVolumeOpen === true ?
+        <ul className='flex flex-col items-start gap-3'>
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>30ml</li></button> 
+         <button> <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>50ml</li></button> 
+         <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>100ml</li></button> 
+   
+         </ul>:""}
+       </div>
+      </div>
+      
+      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+
+
+      <div>
+        <div className="flex justify-between items-center mb-3">
+          <p className="text-[22px] font-medium text-[#212121]">Price</p>
+          <button onClick={togglePriceArrows}>{isPriceOpen ? <IoIosArrowUp className="cursor-pointer" /> : <IoIosArrowDown className="cursor-pointer" />}</button>
+        </div>
+        <div>
+          {isPriceOpen && (
+            <ul className='flex flex-col items-start gap-3'>
+              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Under $50</li></button> 
+              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>$50 - $100</li></button> 
+              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>$100 - $150</li></button> 
+              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Over $150</li></button> 
+            </ul>
+          )}
+        </div>
+      </div>
+
+    
+    </div>
+  )
+}
+
+export default Filter
