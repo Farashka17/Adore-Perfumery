@@ -5,67 +5,89 @@ import cloudinary from 'cloudinary';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
-const register = async (req,res)=>{
- 
-    const avatar = await cloudinary.uploader.upload(req.body.avatar, {
-        folder:"avatars",
-        width:130,
-        crop:"scale"
-    })
+const register = async (req, res) => {
+    const { name, email, password, role } = req.body;
 
+    // Tüm alanların dolu olup olmadığını kontrol et
+    if (!name || !email || !password || !role) {
+        return res.status(400).json({ message: "Lütfen tüm gerekli alanları doldurun." });
+    }
 
-     const {name,email,password}= req.body;
+    // Kullanıcı var mı kontrol et
+    const user = await User.findOne({ email });
+    if (user) {
+        return res.status(400).json({ message: "Bu kullanıcı zaten mevcut." });
+    }
 
-     const user = await User.findOne({email})
-     if(user){
-        return res.status(500).json({message:"Bu istifadeci var"})
-     }
-     const hashedPassword = await bcrypt.hash(password,10)
-     if(password.length<8){
-        return res.status(500).json({message:"Sifrenin uzunluq minimum 8-reqem olmalidir"})
-     }
-     const newUser = await User.create({
+    // Şifrenin uzunluğunu kontrol et
+    if (password.length < 8) {
+        return res.status(400).json({ message: "Şifrenin uzunluğu minimum 8 karakter olmalıdır." });
+    }
+
+    // Şifreyi hashle
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Yeni kullanıcı oluştur
+    const newUser = await User.create({
         name,
         email,
-        password:hashedPassword,
-        avatar:{
-        public_id:avatar.public_id,
-        url:avatar.secure_url
-        }
-    })
-     
-     const token = jwt.sign({id:newUser._id},"SECRETTOKEN",{expireIn:"1h"})
-     const cookieOptions = {
-        httpOnly: true,
-        expires:new Date(Date.now()+5*24*60*60*1000)
-     }
-     res.status(201).cookie("token",token,cookieOptions).json({
-        newUser,
-        token
-    })
-}
+        password: hashedPassword,
+        role,
+    });
 
-const login = async (req,res)=>{
-    const {email,password} = req.body
-    const user = await User.findOne({email})
-    if(!user){
-        return res.status(500).json({message:"Bu istifadeci yoxdur"})
-    }
-    const comparePassword = await bcrypt.compare(password,user.password)
-    if(!comparePassword){
-        return res.status(500).json({message:"Sifreniz yanlisdir"})
+    // JWT oluştur
+    const token = jwt.sign({ id: newUser._id }, "SECRETTOKEN", { expiresIn: "1h" });
+
+    // Cookie ayarları
+    const cookieOptions = {
+        httpOnly: true,
+        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+    };
+
+    // Yanıtı gönder
+    return res.status(201)
+        .cookie("token", token, cookieOptions)
+        .json({
+            message: "Kullanıcı başarıyla oluşturuldu.",
+            user: newUser,
+            token,
+        });
+};
+
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    // Kullanıcıyı bul
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(404).json({ message: "Bu kullanıcı mevcut değil." }); // 404 hatası daha uygun
     }
 
-    const token = jwt.sign({id:user._id},"SECRETTOKEN",{expireIn:"1h"})
-     const cookieOptions = {
+    // Şifreyi karşılaştır
+    const comparePassword = await bcrypt.compare(password, user.password);
+    if (!comparePassword) {
+        return res.status(401).json({ message: "Şifreniz yanlıştır." }); // 401 hatası daha uygun
+    }
+
+    // JWT oluştur
+    const token = jwt.sign({ id: user._id }, "SECRETTOKEN", { expiresIn: "1h" });
+    
+    // Cookie ayarları
+    const cookieOptions = {
         httpOnly: true,
-        expires:new Date(Date.now()+5*24*60*60*1000)
-     }
-     res.status(200).cookie("token",token,cookieOptions).json({
-        user,
-        token
-    })
-}
+        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+    };
+
+    // Yanıtı gönder
+    return res.status(200)
+        .cookie("token", token, cookieOptions)
+        .json({
+            message: "Giriş başarılı.",
+            user,
+            token,
+        });
+};
+
 
 const logout = async (req,res)=>{
     const cookieOptions = {
@@ -73,7 +95,7 @@ const logout = async (req,res)=>{
         expires:new Date(Date.now())
      }
     res.status(200).cookie("token",null,cookieOptions).json({
-        messahe:"Hesabdan cixildi"
+        message:"Hesabdan cixildi"
     })
 }
 
@@ -121,7 +143,7 @@ const forgetPassword = async (req,res)=>{
 }
 
 const resetPassword = async (req,res)=>{
-    const resetPasswordToke = crypto.createHash("sha256").update(req.params.token).digest('hex')
+    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest('hex')
     const user = await User.findOne({
         resetPasswordToken,
         resetPasswordExpire:{$gt:Date.now()}
@@ -162,3 +184,76 @@ export {
     resetPassword,
     userDetail
   };
+
+
+
+//   export const addUser = async(request,response)=>{
+//     const {name, email, password, role} = request.body
+
+//     if(!name || !email || !password || !role){
+//         response.status(500).send({message:"Please fill al required fields"})
+//         return;
+//     }
+//      const existedUser = await User.findOne({email:email,name:name})
+//     if(existedUser){
+//     response.status(400).send({message:"User already exists"})
+//         return;
+//    }
+//     const newUser = await User.create(request.body)
+    
+//     if(!newUser){
+//         response.status(500).send({message:"User not created"})
+//         return;
+//     }
+//     response.status(201).send({message:"User created successfully",data:newUser})
+// }
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+
+        // Kullanıcı bulunmadıysa
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: "No users found" });
+        }
+
+        // Kullanıcılar bulunduysa
+        return res.status(200).json({ message: "Users found", data: users });
+    } catch (error) {
+        // Hata durumunda
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred while fetching users." });
+    }
+};
+
+export const getSingleUser = async (request,response)=>{
+    const {userId} = request.params
+    const user = await User.findById(userId)
+        if(!user){
+            response.status(404).send({message:"User not found"})
+            return;
+        }
+    response.status(200).send({message:"User found",data:user})
+
+}
+
+export const deleteUser = async(request,response)=>{
+    const {userId} =request.params
+    const user = await User.findByIdAndDelete(userId)
+    if(!user){
+        response.status(404).send({message:"User not found"})
+        return;
+    }
+    response.status(200).send({message:"User deleted successfully",data:user})
+}
+
+export const editUser = async(request,response)=>{
+    const {userId} = request.params
+    const updateUser = await User.findByIdAndUpdate({_id: userId})
+    if(!updateUser){
+        response.status(404).send({message:"User not found"})
+        return;
+    }
+    updateUser.set(request.body)
+    response.status(200).send({message:"User updated successfully",data:updateUser})
+}
