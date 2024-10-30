@@ -14,7 +14,7 @@ const MobileSingleCartProduct = () => {
     };
     
   return (
-    <div className='flex flex-col justify-start items-start  gap-y-5'>
+    <div className='flex flex-col justify-start items-start  gap-y-5 px-5'>
         <div className='border-b w-full border-b-black border-opacity-50'>
             <button className='w-[30px] h-[30px]'><MdOutlineClose /></button>
         </div>
@@ -23,18 +23,26 @@ const MobileSingleCartProduct = () => {
             <img src={Perfume} className='bg-cover  w-[100%] h-[111px]'/>
         </button>
         </div>
-        <button className='border-b w-full border-b-black border-opacity-50'>
+        <div className='border-b w-full border-b-black border-opacity-50 flex justify-between items-center'>
+        <p className='font-raleway font-thin text-[16px] text-[#232323] hover:text-[#EAAA85] text-left'>Product:</p>
             <p className='font-raleway font-thin text-[16px] text-[#232323] hover:text-[#EAAA85] text-left'>Basic Foundation</p>
-        </button>
-        <div className='border-b w-full border-b-black border-opacity-50'>
+        </div>
+        <div className='border-b w-full border-b-black border-opacity-50 flex justify-between items-center'>
+        <p className='font-raleway font-extralight text-[16px] text-[#232323]'>Price:</p>
             <p className='font-raleway font-extralight text-[16px] text-[#232323]'>$15.00</p>
         </div>
-        <div className='flex items-center gap-2 border-b w-full border-b-black border-opacity-50 pb-5'>
-            <button className='w-10 h-10 flex items-center justify-center border border-black' onClick={decrement}>-</button>
+        <div className='flex justify-between items-center border-b w-full border-b-black border-opacity-50'>
+          <div>
+            <p>Quantity:</p>
+          </div>
+        <div className='flex items-center gap-2  pb-5'>
+          <button className='w-10 h-10 flex items-center justify-center border border-black' onClick={decrement}>-</button>
             <p className='w-10 h-10 flex items-center justify-center border border-black'>{count}</p>
             <button className='w-10 h-10 flex items-center justify-center border border-black' onClick={increment}>+</button>
         </div>
-        <div className=''>
+         </div>
+        <div className='flex items-center justify-between'>
+        <p className='font-raleway font-extralight text-[16px] text-[#EAAA85]'>Subtotal:</p>
             <p className='font-raleway font-extralight text-[16px] text-[#EAAA85]'>$15.00</p>
         </div>
     </div>

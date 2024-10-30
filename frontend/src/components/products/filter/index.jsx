@@ -33,7 +33,7 @@ const Filter = () => {
 
   return (
     <div className='absolute bg-white mx-auto z-10 md:relative   w-[200px] hidden md:flex flex-col justify-start '>
-      <button><p className='font-raleway text-[25px]'>All products</p></button>
+      <button><p className='font-raleway text-[25px] text-left'>All products</p></button>
    <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>

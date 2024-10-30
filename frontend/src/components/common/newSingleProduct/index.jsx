@@ -1,8 +1,9 @@
 import React from 'react'
 import Perfume from '../../../assets/Perfume.svg'
+import { Link } from 'react-router-dom'
 const NewSingleProduct = () => {
   return (
-    <div className=' mx-auto flex items-center gap-[30px]'>
+   <Link to={"/product/:id"}><div className=' mx-auto flex items-center gap-[30px]'>
     <div className='w-[133px] h-[159px] bg-[#e9e6ed] flex items-center justify-center'>
      <div className='w-[90%] h-[90%] border border-black transition-transform duration-300 transform hover:scale-110'>
    <img src={Perfume}/>
@@ -24,6 +25,7 @@ const NewSingleProduct = () => {
     </div>
 
     </div>
+    </Link> 
   )
 }
 

@@ -10,6 +10,7 @@ import LoginPage from './pages/login/loginPage'
 import WishlistPage from './pages/wishlist/wishlistPage'
 import ProductsPage from './pages/products/productsPage'
 import CartPage from './pages/cart/cartPage'
+import DetailPage from './pages/detailPage/detailPage'
 
 function App() {
   
@@ -19,7 +20,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage/>} />
       <Route path="/products" element={<ProductsPage/>} />
-      {/* <Route path={`/product/:id`} element={<ProductPage/>} /> */}
+      <Route path={`/product/:id`} element={<DetailPage/>} />
       <Route path="/cart" element={<CartPage/>} />
        <Route path="/register" element={<RegisterPage/>} />
        <Route path="/login" element={<LoginPage/>} />

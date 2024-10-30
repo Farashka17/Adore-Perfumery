@@ -10,7 +10,7 @@ const Cart = () => {
 
   return (
     <div className="bg-[white]  md:mx-auto font-nunito w-full">
-    <div className="container max-w-[1920px]  flex flex-col  mx-auto md:px-10 py-[25px] px-[15px]">
+    <div className="w-full flex flex-col  mx-auto  py-[25px]">
       <PageTitleImageBackground title={title}/>
        <CartProducts/>
        <OrderButton/>
