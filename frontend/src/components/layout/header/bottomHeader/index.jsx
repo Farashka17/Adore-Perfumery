@@ -5,6 +5,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiOutlineUser } from "react-icons/hi2";
 import { Link } from 'react-router-dom';
+import { TbShoppingBagCheck } from "react-icons/tb";
+
 const BottomHeader = () => {
 
     const navElements = [
@@ -30,6 +32,8 @@ const BottomHeader = () => {
          </div>
          <div className='flex iterms-center gap-[30px]'>
        <Link to={"/login"}> <button className='md:block hidden '><HiOutlineUser  className='w-[23px] h-[23px]'/></button></Link> 
+       <Link to={"/account"}> <button className='md:block hidden '><TbShoppingBagCheck  className='w-[23px] h-[23px]'/></button></Link> 
+
        <Link to={"/wishlist"}>      <button className='md:block hidden'><GoHeart className='w-[23px] h-[23px]'/></button></Link> 
             <button className='relative md:flex hidden'>
        <Link to={"/cart"} ><HiOutlineShoppingBag className='w-[23px] h-[23px]'/>

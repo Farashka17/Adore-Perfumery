@@ -3,3 +3,31 @@
 @tailwind utilities;
 @import '~slick-carousel/slick/slick.css';
 @import '~slick-carousel/slick/slick-theme.css';
+
+
+
+@layer components {
+    .button {
+      @apply relative overflow-hidden border border-[#232323] font-raleway text-[10px] md:text-[13px] font-thin w-full py-[19.8px];
+    }
+  
+    .button::before {
+      content: '';
+      @apply absolute top-1/2 left-1/2 w-[300%] h-[300%] bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] rounded-full;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 1s ease;
+      z-index: 0;
+    }
+  
+    .button:hover::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  
+    .button:hover {
+      @apply text-white; /* Hover'da yazı rengi değişimi */
+    }
+  
+    .button span {
+      @apply relative z-10; /* Yazının önde görünmesi için */
+    }
+  }

@@ -11,6 +11,7 @@ import WishlistPage from './pages/wishlist/wishlistPage'
 import ProductsPage from './pages/products/productsPage'
 import CartPage from './pages/cart/cartPage'
 import DetailPage from './pages/detailPage/detailPage'
+import MyAccountPage from './pages/myAccount/myAccountPage'
 
 function App() {
   
@@ -24,6 +25,8 @@ function App() {
       <Route path="/cart" element={<CartPage/>} />
        <Route path="/register" element={<RegisterPage/>} />
        <Route path="/login" element={<LoginPage/>} />
+       <Route path="/account" element={<MyAccountPage/>} />
+
       <Route path="/wishlist" element={<WishlistPage/>} />
 
       <Route path="*" element={<HomePage/>} />

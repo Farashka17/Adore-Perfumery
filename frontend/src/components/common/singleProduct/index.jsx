@@ -24,7 +24,9 @@ const SingleProduct = () => {
     <p className='font-raleway  text-[14px] md:text-[20px] font-thin text-[#232323] mt-[19px]'>Body Oil & Lotion</p>
     <div className='mt-[26px] flex items-stretch w-full'>
      {/* <Link to={"/cart"}> */}
-      <button className='font-raleway text-[10px] md:text-[13px] font-thin w-full  py-[19.8px] border border-[#232323] '>ADD TO CART</button>
+     <button class="button">
+    <span>ADD TO CART</span>
+</button>
       {/* </Link>  */}
         <button className='font-raleway text-[10px] md:text-[13px] font-thin  w-full py-[19.8px] border border-[#232323] '>$27.00 </button>
     </div>
