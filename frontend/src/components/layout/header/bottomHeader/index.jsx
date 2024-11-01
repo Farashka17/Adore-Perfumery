@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { GoHeart } from "react-icons/go";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoSearchOutline } from "react-icons/io5";
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { TbShoppingBagCheck } from "react-icons/tb";
 
 const BottomHeader = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
     const navElements = [
         { title: "SHOP", href: "/eveningBags" },
@@ -31,8 +32,37 @@ const BottomHeader = () => {
             <button className='hover:text-[#dbaf77]'>Contact</button>
          </div>
          <div className='flex iterms-center gap-[30px]'>
-       <Link to={"/login"}> <button className='md:block hidden '><HiOutlineUser  className='w-[23px] h-[23px]'/></button></Link> 
-       <Link to={"/account"}> <button className='md:block hidden '><TbShoppingBagCheck  className='w-[23px] h-[23px]'/></button></Link> 
+       {/* <Link to={"/login"}> <button className='md:block hidden '><HiOutlineUser  className='w-[23px] h-[23px]'/></button></Link>  */}
+       <div className="relative">
+       <div
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button className="text-black">
+        <HiOutlineUser className="w-6 h-6" />
+      </button>
+      {isOpen && (
+        <div className="absolute top-full right-0 z-10 bg-white rounded-lg shadow w-32">
+          <div className="py-2 px-1 flex flex-col gap-1 text-sm text-gray-950 text-left">
+            <Link
+              to="/login"
+              className="block  px-2 py-1 rounded hover:bg-slate-100"
+            >
+              Login
+            </Link>
+            <Link
+              to="/account"
+              className="block  px-2 py-1 rounded hover:bg-slate-100"
+            >
+              My Account
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+        </div>
+       {/* <Link to={"/account"}> <button className='md:block hidden '><TbShoppingBagCheck  className='w-[23px] h-[23px]'/></button></Link>  */}
 
        <Link to={"/wishlist"}>      <button className='md:block hidden'><GoHeart className='w-[23px] h-[23px]'/></button></Link> 
             <button className='relative md:flex hidden'>

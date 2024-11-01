@@ -31,7 +31,7 @@ const UpperHeader = () => {
           <div className="flex items-center gap-[11px]">
             <TfiEmail className="text-white" />
             <p className="text-white font-extralight text-[16px]">
-              adore@mail.com
+            contact@adoregroup.az
             </p>
           </div>
           <div className="w-4 h-[1px]">
