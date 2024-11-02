@@ -12,6 +12,7 @@ import ProductsPage from './pages/products/productsPage'
 import CartPage from './pages/cart/cartPage'
 import DetailPage from './pages/detailPage/detailPage'
 import MyAccountPage from './pages/myAccount/myAccountPage'
+import ContactAndBranches from './pages/contactAndBranches/ContactAndBranches'
 
 function App() {
   
@@ -26,6 +27,8 @@ function App() {
        <Route path="/register" element={<RegisterPage/>} />
        <Route path="/login" element={<LoginPage/>} />
        <Route path="/account" element={<MyAccountPage/>} />
+       <Route path="/contactAndBranches" element={<ContactAndBranches/>} />
+
 
       <Route path="/wishlist" element={<WishlistPage/>} />
 
