@@ -1,5 +1,6 @@
 import React from 'react'
 import Fresh from '../../../assets/Fresh.svg'
+
 const Category = () => {
   return (
     <div className=" mx-auto ">

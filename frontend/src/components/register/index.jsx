@@ -6,8 +6,9 @@ import GirlChanel from '../../assets/GirlChanel.jpg';
 const Register = () => {
   return (
     <div className="relative h-screen flex items-center justify-center mx-auto">
-    <img src={LoginBackground} alt="Background" className="absolute inset-0 w-full h-full md:h-[150vh] object-cover opacity-50" />
-    <div className="z-10 absolute top-[20px] bottom-[] bg-white  flex md:flex-row flex-col items-center justify-center w-[90%]  md:w-[1000px] ">
+    <img src={LoginBackground} alt="Background" className=" inset-0 w-full h-full object-cover opacity-50" />
+    <div className="z-10 absolute top-[20px]  bg-white flex md:flex-row flex-col items-center justify-center w-[90%]  md:w-[1000px] ">
+
        
     <div className='flex gap-[40px] items-center justify-center p-8'>
         <div className='md:w-[full]  hidden md:block'>
@@ -19,12 +20,7 @@ const Register = () => {
     </div>
 
   <form className="flex flex-col md:w-[480px] w-full" >
-    {/* <label
-      htmlFor="email"
-      className="text-[14px] font-medium text-[#474B57] text-start"
-    >
-      Email
-    </label> */}
+  
      <input
       type="text"
       id="text"
@@ -40,12 +36,6 @@ const Register = () => {
       className="py-[10px] px-[15px] mb-[15px] w-full border border-[#E6E7E8] rounded-[6px] font-dancing"
     />
 
-    {/* <label
-      htmlFor="password"
-      className="text-[14px] font-medium text-[#474B57] text-start"
-    >
-      Password
-    </label> */}
 
     <input
       type="password"
