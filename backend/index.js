@@ -9,8 +9,8 @@ import user from './routes/user.js';
 import expressFileUpload from 'express-fileupload'
 // import brand from './routes/brand.js'
 // import brand from './routes/brand.js'
-import cloudinary from 'cloudinary';
 import brand from './routes/brand.js'
+import fragranceFamily from './routes/fragranceFamily.js'
 dotenv.config()
 
 const app =  express()
@@ -23,6 +23,8 @@ app.use(cookieParser())
 app.use('/products',product)
 app.use('/users',user)
 app.use('/brands',brand)
+app.use('/fragranceFamily',fragranceFamily)
+
 db()
 const PORT = 3000
 app.listen(PORT , ()=>{

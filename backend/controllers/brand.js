@@ -105,13 +105,22 @@ const editBrand = async (req, res) => {
 
 const addBrand = async (req, res) => {
   try {
-    const newBrand = new Brand(req.body);
+    const { name, brandPic } = req.body;
+    console.log("Backend'e gelen veriler:", { name, brandPic });
+
+    const newBrand = new Brand({
+      name,
+      brandPic,
+    });
+
     await newBrand.save();
     res.status(201).json(newBrand);
   } catch (error) {
+    console.error("Veritabanına kaydedilemedi:", error);
     res.status(400).json({ message: error.message });
   }
 };
+
 
 export {
   getBrands,
