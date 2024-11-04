@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SingleBrand from "../SingleBrand";
+import { Link } from "react-router-dom";
 
 const BrandComponent = () => {
   const [brandData, setBrandData] = useState([]);
@@ -8,25 +9,22 @@ const BrandComponent = () => {
   const [newBrandName, setNewBrandName] = useState("");
   const [newBrandPic, setNewBrandPic] = useState(null);
 
-  useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/brands");
-
-        if (!response.ok) {
-          console.error(`Failed to fetch brands. Status: ${response.status}`);
-          return;
-        }
-
-        const result = await response.json();
-        const brands = Array.isArray(result.data) ? result.data : [];
-        setBrandData(brands);
-        console.log("Fetched brands:", result);
-      } catch (error) {
-        console.error("Error fetching brands:", error);
+  const fetchBrands = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/brands");
+      if (!response.ok) {
+        console.error(`Failed to fetch brands. Status: ${response.status}`);
+        return;
       }
-    };
+      const result = await response.json();
+      const brands = Array.isArray(result.data) ? result.data : [];
+      setBrandData(brands);
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchBrands();
   }, []);
 
@@ -54,57 +52,51 @@ const BrandComponent = () => {
     setNewBrandPic(null); // Yeni fotoğraf seçilmesini bekliyoruz
   };
 
- const brandEditHandler = async () => {
-  if (!currentBrand) return;
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "erndbi22"); // Preset ismini buraya yazın
 
-  const formData = new FormData();
-  formData.append("name", newBrandName);
+    try {
+      const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-  if (newBrandPic) {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-      formData.append("brandPic", base64String);
-
-      try {
-        const response = await fetch(`http://localhost:3000/brands/${currentBrand._id}`, {
-          method: "PATCH",
-          body: formData,
-        });
-
-        // Hata varsa, hata durum kodunu ve mesajı loglayın
-        if (!response.ok) {
-          console.log("Failed to edit brand. Status:", response.status);
-          const errorData = await response.json();
-          console.log("Error message:", errorData.message);
-          return;
-        }
-
-        const updatedBrand = await response.json();
-
-        setBrandData((prevBrands) =>
-          prevBrands.map((brand) =>
-            brand._id === currentBrand._id ? updatedBrand : brand
-          )
-        );
-
-        setIsEditing(false);
-        setCurrentBrand(null);
-      } catch (error) {
-        console.log("Error editing brand:", error);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Image upload failed: ${errorText}`);
       }
-    };
 
-    reader.readAsDataURL(newBrandPic); // Resmi base64 formatına dönüştür
-  } else {
-    // Eğer yeni bir fotoğraf yoksa, formData'ya ekleme yapmadan devam et
+      const data = await response.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return "";
+    }
+  };
+
+  const brandEditHandler = async () => {
+    if (!currentBrand) return;
+
+    const formData = new FormData();
+    formData.append("name", newBrandName);
+
+    if (newBrandPic) {
+      const brandPicUrl = await uploadImage(newBrandPic);
+      if (!brandPicUrl) {
+        alert("Image upload failed. Please try again.");
+        return;
+      }
+      formData.append("brandPic", brandPicUrl);
+    }
+
     try {
       const response = await fetch(`http://localhost:3000/brands/${currentBrand._id}`, {
         method: "PATCH",
         body: formData,
       });
 
-      // Hata varsa, hata durum kodunu ve mesajı loglayın
       if (!response.ok) {
         console.log("Failed to edit brand. Status:", response.status);
         const errorData = await response.json();
@@ -113,7 +105,6 @@ const BrandComponent = () => {
       }
 
       const updatedBrand = await response.json();
-
       setBrandData((prevBrands) =>
         prevBrands.map((brand) =>
           brand._id === currentBrand._id ? updatedBrand : brand
@@ -125,12 +116,16 @@ const BrandComponent = () => {
     } catch (error) {
       console.log("Error editing brand:", error);
     }
-  }
-};
-
+  };
 
   return (
-    <div>
+    <div className="bg-gray-100 min-h-[100vh] flex flex-col p-4">
+      <Link to="/addbrand">
+        <button className="border-green-700 border-2 rounded-lg py-1 px-4 bg-green-800 text-white font-bold">
+          Add brand
+        </button>
+      </Link>
+
       {brandData.map((brand) => (
         <SingleBrand
           key={brand._id}
