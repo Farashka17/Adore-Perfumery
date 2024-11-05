@@ -20,7 +20,7 @@ const Footer = () => {
   // ];
   return (
     <div className="bg-[black]  md:mx-auto font-nunito w-full">
-    <div className="container max-w-[1120px]  flex justify-between items-center mx-auto md:px-10 py-[25px] px-[15px]">
+    <div className="container max-w-[1120px]  flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mx-auto md:px-10 py-[25px] px-[15px]">
        <div className='flex flex-col items-start justify-start gap-3 w-[350px]'>           
        <div><img src={"https://adorebeauty.az/assets/img/logo/brand.svg"}/></div> 
        <div className="flex items-center gap-[11px]">
@@ -49,8 +49,8 @@ const Footer = () => {
       </div>
        </div>
 
-       <div className="flex flex-col gap-[20px]">
-          <p className='font-medium text-[18px] text-white'>Company</p>
+       <div className="flex flex-col items-start justify-start  gap-[20px]">
+          <p className='font-medium text-[18px] text-white font-raleway'>Company</p>
           <ul className="flex flex-col gap-[20px] items-start text-white ">
          <li> About Us</li>
          <li> Brands</li>

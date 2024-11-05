@@ -13,25 +13,25 @@ const Category = () => {
        <div className='flex gap-[50px] mx-auto  flex-col md:flex-row text-center mt-12'>
         <div className='flex flex-col items-center justify-center '>
             <img src={Fresh} />
-            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrances</p>
+            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrancies</p>
             <p className='text-[16px] font-nunito font-extralight text-[#232323] mt-5'>Black scalyfin kingfish convict blenny ziege yellow moray whalefish silver drifitinity elpo</p>
         </div>
 
         <div className='flex flex-col items-center justify-center'>
             <img src={Fresh} />
-            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrances</p>
+            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrancies</p>
             <p className='text-[16px] font-nunito font-extralight text-[#232323] mt-5'>Black scalyfin kingfish convict blenny ziege yellow moray whalefish silver drifitinity elpo</p>
         </div>
 
         <div className='flex flex-col items-center justify-center'>
             <img src={Fresh} />
-            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrances</p>
+            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrancies</p>
             <p className='text-[16px] font-nunito font-extralight text-[#232323] mt-5'>Black scalyfin kingfish convict blenny ziege yellow moray whalefish silver drifitinity elpo</p>
         </div>
 
         <div className='flex flex-col items-center justify-center'>
             <img src={Fresh} />
-            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrances</p>
+            <p className='text-[30px] font-thin font-dancing text-[#232323] mt-[33px]'>Fresh Fragrancies</p>
             <p className='text-[16px] font-nunito font-extralight text-[#232323] mt-5'>Black scalyfin kingfish convict blenny ziege yellow moray whalefish silver drifitinity elpo</p>
         </div>
        </div>

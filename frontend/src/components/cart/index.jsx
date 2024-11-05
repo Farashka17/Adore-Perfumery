@@ -6,7 +6,7 @@ import OrderButton from './orderButton'
 
 const Cart = () => {
 
-    const title="Cart of Fragrances"
+    const title="Cart of Fragrancies"
 
   return (
     <div className="bg-[white]  md:mx-auto font-nunito w-full">

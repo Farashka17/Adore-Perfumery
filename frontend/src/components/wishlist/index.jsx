@@ -1,7 +1,7 @@
 import React from 'react'
 import PageTitleImageBackground from '../common/pageTitleImageBackground'
 const Wishlist = () => {
-  const title = 'My Fragrance Collection'
+  const title = 'My Fragrancy Collection'
   return (
     
    <div>

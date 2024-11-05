@@ -4,31 +4,26 @@ import { CiHeart } from "react-icons/ci";
 import Slider from 'react-slick';
 
 const Product = () => {
-  const settings = {
-    dots: true,
-    dotsClass: "slick-dots flex justify-center", // Noktaları ortalamak için flex kullanın
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  // const settings = {
+  //   dots: true,
+  //   dotsClass: "slick-dots flex justify-center", // Noktaları ortalamak için flex kullanın
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  // };
 
   return (
     <div className="bg-white md:mx-auto font-nunito ">
       <div className="container max-w-[1920px] flex flex-col md:flex-row gap-10 justify-center mx-auto md:px-10 py-6 ">
-        <div className="container mx-auto">
-          <div className="hidden  md:block">
-            <div className="grid grid-cols-2 gap-5 w-full">
-              <div>
-                <img src={BigPerfume} alt="Perfume" className="w-full h-auto" />
+        <div className="container mx-auto ">
+              <div className='w-full h-auto '>
+                <img src={BigPerfume} alt="Perfume" className="w-full h-auto " />
               </div>
-              <div>
+              {/* <div>
                 <img src={BigPerfume} alt="Perfume" className="w-full h-auto" />
-              </div>
-            </div>
-          </div>
-
-          <div className="md:hidden max-w-[390px]  ">
+              </div> */}
+          {/* <div className="md:hidden max-w-[390px]  ">
             <Slider {...settings}>
               <div>
                 <img src={BigPerfume} alt="Perfume" className="w-full h-auto " />
@@ -37,7 +32,7 @@ const Product = () => {
                 <img src={BigPerfume} alt="Perfume" className="w-full h-auto " />
               </div>
             </Slider>
-          </div>
+          </div> */}
         </div>
         <div className='w-[90%] mx-auto'>
           <div>
@@ -68,8 +63,10 @@ const Product = () => {
             <button className='py-4 border border-[#232323] bg-black text-white hover:bg-[#dbaf77] w-full'>Add to Cart</button>
           </div>
         </div>
-      </div>
+      
     </div>
+    </div>
+
   );
 }
 

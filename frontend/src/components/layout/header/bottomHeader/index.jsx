@@ -29,7 +29,7 @@ const BottomHeader = () => {
          <Link to={'/products'}>  <button className='hover:text-[#dbaf77]'>Products</button></Link> 
             <button className='hover:text-[#dbaf77]'>Collection</button>
             <button className='hover:text-[#dbaf77]'>Our History</button>
-            <button className='hover:text-[#dbaf77]'>Contact</button>
+        <Link to={"/contactAndBranches"}>    <button className='hover:text-[#dbaf77]'>Contact</button></Link>
          </div>
          <div className='flex iterms-center gap-[30px]'>
        {/* <Link to={"/login"}> <button className='md:block hidden '><HiOutlineUser  className='w-[23px] h-[23px]'/></button></Link>  */}
