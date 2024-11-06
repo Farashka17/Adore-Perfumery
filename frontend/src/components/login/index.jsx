@@ -5,9 +5,9 @@ import { FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 const Login = () => {
   return (
-    <div className="relative h-screen flex items-center justify-center mx-auto">
+    <div className="relative  flex items-center justify-center mx-auto">
     <img src={LoginBackground} alt="Background" className=" inset-0 w-full h-full object-cover opacity-50" />
-    <div className="z-10 absolute top-[20px]  bg-white flex md:flex-row flex-col items-center justify-center w-[90%]  md:w-[1000px] ">
+    <div className="z-1 absolute top-[20px]  bg-white flex md:flex-row flex-col items-center justify-center w-[90%]  md:w-[1000px] ">
        
     <div className='flex gap-[40px] items-center justify-center p-8'>
         <div className='md:w-[full] md:h-[100%] hidden md:block'>

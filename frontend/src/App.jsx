@@ -13,6 +13,7 @@ import CartPage from './pages/cart/cartPage'
 import DetailPage from './pages/detailPage/detailPage'
 import MyAccountPage from './pages/myAccount/myAccountPage'
 import ContactAndBranches from './pages/contactAndBranches/ContactAndBranches'
+import CheckoutPage from './pages/checkout/checkoutPage'
 
 function App() {
   
@@ -28,6 +29,8 @@ function App() {
        <Route path="/login" element={<LoginPage/>} />
        <Route path="/account" element={<MyAccountPage/>} />
        <Route path="/contactAndBranches" element={<ContactAndBranches/>} />
+       <Route path="/checkout" element={<CheckoutPage/>} />
+
 
 
       <Route path="/wishlist" element={<WishlistPage/>} />

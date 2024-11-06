@@ -1,11 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const OrderButton = () => {
   return (
     <div className="bg-[white] container max-w-[1210px]  md:mx-auto font-nunito w-full mt-10 px-5">
     <div className="  flex flex-col justify-center items-center md:justify-end md:items-end mx-auto">
         <div >
-            <button className='font-raleway  text-[13px] font-thin py-[19px] px-[50px] bg-gray-300'>Update Cart</button>
+            <button className='font-raleway  text-[13px] font-thin py-[19px] px-[50px] bg-gray-300 hover:bg-[#dbaf77]'>Update Cart</button>
         </div>
     </div>
     <div className='flex justify-end items-end mt-20'>
@@ -20,7 +21,7 @@ const OrderButton = () => {
           <p className='font-nunito font-extralight text-[18px] text-[#232323]'>$15.00</p>
         </div>
         <div className='mt-4'>
-          <button className='font-raleway  text-[13px] font-thin w-full justify-center items-center py-5 border border-[#232323] uppercase'>Proceed to Checkout</button>
+        <Link to={"/checkout"}> <button className='font-raleway  text-[15px] font-thin w-full justify-center items-center py-5 border border-[#232323] uppercase hover:bg-[#dbaf77]'>Proceed to Checkout</button></Link> 
         </div>
       </div>
     </div>
