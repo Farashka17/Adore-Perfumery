@@ -45,7 +45,7 @@ const Filter = () => {
             <ul className='flex flex-col items-start gap-3'>
               <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Floral</li></button>
               <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Fresh</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Fruity</li></button>
+              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Oceanic</li></button>
               <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Citrus</li></button>
               <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Woody</li></button>
               <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Oriental</li></button>

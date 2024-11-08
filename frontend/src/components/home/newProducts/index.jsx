@@ -7,8 +7,8 @@ import SagYarpaq from '../../../assets/SagYarpaq.svg'
 const NewProducts = () => {
   return (
   <div>
-  <div className='container max-w-[1920px] mx-auto'>
-    <div className=' flex flex-col items-center  mt-[128px]'>
+  <div className='container max-w-[1920px] mx-auto my-8'>
+    <div className=' flex flex-col items-center  mt-[80px]'>
       <p className='font-dancing font-regular  text-[50px]'>New Products</p>
         <p className='font-raleway font-thin text-[38px] text-[#232323]'>Meet New Arrivals</p>
     </div>
