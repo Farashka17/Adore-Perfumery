@@ -7,18 +7,15 @@ const FragranceFamilyComponent = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentFragrance, setCurrentFragrance] = useState(null);
   const [newFragranceName, setNewFragranceName] = useState("");
+  const [newDescription, setNewDescription] = useState(""); // Yeni description alanı
   const [newFragrancePic, setNewFragrancePic] = useState(null);
 
   const fetchFragrances = async () => {
     try {
       const response = await fetch("http://localhost:3000/fragranceFamily");
-      if (!response.ok) {
-        console.error(`Failed to fetch fragrances. Status: ${response.status}`);
-        return;
-      }
+      if (!response.ok) throw new Error("Failed to fetch fragrances.");
       const result = await response.json();
-      const fragrances = Array.isArray(result.data) ? result.data : [];
-      setFragranceData(fragrances);
+      setFragranceData(Array.isArray(result.data) ? result.data : []);
     } catch (error) {
       console.error("Error fetching fragrances:", error);
     }
@@ -34,7 +31,7 @@ const FragranceFamilyComponent = () => {
         method: "DELETE",
       });
       if (!response.ok) {
-        console.log(`Failed to delete fragrance.`);
+        console.log("Failed to delete fragrance.");
         return;
       }
       setFragranceData((prevFragrances) =>
@@ -49,31 +46,8 @@ const FragranceFamilyComponent = () => {
     setIsEditing(true);
     setCurrentFragrance(fragrance);
     setNewFragranceName(fragrance.name);
+    setNewDescription(fragrance.description || ""); // Eğer açıklama varsa düzenlemeye eklenir
     setNewFragrancePic(null);
-  };
-
-  const uploadImage = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "erndbi22");
-
-    try {
-      const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Image upload failed: ${errorText}`);
-      }
-
-      const data = await response.json();
-      return data.secure_url;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return "";
-    }
   };
 
   const fragranceEditHandler = async () => {
@@ -81,6 +55,7 @@ const FragranceFamilyComponent = () => {
 
     const formData = new FormData();
     formData.append("name", newFragranceName);
+    formData.append("description", newDescription); // Yeni description alanı gönderiliyor
 
     if (newFragrancePic) {
       const fragrancePicUrl = await uploadImage(newFragrancePic);
@@ -131,6 +106,7 @@ const FragranceFamilyComponent = () => {
           key={fragrance._id}
           name={fragrance.name}
           id={fragrance._id}
+          description={fragrance.description} // Yeni alan ekleniyor
           fragrancePic={fragrance.fragrancePic}
           deleteFragrance={() => fragranceDeleteHandler(fragrance._id)}
           editFragrance={() => startEditHandler(fragrance)}
@@ -146,6 +122,12 @@ const FragranceFamilyComponent = () => {
               className="w-full p-2 border rounded mb-4"
               value={newFragranceName}
               onChange={(e) => setNewFragranceName(e.target.value)}
+            />
+            <textarea
+              className="w-full p-2 border rounded mb-4"
+              value={newDescription}
+              placeholder="Description"
+              onChange={(e) => setNewDescription(e.target.value)}
             />
             <input
               type="file"

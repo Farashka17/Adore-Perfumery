@@ -12,6 +12,8 @@ import AddbrandPage from './pages/AddBrand/addBrand'
 import BrandPage from './pages/Brand/brand'
 import FragranceFamilyPage from './pages/FragranceFamily/fragranceFamilyPage'
 import AddFragranceFamilyComponent from './components/addFragranceFamily'
+import AddConcentrationComponent from './components/addConcentration'
+import ConcentrationPage from './pages/Concentration/concentration'
 
 const App = () => {
   return (
@@ -27,7 +29,9 @@ const App = () => {
               <Route path='/addbrand' element={<AddbrandPage />} />
               <Route path='/brand' element={<BrandPage />} />
               <Route path='/fragranceFamily' element={<FragranceFamilyPage />} />
+              <Route path='/concentration' element={<ConcentrationPage />} />
               <Route path='/addFragranceFamily' element={<AddFragranceFamilyComponent />} />
+              <Route path='/addConcentration' element={<AddConcentrationComponent />} />
               <Route path='/list' element={<ListPage />} />
               <Route path='/orders' element={<OrdersPage />} />
               <Route path='/products' element={<ProductsPage />} />

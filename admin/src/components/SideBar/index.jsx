@@ -31,6 +31,13 @@ const Sidebar = () => {
           </div>
         </NavLink>
 
+        <NavLink to={"/concentration"}>
+          <div className='flex items-center border gap-2 border-gray-300 border-r-0 px-3 py-2 rounded-l '>
+            <MdCategory className='w-5 h-5' />
+            <p className='hidden md:block'>Concentration</p>
+          </div>
+        </NavLink>
+
         <NavLink to={"/list"}>
           <div className='flex items-center border gap-2 border-gray-300 border-r-0 px-3 py-2 rounded-l '>
             <CiViewList className='w-5 h-5' />
@@ -44,6 +51,7 @@ const Sidebar = () => {
             <p className='hidden md:block'>Orders</p>
           </div>
         </NavLink>
+        
       </div>
     </div>
   );
