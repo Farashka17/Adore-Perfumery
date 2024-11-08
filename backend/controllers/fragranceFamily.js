@@ -101,12 +101,13 @@ const editFragranceFamily = async (req, res) => {
 
 const addFragranceFamily = async (req, res) => {
   try {
-    const { name, fragrancePic } = req.body;
-    console.log("Backend'e gelen veriler:", { name, fragrancePic });
+    const { name, fragrancePic,description } = req.body;
+    console.log("Backend'e gelen veriler:", { name, fragrancePic, description });
 
     const newFamily = new FragranceFamily({
       name,
       fragrancePic,
+      description
     });
 
     await newFamily.save();
