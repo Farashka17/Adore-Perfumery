@@ -15,7 +15,6 @@ const Brands = () => {
         "https://adorebeauty.az/assets/img/clients/esteelauderlogo.png",
         "https://adorebeauty.az/assets/img/clients/collistarlogo.png",
         "https://adorebeauty.az/assets/img/clients/carolinaherreralogo.png",
-        "https://adorebeauty.az/assets/img/clients/gazellilogo.png",
         "https://adorebeauty.az/assets/img/clients/bdklogo.png",
 
 
