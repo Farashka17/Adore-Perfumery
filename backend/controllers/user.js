@@ -6,11 +6,16 @@ import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
 const register = async (req, res) => {
-    const { name, email, password, role } = req.body;
+    const { name, lastName, email, password, confirmPassword, role } = req.body;
 
     // Tüm alanların dolu olup olmadığını kontrol et
-    if (!name || !email || !password || !role) {
+    if (!name || !lastName || !email || !password || !confirmPassword ) {
         return res.status(400).json({ message: "Lütfen tüm gerekli alanları doldurun." });
+    }
+
+    // Şifrelerin eşleşip eşleşmediğini kontrol et
+    if (password !== confirmPassword) {
+        return res.status(400).json({ message: "Şifreler eşleşmiyor." });
     }
 
     // Kullanıcı var mı kontrol et
@@ -30,6 +35,7 @@ const register = async (req, res) => {
     // Yeni kullanıcı oluştur
     const newUser = await User.create({
         name,
+        lastName,
         email,
         password: hashedPassword,
         role,
@@ -54,40 +60,33 @@ const register = async (req, res) => {
         });
 };
 
+
 const login = async (req, res) => {
     const { email, password } = req.body;
-
+  
     // Kullanıcıyı bul
     const user = await User.findOne({ email });
     if (!user) {
-        return res.status(404).json({ message: "Bu kullanıcı mevcut değil." }); // 404 hatası daha uygun
+      return res.status(404).json({ message: "Bu kullanıcı mevcut değil." });
     }
-
+  
     // Şifreyi karşılaştır
     const comparePassword = await bcrypt.compare(password, user.password);
     if (!comparePassword) {
-        return res.status(401).json({ message: "Şifreniz yanlıştır." }); // 401 hatası daha uygun
+      return res.status(401).json({ message: "Şifreniz yanlıştır." });
     }
-
+  
     // JWT oluştur
     const token = jwt.sign({ id: user._id }, "SECRETTOKEN", { expiresIn: "1h" });
-    
-    // Cookie ayarları
-    const cookieOptions = {
-        httpOnly: true,
-        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-    };
-
+  
     // Yanıtı gönder
-    return res.status(200)
-        .cookie("token", token, cookieOptions)
-        .json({
-            message: "Giriş başarılı.",
-            user,
-            token,
-        });
-};
-
+    return res.status(200).json({
+      message: "Giriş başarılı.",
+      user: user, // Kullanıcı bilgilerini döndürüyoruz
+      token,
+    });
+  };
+  
 
 const logout = async (req,res)=>{
     const cookieOptions = {

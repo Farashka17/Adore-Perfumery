@@ -11,6 +11,7 @@ import expressFileUpload from 'express-fileupload'
 // import brand from './routes/brand.js'
 import brand from './routes/brand.js'
 import fragranceFamily from './routes/fragranceFamily.js'
+import concentration from './routes/concentration.js'
 dotenv.config()
 
 const app =  express()
@@ -24,6 +25,8 @@ app.use('/products',product)
 app.use('/users',user)
 app.use('/brands',brand)
 app.use('/fragranceFamily',fragranceFamily)
+app.use('/concentrations',concentration)
+
 
 db()
 const PORT = 3000
