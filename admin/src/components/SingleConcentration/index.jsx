@@ -1,7 +1,7 @@
 import { useState } from "react";
 import User from '../../assets/user.svg';
 
-const SingleConcentration = ({ name, id, fragrancePic, deleteFragrance, editFragrance, description }) => {
+const SingleConcentration = ({ name, id, deleteConcentration, editConcentration, description }) => {
   return (
     <div className="bg-orange-200 h-[120px] my-2 w-full">
       <div className="py-4 flex items-center justify-between gap-6 px-6">
@@ -16,13 +16,13 @@ const SingleConcentration = ({ name, id, fragrancePic, deleteFragrance, editFrag
         <div className="flex items-center gap-8">
           <button
             className="border-orange-700 border-2 rounded-lg py-1 px-4 bg-gray-100 text-black font-bold"
-            onClick={editFragrance}
+            onClick={editConcentration}
           >
             Edit
           </button>
           <button
             className="border-violet-800 border-2 rounded-lg py-1 px-4 bg-gray-100 text-black font-bold"
-            onClick={deleteFragrance}
+            onClick={deleteConcentration}
           >
             Delete
           </button>

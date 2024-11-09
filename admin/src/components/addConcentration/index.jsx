@@ -5,7 +5,8 @@ const AddConcentrationComponent = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
-    brandPic: null,
+    concentrationPic: null,
+    description: "", 
   });
 
   const handleChange = (e) => {
@@ -43,64 +44,75 @@ const AddConcentrationComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let brandPicUrl = "";
+    let concentrationPicUrl = "";
 
-    if (formData.brandPic) {
-      brandPicUrl = await uploadImage(formData.brandPic);
-      if (!brandPicUrl) {
+    if (formData.concentrationPic) {
+      concentrationPicUrl = await uploadImage(formData.concentrationPic);
+      if (!concentrationPicUrl) {
         alert("Image upload failed. Please try again.");
         return;
       }
     }
 
-    const brandData = {
+    const concentrationData = {
       name: formData.name,
-      brandPic: brandPicUrl,
+      concentrationPic: concentrationPicUrl || "", // Cloudinary URL boş değilse gönderiyoruz
+      description: formData.description,
     };
 
     try {
-      const response = await fetch("http://localhost:3000/brands", {
+      const response = await fetch("http://localhost:3000/concentrations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(brandData),
+        body: JSON.stringify(concentrationData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Failed to create brand: ${errorData.message}`);
+        throw new Error(`Failed to create concentration: ${errorData.message}`);
       }
 
-      alert("Brand created successfully!");
-      navigate("/brand");
+      alert("Concentration created successfully!");
+      navigate("/concentration");
     } catch (error) {
-      console.error("Error creating brand:", error);
-      alert("Can't create brand: " + error.message);
+      console.error("Error creating concentration:", error);
+      alert("Can't create concentration: " + error.message);
     }
   };
 
   return (
     <div className="bg-pink-100 min-h-screen flex items-center justify-center">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-        <h1 className="text-center text-black font-bold text-[48px]">Create brand</h1>
+        <h1 className="text-center text-black font-bold text-[48px]">Create Concentration</h1>
 
         <div className="flex flex-col items-center gap-2">
           <label className="text-black font-bold text-[24px]">
-            Brand Name <sup>*</sup>
+          Concentration Name <sup>*</sup>
           </label>
           <input
             type="text"
             name="name"
-            placeholder="Brand Name"
+            placeholder="Concentration Name"
             className="bg-gray-100 rounded-lg p-2 text-black"
             onChange={handleChange}
           />
         </div>
 
         <div className="flex flex-col items-center gap-2">
-          <label className="text-black font-bold text-[24px]">Brand Picture</label>
-          <input type="file" name="brandPic" className="text-black" onChange={handleChange} />
+          <label className="text-black font-bold text-[24px]">Concentration Picture</label>
+          <input type="file" name="concentrationPic" className="text-black" onChange={handleChange} />
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+          <label className="text-black font-bold text-[24px]">Description</label>
+          <textarea
+            name="description"
+            placeholder="Enter concentration description"
+            className="bg-gray-100 rounded-lg p-2 text-black"
+            onChange={handleChange}
+          />
         </div>
 
         <button
@@ -111,8 +123,8 @@ const AddConcentrationComponent = () => {
         </button>
       </form>
 
-      <div className="absolute top-2 right-2">
-        <Link to="/brand">
+      <div className="absolute top-24 right-2">
+        <Link to="/concentration">
           <button className="border-blue-700 border-2 rounded-lg py-1 px-4 bg-blue-800 text-black font-bold">
             Back
           </button>

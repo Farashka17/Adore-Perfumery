@@ -7,13 +7,13 @@ import ListPage from './pages/List/list'
 import OrdersPage from './pages/Orders/orders'
 import ProductsPage from './pages/Products/ProductsPage'
 import AddProductPage from './pages/AddProductsPage/addProductPage'
-import UsersPage from './pages/Users/users'
 import AddbrandPage from './pages/AddBrand/addBrand'
 import BrandPage from './pages/Brand/brand'
 import FragranceFamilyPage from './pages/FragranceFamily/fragranceFamilyPage'
 import AddFragranceFamilyComponent from './components/addFragranceFamily'
 import AddConcentrationComponent from './components/addConcentration'
 import ConcentrationPage from './pages/Concentration/concentration'
+import UsersPage from './pages/Users/users'
 
 const App = () => {
   return (
@@ -34,6 +34,7 @@ const App = () => {
               <Route path='/addConcentration' element={<AddConcentrationComponent />} />
               <Route path='/list' element={<ListPage />} />
               <Route path='/orders' element={<OrdersPage />} />
+              <Route path='/users' element={<UsersPage />} />
               <Route path='/products' element={<ProductsPage />} />
               <Route path="/addProduct" element={<AddProductPage />} />
             </Routes>
