@@ -8,6 +8,7 @@ const Filter = () => {
   const [isConcentrationOpen, setIsConcentrationOpen] = useState(false);
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
+  const [isOnSale, setIsOnSale] = useState(false);
 
   const toggleFragranceArrows = () => {
     setIsFragranceOpen(!isFragranceOpen);
@@ -161,6 +162,18 @@ const Filter = () => {
           )}
         </div>
       </div>
+      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+
+      <div className="flex justify-start items-center mb-3">
+        <input
+          type="checkbox"
+          checked={isOnSale}
+          onChange={() => setIsOnSale(!isOnSale)}
+          className="mr-2 cursor-pointer"
+        />
+        <p className="text-[22px] font-medium text-[#212121]">On Sale</p>
+      </div>
+
     </div>
   );
 };

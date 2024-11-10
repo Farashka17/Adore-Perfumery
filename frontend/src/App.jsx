@@ -14,6 +14,7 @@ import DetailPage from './pages/detailPage/detailPage'
 import MyAccountPage from './pages/myAccount/myAccountPage'
 import ContactAndBranches from './pages/contactAndBranches/ContactAndBranches'
 import CheckoutPage from './pages/checkout/checkoutPage'
+import HomePageAdmin from '../../admin/src/pages/Home/homePage'
 
 function App() {
   
@@ -21,6 +22,8 @@ function App() {
     <>
     <Header/>
     <Routes>
+    <Route path="/admin" element={<HomePageAdmin/>} />
+
       <Route path="/" element={<HomePage/>} />
       <Route path="/products" element={<ProductsPage/>} />
       <Route path={`/product/:id`} element={<DetailPage/>} />

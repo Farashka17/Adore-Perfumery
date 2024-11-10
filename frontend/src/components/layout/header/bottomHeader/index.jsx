@@ -4,25 +4,30 @@ import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoSearchOutline } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiOutlineUser } from "react-icons/hi2";
-import { Link } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 
 const BottomHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [userRole, setUserRole] = useState('');
+  const navigate = useNavigate();
   useEffect(() => {
     const checkUserStatus = () => {
       const user = localStorage.getItem('userName');
+      const role = localStorage.getItem('role');
       if (user) {
         setUserName(user);
         setIsLoggedIn(true);
+        setUserRole(role);
       } else {
         setUserName('');
         setIsLoggedIn(false);
+        setUserRole('');
       }
+       console.log(role)
     };
-
+ 
     checkUserStatus();
 
     // Login durumunu dinleyin
@@ -32,12 +37,17 @@ const BottomHeader = () => {
       window.removeEventListener('loginStatusChanged', checkUserStatus);
     };
   }, []);
-
+  // const handleAdminDashboardClick = () => {
+  //   if (userRole === 'admin') {
+  //     navigate('/admin');
+  //   }
+  // };
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
-    window.dispatchEvent(new Event('loginStatusChanged')); // Çıkış event tetikleniyor
+    setUserRole('');
+    window.dispatchEvent(new Event('loginStatusChanged'));
   };
 
   return (
@@ -45,7 +55,7 @@ const BottomHeader = () => {
       <div className="container max-w-[1920px] flex justify-between items-center mx-auto md:px-10 py-[25px] px-[15px]">
         <Link to={"/"}>
           <div>
-            <img src={"https://adorebeauty.az/assets/img/logo/brand.svg"} />
+            <img src={"https://adorebeauty.az/assets/img/logo/brand.svg"} alt="Brand Logo" />
           </div>
         </Link>
         <div className='lg:flex lg:gap-6 hidden'>
@@ -75,12 +85,27 @@ const BottomHeader = () => {
                 <div className="absolute top-full right-0 z-10 rounded-lg shadow w-32 bg-white">
                   <div className="py-2 px-1 flex flex-col gap-1 text-sm text-gray-950 text-left ">
                     {isLoggedIn ? (
-                      <button 
-                        onClick={handleLogout} 
-                        className="block px-2 py-1 rounded hover:bg-slate-100 text-left"
-                      >
-                        Logout
-                      </button>
+                      <>
+                        <button 
+                          onClick={handleLogout} 
+                          className="block px-2 py-1 rounded hover:bg-slate-100 text-left"
+                        >
+                          Logout
+                        </button>
+                        <Link
+                          to="/account"
+                          className="block px-2 py-1 rounded hover:bg-slate-100"
+                        >
+                          My Account
+                        </Link>
+                      
+            {userRole === 'admin' && (
+              <a href="http://localhost:5173"  rel="noopener noreferrer">
+                Admin Dashboard
+              </a>
+            )}
+
+                      </>
                     ) : (
                       <Link 
                         to="/login" 
@@ -89,12 +114,6 @@ const BottomHeader = () => {
                         Login
                       </Link>
                     )}
-                    <Link
-                      to="/account"
-                      className="block px-2 py-1 rounded hover:bg-slate-100"
-                    >
-                      My Account
-                    </Link>
                   </div>
                 </div>
               )}

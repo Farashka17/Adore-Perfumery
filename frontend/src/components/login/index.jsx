@@ -14,6 +14,7 @@ const Login = () => {
 
     try {
       const response = await fetch('http://localhost:3000/users/login', {
+       
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,6 +28,8 @@ const Login = () => {
         // Token ve kullanıcı adını kaydediyoruz
         localStorage.setItem('token', data.token);
         localStorage.setItem('userName', data.user.name);
+        localStorage.setItem('role', data.user.role);
+
 
         // Giriş durumu değişikliği için event tetikle
         window.dispatchEvent(new Event('loginStatusChanged'));
