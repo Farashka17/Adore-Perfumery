@@ -4,10 +4,10 @@ import { authenticationMid, roleChecked } from '../middleware/auth.js';
 
 
 const router = express.Router()
-router.get('/products',allProducts)
+router.get('/',allProducts)
 router.get('/admin/products',authenticationMid,roleChecked("admin"),adminProducts,)
 router.get('/products/:id',detailProducts)
-router.post('/product/new',authenticationMid,roleChecked("admin"),createProduct)
+router.post('/',authenticationMid,roleChecked("admin"),createProduct)
 router.post('/product/newReview',authenticationMid,createReview)
 router.delete('/products/:id',authenticationMid,roleChecked("admin"),deleteProduct)
 router.patch('/products/:id',authenticationMid,roleChecked("admin"),updateProduct)

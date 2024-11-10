@@ -207,23 +207,23 @@ export {
 //     response.status(201).send({message:"User created successfully",data:newUser})
 // }
 
-export const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find();
+    export const getAllUsers = async (req, res) => {
+        try {
+            const users = await User.find();
 
-        // Kullanıcı bulunmadıysa
-        if (!users || users.length === 0) {
-            return res.status(404).json({ message: "No users found" });
+            // Kullanıcı bulunmadıysa
+            if (!users || users.length === 0) {
+                return res.status(404).json({ message: "No users found" });
+            }
+
+            // Kullanıcılar bulunduysa
+            return res.status(200).json({ message: "Users found", data: users });
+        } catch (error) {
+            // Hata durumunda
+            console.error(error);
+            return res.status(500).json({ message: "An error occurred while fetching users." });
         }
-
-        // Kullanıcılar bulunduysa
-        return res.status(200).json({ message: "Users found", data: users });
-    } catch (error) {
-        // Hata durumunda
-        console.error(error);
-        return res.status(500).json({ message: "An error occurred while fetching users." });
-    }
-};
+    };
 
 export const getSingleUser = async (request,response)=>{
     const {userId} = request.params
@@ -246,13 +246,29 @@ export const deleteUser = async(request,response)=>{
     response.status(200).send({message:"User deleted successfully",data:user})
 }
 
-export const editUser = async(request,response)=>{
-    const {userId} = request.params
-    const updateUser = await User.findByIdAndUpdate({_id: userId})
-    if(!updateUser){
-        response.status(404).send({message:"User not found"})
-        return;
+export const editUser = async (request, response) => {
+    const { userId } = request.params;
+    try {
+        const updateUser = await User.findById(userId);
+
+        if (!updateUser) {
+            return response.status(404).send({ message: "User not found" });
+        }
+
+        // Kullanıcıyı güncelle
+        updateUser.set(request.body); // request.body'deki tüm veriyi kullanıcıya uygula
+
+        await updateUser.save(); // Güncellenmiş kullanıcıyı kaydet
+
+        return response.status(200).send({
+            message: "User updated successfully",
+            data: updateUser,
+        });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return response.status(500).send({
+            message: "An error occurred while updating the user",
+        });
     }
-    updateUser.set(request.body)
-    response.status(200).send({message:"User updated successfully",data:updateUser})
-}
+};
+

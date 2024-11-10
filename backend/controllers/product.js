@@ -23,27 +23,41 @@ const detailProducts = async (req,res)=>{
 }
 
     // admin
-const createProduct = async (req,res,next)=>{
-    let images = []
-    if(typeof req.body.images === 'string'){
-        images.push(req.body.images)
-    }
-    else{
-        images = req.body.images
-    }
-    let allImage = []
-    for(let i=0; i<images.length; i++){
-        const result = await cloudinary.uploader.upload(images[i],{folder:"products"})
-        allImage.push({
-            public_id:result.public_id,
-            url:result.secure_url
-        })
-    }
-    req.body.images = allImage
-    req.body.user = req.user.id
-     const product = await Product.create(req.body)
-     res.status(201).json({product})
-}
+    const createProduct = async (req, res, next) => {
+        try {
+          const image = req.body.image; // image'yi alıyoruz
+      
+          let uploadedImage;
+          if (image) {
+            try {
+              const result = await cloudinary.uploader.upload(image, { folder: "products" });
+              uploadedImage = {
+                public_id: result.public_id,
+                url: result.secure_url,
+              };
+            } catch (error) {
+              console.error("Error uploading image to Cloudinary:", error);
+              return res.status(500).json({ message: "Image upload failed", error });
+            }
+          }
+      
+          req.body.image = uploadedImage; // Tek resim objesi ekliyoruz
+      
+          if (req.user && req.user.id) {
+            req.body.user = req.user.id;
+          } else {
+            return res.status(401).json({ message: "User not authenticated" });
+          }
+      
+          const product = await Product.create(req.body);
+          res.status(201).json({ product });
+        } catch (error) {
+          console.error("Error creating product:", error);
+          res.status(500).json({ message: "Failed to create product", error });
+        }
+      };
+      
+      
 
 
 const deleteProduct = async (req,res,next)=>{
