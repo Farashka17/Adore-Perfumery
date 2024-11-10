@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const AddProductComponent = () => {
   const [categoryData, setCategoryData] = useState([]);
+  const [brandData, setBrandData] = useState([]);
+  const [fragranceFamilyData, setFragranceFamilyData] = useState([]);
+  const [concentrationData, setConcentrationData] = useState([]);
+  const [volumeData, setVolumeData] = useState([]);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -14,7 +19,7 @@ const AddProductComponent = () => {
     concentration: "",
     volume: "",
     fragranceFamily: "",
-    images: [],
+    image: null, // Tek bir dosya
     userId: "",
     categoryId: "",
     newArrivals: false,
@@ -27,61 +32,60 @@ const AddProductComponent = () => {
     const { name, type, checked, value, files } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : type === "file" ? Array.from(files) : value,
+      [name]: type === "checkbox" ? checked : type === "file" ? files[0] : value, // Dosya seçildiğinde ilk dosya alınır
     }));
   };
 
-  const uploadImages = async (files) => {
-    const imageUrls = [];
-    for (const file of files) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "hof1ji4h");
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "erndbi22"); // Cloudinary upload preset
 
-      try {
-        const response = await fetch("https://api.cloudinary.com/v1_1/dj294wevk/image/upload", {
-          method: "POST",
-          body: formData,
-        });
+    try {
+      const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (!response.ok) throw new Error("Image upload failed");
+      if (!response.ok) throw new Error("Image upload failed");
 
-        const data = await response.json();
-        imageUrls.push({ public_id: data.public_id, url: data.secure_url });
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
+      const data = await response.json();
+      return { public_id: data.public_id, url: data.secure_url };
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return null;
     }
-    return imageUrls;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let images = [];
-    if (formData.images.length) {
-      images = await uploadImages(formData.images);
+    let image = null;
+    if (formData.image) {
+      image = await uploadImage(formData.image); // Tek bir resmi yükle
     }
 
     const productData = {
       ...formData,
-      images,
+      image, // Tek bir resim ekleniyor
     };
 
     try {
-      const response = await fetch("http://localhost:8000/api/products", {
+      const response = await fetch("http://localhost:3000/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          //  "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify(productData),
+        //  credentials: "include"
       });
 
       if (!response.ok) throw new Error("Failed to create product");
 
       const result = await response.json();
       alert("Product created successfully", result);
-      navigate("/products");
+      navigate("/products"); // Ürün ekledikten sonra products sayfasına yönlendir
     } catch (error) {
       console.error("Error creating product:", error);
       alert("Can't create Product...");
@@ -89,22 +93,24 @@ const AddProductComponent = () => {
   };
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async (url, setter) => {
       try {
-        const response = await fetch("http://localhost:8000/api/categories");
+        const response = await fetch(url);
         if (!response.ok) {
-          console.log(`Failed to fetch categories.`);
+          console.log(`Failed to fetch data from ${url}`);
           return;
         }
-
         const result = await response.json();
-        const categories = Array.isArray(result.data) ? result.data : [];
-        setCategoryData(categories);
+        setter(Array.isArray(result.data) ? result.data : []);
       } catch (error) {
-        console.log("Error fetching categories:", error);
+        console.log("Error fetching data:", error);
       }
     };
-    fetchCategories();
+
+    fetchData("http://localhost:3000/brands", setBrandData);
+    fetchData("http://localhost:3000/fragranceFamily", setFragranceFamilyData);
+    fetchData("http://localhost:3000/concentrations", setConcentrationData);
+    fetchData("http://localhost:3000/volumes", setVolumeData);
   }, []);
 
   return (
@@ -151,14 +157,20 @@ const AddProductComponent = () => {
         />
 
         <label className="block text-gray-700">Brand</label>
-        <input
-          type="text"
+        <select
           name="brand"
           value={formData.brand}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
-        />
+        >
+          <option value="">Select Brand</option>
+          {brandData.map((brand) => (
+            <option key={brand._id} value={brand.name}>
+              {brand.name}
+            </option>
+          ))}
+        </select>
 
         <label className="block text-gray-700">Rating</label>
         <input
@@ -185,42 +197,60 @@ const AddProductComponent = () => {
         </select>
 
         <label className="block text-gray-700">Concentration</label>
-        <input
-          type="text"
+        <select
           name="concentration"
           value={formData.concentration}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
-        />
+        >
+          <option value="">Select Concentration</option>
+          {concentrationData.map((conc) => (
+            <option key={conc._id} value={conc.name}>
+              {conc.name}
+            </option>
+          ))}
+        </select>
 
-        <label className="block text-gray-700">Volume (ml)</label>
-        <input
-          type="number"
+        <label className="block text-gray-700">Volume</label>
+        <select
           name="volume"
           value={formData.volume}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
-        />
+        >
+          <option value="">Select Volume</option>
+          {volumeData.map((vol) => (
+            <option key={vol._id} value={vol.name}>
+              {vol.name}
+            </option>
+          ))}
+        </select>
 
         <label className="block text-gray-700">Fragrance Family</label>
-        <input
-          type="text"
+        <select
           name="fragranceFamily"
           value={formData.fragranceFamily}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
-        />
+        >
+          <option value="">Select Fragrance Family</option>
+          {fragranceFamilyData.map((family) => (
+            <option key={family._id} value={family.name}>
+              {family.name}
+            </option>
+          ))}
+        </select>
 
-        <label className="block text-gray-700">Product Images</label>
+        <label className="block text-gray-700">Product Image</label>
         <input
           type="file"
-          name="images"
-          multiple
+          name="image"
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-md"
+          required
         />
 
         <button

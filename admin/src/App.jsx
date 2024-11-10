@@ -14,6 +14,9 @@ import AddFragranceFamilyComponent from './components/addFragranceFamily'
 import AddConcentrationComponent from './components/addConcentration'
 import ConcentrationPage from './pages/Concentration/concentration'
 import UsersPage from './pages/Users/users'
+import VolumePage from './pages/Volume/volume'
+import AddVolumePage from './pages/AddVolume/addVolume'
+// import HomePageAdmin from './pages/Home/homePage'
 
 const App = () => {
   return (
@@ -25,14 +28,18 @@ const App = () => {
           <Sidebar />
           <div className='w-full mx-auto text-gray-600 text-base'>
             <Routes>
+            {/* <Route path="/" element={<HomePageAdmin />} /> */}
+
               <Route path="/users" element={<UsersPage />} />
               <Route path='/addbrand' element={<AddbrandPage />} />
+              <Route path='/addvolume' element={<AddVolumePage />} />
               <Route path='/brand' element={<BrandPage />} />
               <Route path='/fragranceFamily' element={<FragranceFamilyPage />} />
               <Route path='/concentration' element={<ConcentrationPage />} />
               <Route path='/addFragranceFamily' element={<AddFragranceFamilyComponent />} />
               <Route path='/addConcentration' element={<AddConcentrationComponent />} />
               <Route path='/list' element={<ListPage />} />
+              <Route path='/volume' element={<VolumePage />} />
               <Route path='/orders' element={<OrdersPage />} />
               <Route path='/users' element={<UsersPage />} />
               <Route path='/products' element={<ProductsPage />} />

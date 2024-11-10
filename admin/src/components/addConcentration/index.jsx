@@ -65,8 +65,10 @@ const AddConcentrationComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify(concentrationData),
+        // credentials: "include" 
       });
 
       if (!response.ok) {

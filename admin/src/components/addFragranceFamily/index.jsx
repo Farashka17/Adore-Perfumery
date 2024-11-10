@@ -65,8 +65,10 @@ const AddFragranceFamilyComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify(fragranceData),
+        //  credentials: "include"
       });
 
       if (!response.ok) {

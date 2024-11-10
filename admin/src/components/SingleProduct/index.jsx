@@ -1,18 +1,21 @@
 import React from "react";
 import User from '../../assets/user.svg'
 
-const SingleProduct = ({name,price,quantity,productPic,productDeleteHandler}) => {
+const SingleProduct = ({name,price,quantity,productPic,productDeleteHandler,volume}) => {
   return (
     <div className="bg-gray-800 h-[120px] my-2 w-full">
       <div className="py-4 flex items-center justify-between gap-6 px-6">
         <div className="flex items-center gap-8">
         <div className="w-[80px] h-[80px]">
-            <img src={productPic ? productPic:User} className="rounded-full" />
+            <img src={productPic ? productPic : ""} className="rounded-full" />
         </div>
         <div>
         <h1 className="text-white text-[28px] font-bold">{name}</h1>
+        <h1 className="text-white text-[28px] font-bold">{brand}</h1>
         <p className="text-white text-[18px] font-400">{`$ ${price}`}</p>
         <p className="text-white text-[18px] font-400">{`quantity : ${quantity}`}</p>
+        <p className="text-white text-[18px] font-400">{`quantity : ${volume}`}</p>
+
         </div>
         </div>
         <div className="flex items-center gap-8">

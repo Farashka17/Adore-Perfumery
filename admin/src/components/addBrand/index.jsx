@@ -25,7 +25,8 @@ const AddbrandComponent = () => {
       const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
         method: "POST",
         body: formData,
-      });
+      },
+     );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -63,7 +64,9 @@ const AddbrandComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          //  "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
+        //  credentials: "include",
         body: JSON.stringify(brandData),
       });
 
