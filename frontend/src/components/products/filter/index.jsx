@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const Filter = () => {
@@ -29,8 +29,69 @@ const Filter = () => {
     setIsPriceOpen(!isPriceOpen);
   };
 
+  
+  const [fragranceData, setFragranceData] = useState([]);
+  const [concentrationData, setConcentrationData] = useState([]);
+  const [volumeData, setVolumeData] = useState([]);
+  const [brandData, setBrandData] = useState([]);
+
+
+
+
+  // Veritabanından fragrance verilerini çekme fonksiyonu
+  const fetchFragranceData = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/fragranceFamily");
+      if (!response.ok) throw new Error("Failed to fetch fragrance data.");
+      const result = await response.json();
+      setFragranceData(result.data || []);
+    } catch (error) {
+      console.error("Error fetching fragrance data:", error);
+    }
+  };
+
+  const fetchConcentrationData = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/concentrations");
+      if (!response.ok) throw new Error("Failed to fetch concentration data.");
+      const result = await response.json();
+      setConcentrationData(result.data || []);
+    } catch (error) {
+      console.error("Error fetching concentration data:", error);
+    }
+  };
+
+  const fetchVolumeData = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/volumes");
+      if (!response.ok) throw new Error("Failed to fetch concentration data.");
+      const result = await response.json();
+      setVolumeData(result.data || []);
+    } catch (error) {
+      console.error("Error fetching volume data:", error);
+    }
+  };
+
+  const fetchBrandData = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/brands");
+      if (!response.ok) throw new Error("Failed to fetch brand data.");
+      const result = await response.json();
+      setBrandData(result.data || []);
+    } catch (error) {
+      console.error("Error fetching brand data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFragranceData();
+    fetchConcentrationData();
+    fetchVolumeData()
+    fetchBrandData()
+  }, []);
+
   return (
-    <div className='absolute bg-white mx-auto z-10 md:relative w-[200px] hidden md:flex flex-col justify-start'>
+    <div className='absolute  mx-auto z-10 md:relative w-[200px] hidden md:flex flex-col justify-start'>
       <button><p className='font-raleway text-[25px] text-left'>All products</p></button>
       <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
 
@@ -42,17 +103,16 @@ const Filter = () => {
           </button>
         </div>
         <div>
-          {isFragranceOpen && (
-            <ul className='flex flex-col items-start gap-3'>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Floral</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Fresh</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Oceanic</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Citrus</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Woody</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Oriental</li></button>
-            </ul>
-          )}
-        </div>
+      {isFragranceOpen && (
+         <ul className='flex flex-col items-start gap-3'>
+         {fragranceData && fragranceData.map((fragrance) => (
+        <button key={fragrance._id}>
+          <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{fragrance.name}</li>
+        </button>
+        ))}
+       </ul>
+      )}
+      </div>
       </div>
 
       <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
@@ -88,10 +148,11 @@ const Filter = () => {
         <div>
           {isConcentrationOpen && (
             <ul className='flex flex-col items-start gap-3'>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Eau de Parfum</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Eau de Toilette</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Eau de Cologne</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Perfume Oil</li></button>
+        {concentrationData && concentrationData.map((concentration) => (
+        <button key={concentration._id}>
+          <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{concentration.name}</li>
+        </button>
+        ))}
             </ul>
           )}
         </div>
@@ -109,14 +170,11 @@ const Filter = () => {
         <div>
           {isBrandOpen && (
             <ul className='flex flex-col items-start gap-3'>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Chanel</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Dior</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Givenchy</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Yves Saint Laurent</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Gucci</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Carolina Herrera</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Paco Rabanne</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Pilot 65</li></button>
+               {brandData && brandData.map((brand) => (
+        <button key={brand._id}>
+          <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{brand.name}</li>
+        </button>
+        ))}
             </ul>
           )}
         </div>
@@ -134,9 +192,11 @@ const Filter = () => {
         <div>
           {isVolumeOpen && (
             <ul className='flex flex-col items-start gap-3'>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>30ml</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>50ml</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>100ml</li></button>
+               {volumeData && volumeData.map((volume) => (
+        <button key={volume._id}>
+          <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{volume.name}</li>
+        </button>
+        ))}
             </ul>
           )}
         </div>

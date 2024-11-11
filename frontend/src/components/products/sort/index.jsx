@@ -10,7 +10,7 @@ const Sort = () => {
   };
 
   return (
-    <div className="bg-[white]  md:mx-auto font-nunito w-full">
+    <div className="  md:mx-auto font-nunito w-full">
       <div className=" hidden container max-w-[1150px] items-center justify-between md:flex mx-auto px-5 ">
         <div>
           <p className="text-[#232323] font-semibold text-[16px] font-raleway ">
