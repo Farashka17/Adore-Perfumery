@@ -20,8 +20,8 @@ dotenv.config()
 const app =  express()
 app.use(expressFileUpload());
 app.use(cors());
-app.use(bodyParser.json({limit:"30mb",extended:true}))
-app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
+app.use(bodyParser.json({limit:"50mb",extended:true}))
+app.use(bodyParser.urlencoded({limit:"50mb",extended:true}))
 app.use(cookieParser())
 
 app.use('/products',product)

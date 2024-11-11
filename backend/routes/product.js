@@ -1,17 +1,43 @@
-import express from 'express';
-import { allProducts, detailProducts, createProduct, deleteProduct, updateProduct, createReview, adminProducts } from '../controllers/product.js';
-import { authenticationMid, roleChecked } from '../middleware/auth.js';
+// import express from 'express';
+// import {
+//   allProducts,
+//   detailProducts,
+//   createProduct,
+//   deleteProduct,
+//   updateProduct,
+//   createReview,
+// //   adminProducts
+// } from '../controllers/product.js';
+// // import { authenticationMid, roleChecked } from '../middleware/auth.js';
+
+// const router = express.Router();
+
+// router.get('/', allProducts);
+// // router.get('/admin/products', authenticationMid, roleChecked("admin"), adminProducts);
+// router.get('/products/:id', detailProducts);
+// router.post('/', createProduct);
+// router.post('/product/newReview', createReview);
+// router.delete('/products/:id', deleteProduct);
+// router.patch('/products/:id', updateProduct);
+
+// export default router;
 
 
-const router = express.Router()
-router.get('/',allProducts)
-router.get('/admin/products',authenticationMid,roleChecked("admin"),adminProducts,)
-router.get('/products/:id',detailProducts)
-router.post('/',authenticationMid,roleChecked("admin"),createProduct)
-router.post('/product/newReview',authenticationMid,createReview)
-router.delete('/products/:id',authenticationMid,roleChecked("admin"),deleteProduct)
-router.patch('/products/:id',authenticationMid,roleChecked("admin"),updateProduct)
 
+import express from "express"
 
+import {getProducts,
+    getSingleProduct,
+    deleteProduct,
+    editProduct,
+    createProduct} from "../controllers/product.js"
 
-export default router
+    const router = express.Router();
+
+    router.post("/",createProduct)
+    router.get("/",getProducts)
+    router.get("/:id",getSingleProduct)
+    router.patch("/:id",editProduct)
+    router.delete("/:id",deleteProduct)
+
+    export default router 

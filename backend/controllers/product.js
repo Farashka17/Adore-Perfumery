@@ -1,136 +1,133 @@
-import {Product} from '../models/product.js';
-import ProductFilter from '../utils/productFilter.js';
-import cloudinary from 'cloudinary';
+import { Product } from "../models/product.js";
 
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json({message : "Product found",data:products});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getSingleProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
 
-const allProducts = async (req,res)=>{
-    const resultPerPage = 10
-    const productFilter = new ProductFilter(Product.find(),req.query).search().filter().pagination(resultPerPage)
-    const products = await productFilter.query
+    if (!product) return res.status(404).json({ message: "Product not found" });
 
-res.status(200).json({
-    products
-})
-}
+    res.status(200).json({message : "Product found",data:product});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-const adminProducts =  async(req,res,next)=>{
-    const products = await Product.find()
-    res.status(200).json({products})
-}
-const detailProducts = async (req,res)=>{
-    const product = await Product.findById(req.params.id)
-    res.status(200).json({product})
-}
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Product.findByIdAndDelete(id);
 
-    // admin
-    const createProduct = async (req, res, next) => {
+    if (!data)
+      return res.status(404).json({ message: "Product not found" });
+
+    res.status(200).json({ message: "Product deleted successfully",data});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// const editProduct = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+//       new: true,
+//     });
+
+//     if (!updatedProduct)
+//       return res.status(404).json({ message: "Product not found" });
+
+//     res.status(200).json(updatedProduct);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// };
+
+const editProduct = async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log("Starting fragrance family update for ID:", id);
+  
+      if (!id || id.length !== 24) {
+        console.error("Invalid ID format:", id);
+        return res.status(400).json({ message: "Invalid ID format" });
+      }
+  
+      console.log("Request Body:", req.body);
+      console.log("Request Files:", req.files);
+  
+      let updatedData = { ...req.body };
+  
+      if (req.file) {
+        console.log("Uploading image to Cloudinary...");
         try {
-          const image = req.body.image; // image'yi alıyoruz
-      
-          let uploadedImage;
-          if (image) {
-            try {
-              const result = await cloudinary.uploader.upload(image, { folder: "products" });
-              uploadedImage = {
-                public_id: result.public_id,
-                url: result.secure_url,
-              };
-            } catch (error) {
-              console.error("Error uploading image to Cloudinary:", error);
-              return res.status(500).json({ message: "Image upload failed", error });
-            }
-          }
-      
-          req.body.image = uploadedImage; // Tek resim objesi ekliyoruz
-      
-          if (req.user && req.user.id) {
-            req.body.user = req.user.id;
-          } else {
-            return res.status(401).json({ message: "User not authenticated" });
-          }
-      
-          const product = await Product.create(req.body);
-          res.status(201).json({ product });
-        } catch (error) {
-          console.error("Error creating product:", error);
-          res.status(500).json({ message: "Failed to create product", error });
+          const result = await cloudinary.uploader.upload(req.file.path);
+          updatedData.productPic = result.secure_url;
+          console.log("Image successfully uploaded to Cloudinary:", result.secure_url);
+        } catch (cloudinaryError) {
+          console.error("Cloudinary upload error:", cloudinaryError);
+          return res.status(500).json({ message: "Failed to upload image to Cloudinary." });
         }
-      };
-      
-      
-
-
-const deleteProduct = async (req,res,next)=>{
-    const product = await Product.findById(req.params.id)
-
-    for(let i=0; i<product.images.length; i++){
-        await cloudinary.uploader.destroy(product.images[i].public_id)
+      } else {
+        console.log("No file uploaded for Cloudinary.");
+      }
+  
+      console.log("Updating product in MongoDB...");
+      const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, {
+        new: true,
+      });
+  
+      if (!updatedProduct) {
+        console.error("Product not found after update attempt. ID:", id);
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      console.log("Product successfully updated:", updatedProduct);
+      res.status(200).json(updatedProduct);
+    } catch (error) {
+      console.error("Unexpected error:", error.message);
+      res.status(500).json({ message: "An unexpected error occurred. Please try again later." });
     }
-    await product.remove()
-
-    res.status(200).json({message:"Silindi"})
-}
-
-const updateProduct = async (req,res,next)=>{
-    const product = await Product.findById(req.params.id)
-
-    let images = []
-    if(typeof req.body.images === 'string'){
-        images.push(req.body.images)
-    }
-    else{
-        images = req.body.images
-    }
-
-    if(images !==undefined){
-        for(let i=0; i<product.images.length; i++){
-            await cloudinary.uploader.destroy(product.images[i].public_id)
-        }
-        await product.images.splice(0,product.images.length)  // remove all images
-        await product.save()  // save the updated product with removed images to database  // without saving, images will not be removed from cloudinary.com
-    }
-    let allImage = []
-    for(let i=0; i<images.length; i++){
-        const result = await cloudinary.uploader.upload(images[i],{folder:"products"})
-        allImage.push({
-            public_id:result.public_id,
-            url:result.secure_url
-        })
-    }
-    req.body.images = allImage
-
-    product =  await Product.findByIdAndUpdate(req.params.id,req.body,{new:true,runValidators:true})
-
-    res.status(200).json({product})
-}
-
-const createReview =async  (req, res,next) => {
-        const {productId,comment,rating}= req.body;
-    const review ={
-        user:req.user._id,
-        name:req.user.name,
-        comment,
-        rating:Number(rating)
-    }
-    const product = await Product.findByIdAndUpdate(productId)
-    product.reviews.push(review)
-    let avg = 0;
-    product.reviews.forEach(rev =>{ 
-        avg += rev.rating});
-        product.rating = avg/product.reviews.length;
-        await product.save({validatBeforeSave:false})
-
-
-    res.status(200).json({
-        message:"Yorum eklendi"
-    })
-}
-export {
-    allProducts,
-    detailProducts,
-    createProduct,
-    deleteProduct,
-    updateProduct,
-    createReview,
-    adminProducts,
   };
+
+
+  const createProduct = async (req, res) => {
+    try {
+        const { 
+            name, description, price, stock, brand, rating, gender, concentration, 
+            volume, fragranceFamily, productPic, newArrivals, topSelling 
+        } = req.body;
+
+        console.log("Backend'e gelen veriler:", { 
+            name, description, price, stock, brand, rating, gender, concentration, 
+            volume, fragranceFamily, productPic, newArrivals, topSelling 
+        });
+
+        const newProduct = new Product({
+            name, description, price, stock, brand, rating, gender, concentration, 
+            volume, fragranceFamily, productPic, newArrivals, topSelling
+        });
+
+        await newProduct.save();
+        res.status(201).json(newProduct);
+    } catch (error) {
+        console.error("Veritabanına kaydedilemedi:", error);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+export {
+  getProducts,
+  getSingleProduct,
+  deleteProduct,
+  editProduct,
+  createProduct
+};

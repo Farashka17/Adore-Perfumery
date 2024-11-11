@@ -26,23 +26,9 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    images: [
-        {
-            public_id: {
+    productPic: {
                 type: String,
-                required: true
             },
-            url: {
-                type: String,
-                required: true
-            }
-        }
-    ],
-    user: {
-        type: mongoose.Schema.ObjectId,
-        default: "User",
-        required: true
-    },
     reviews: [
         {
             user: {
@@ -74,12 +60,20 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     volume: {
-        type: Number,  // Örneğin mililitre cinsinden saklanabilir
+        type: String,  // Örneğin mililitre cinsinden saklanabilir
         required: true
     },
     fragranceFamily: {
         type: String,  // Örneğin "Floral", "Woody", "Citrus" gibi değerler
         required: true
+    },
+    newArrivals:{
+        type: Boolean,
+        default: false
+    },
+    topSelling:{
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 
