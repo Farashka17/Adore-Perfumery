@@ -25,7 +25,7 @@ const SingleProduct = ({name,price,stock,brand,productPic,deleteProduct,editProd
         <p className="text-black text-[18px] font-400">{`Raiting : ${raiting}`}</p>
         <p className="text-black text-[18px] font-400">{`Gender : ${gender}`}</p>
         <p className="text-black text-[18px] font-400">{`Concentration : ${concentration}`}</p>
-        <p className="text-black text-[18px] font-400">{`Fragrancy Family : ${fragranceFamily}`}</p>
+        <p className="text-black text-[18px] font-400">{`Fragrance Family : ${fragranceFamily}`}</p>
         <p className="text-black text-[18px] font-400">{`New Arrivals : ${newArrivals}`}</p>
         <p className="text-black text-[18px] font-400">{`Top Selling : ${topSelling}`}</p>
         </div>
