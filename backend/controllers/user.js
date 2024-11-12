@@ -47,7 +47,7 @@ const register = async (req, res) => {
     // Cookie ayarları
     const cookieOptions = {
         httpOnly: true,
-        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
     };
 
     // Yanıtı gönder
