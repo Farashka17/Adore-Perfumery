@@ -4,14 +4,16 @@ import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoSearchOutline } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiOutlineUser } from "react-icons/hi2";
-import { Link,  useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BottomHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const checkUserStatus = () => {
       const user = localStorage.getItem('userName');
@@ -25,29 +27,27 @@ const BottomHeader = () => {
         setIsLoggedIn(false);
         setUserRole('');
       }
-       console.log(role)
     };
- 
+
     checkUserStatus();
 
-    // Login durumunu dinleyin
     window.addEventListener('loginStatusChanged', checkUserStatus);
 
     return () => {
       window.removeEventListener('loginStatusChanged', checkUserStatus);
     };
   }, []);
-  // const handleAdminDashboardClick = () => {
-  //   if (userRole === 'admin') {
-  //     navigate('/admin');
-  //   }
-  // };
+
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
     setUserRole('');
     window.dispatchEvent(new Event('loginStatusChanged'));
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobile((prev) => !prev);
   };
 
   return (
@@ -77,7 +77,7 @@ const BottomHeader = () => {
             >
               <button className="text-black flex items-center gap-2">
                 {isLoggedIn && (
-                  <span className="ml-2 text-black">Hello, {userName}</span> 
+                  <span className="ml-2 text-black">Hello, {userName}</span>
                 )}
                 <HiOutlineUser className="w-6 h-6" />
               </button>
@@ -98,13 +98,11 @@ const BottomHeader = () => {
                         >
                           My Account
                         </Link>
-                      
-            {userRole === 'admin' && (
-              <a href="http://localhost:5173"  rel="noopener noreferrer">
-                Admin Dashboard
-              </a>
-            )}
-
+                        {userRole === 'admin' && (
+                          <a href="http://localhost:5173"  rel="noopener noreferrer">
+                            Admin Dashboard
+                          </a>
+                        )}
                       </>
                     ) : (
                       <Link 
@@ -137,9 +135,21 @@ const BottomHeader = () => {
             <IoSearchOutline className='w-[23px] h-[23px]' />
           </button>
 
-          <button className='lg:hidden md:block'>
+          <button className='lg:hidden md:block' onClick={toggleMobileMenu}>
             <GiHamburgerMenu className='w-[23px] h-[23px]' />
           </button>
+
+          {isMobile && (
+            <div className="absolute top-6 right-0 z-20   bg-white flex flex-col items-start p-5 shadow-md">
+              <button onClick={toggleMobileMenu} className="self-end mb-4 text-gray-700">
+                Close
+              </button>
+              <Link to="/products" className="text-black py-2 hover:text-[#dbaf77]">Products</Link>
+              <Link to="/cart" className="text-black py-2 hover:text-[#dbaf77]">Cart</Link>
+              <Link to="/wishlist" className="text-black py-2 hover:text-[#dbaf77]">Wishlist</Link>
+              <Link to="/contactAndBranches" className="text-black py-2 hover:text-[#dbaf77]">Contact</Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

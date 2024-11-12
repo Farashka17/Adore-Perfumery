@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp, IoMdClose } from "react-icons/io";
+import { useLocation, useNavigate } from 'react-router-dom';
+import useStore from '../../../store/useStore';
 
-const Filter = () => {
+const Filter = ({ isMobileFilterOpen, closeFilter }) => {
+  const { setFilter, fetchFilteredProducts, clearFilters } = useStore();  // clearFilters'ı import ediyoruz
   const [isFragranceOpen, setIsFragranceOpen] = useState(false);
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [isGenderOpen, setIsGenderOpen] = useState(false);
@@ -9,36 +12,40 @@ const Filter = () => {
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
   const [isOnSale, setIsOnSale] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({});
 
-  const toggleFragranceArrows = () => {
-    setIsFragranceOpen(!isFragranceOpen);
-  };
-  const toggleBrandArrows = () => {
-    setIsBrandOpen(!isBrandOpen);
-  };
-  const toggleGenderArrows = () => {
-    setIsGenderOpen(!isGenderOpen);
-  };
-  const toggleConcentrationArrows = () => {
-    setIsConcentrationOpen(!isConcentrationOpen);
-  };
-  const toggleVolumeArrows = () => {
-    setIsVolumeOpen(!isVolumeOpen);
-  };
-  const togglePriceArrows = () => {
-    setIsPriceOpen(!isPriceOpen);
-  };
+  const toggleFragranceArrows = () => setIsFragranceOpen(!isFragranceOpen);
+  const toggleBrandArrows = () => setIsBrandOpen(!isBrandOpen);
+  const toggleGenderArrows = () => setIsGenderOpen(!isGenderOpen);
+  const toggleConcentrationArrows = () => setIsConcentrationOpen(!isConcentrationOpen);
+  const toggleVolumeArrows = () => setIsVolumeOpen(!isVolumeOpen);
+  const togglePriceArrows = () => setIsPriceOpen(!isPriceOpen);
 
-  
   const [fragranceData, setFragranceData] = useState([]);
   const [concentrationData, setConcentrationData] = useState([]);
   const [volumeData, setVolumeData] = useState([]);
   const [brandData, setBrandData] = useState([]);
 
+  const navigate = useNavigate();
+  const location = useLocation();
 
-
-
-  // Veritabanından fragrance verilerini çekme fonksiyonu
+  const handleFilterSelect = (filterType, value, displayValue) => {
+    const searchParams = new URLSearchParams(location.search);
+  
+    // Seçili filtreyi URL'ye ekle
+    searchParams.set(filterType, value);
+  
+    // State'e seçili filtreyi ekle
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [filterType]: displayValue
+    }));
+  
+    // Fetch filtered products
+    fetchFilteredProducts();
+  
+    navigate(`?${searchParams.toString()}`);
+  };
   const fetchFragranceData = async () => {
     try {
       const response = await fetch("http://localhost:3000/fragranceFamily");
@@ -64,7 +71,7 @@ const Filter = () => {
   const fetchVolumeData = async () => {
     try {
       const response = await fetch("http://localhost:3000/volumes");
-      if (!response.ok) throw new Error("Failed to fetch concentration data.");
+      if (!response.ok) throw new Error("Failed to fetch volume data.");
       const result = await response.json();
       setVolumeData(result.data || []);
     } catch (error) {
@@ -86,19 +93,35 @@ const Filter = () => {
   useEffect(() => {
     fetchFragranceData();
     fetchConcentrationData();
-    fetchVolumeData()
-    fetchBrandData()
+    fetchVolumeData();
+    fetchBrandData();
   }, []);
 
+  // "All Products" butonuna tıklandığında filtreleri temizle
+  const handleAllProductsClick = () => {
+    clearFilters();  // filtreleri temizliyoruz
+    fetchFilteredProducts(); // Fetch all products
+    navigate("/products");   // Ana sayfaya yönlendiriyoruz
+  };
+
   return (
-    <div className='absolute  mx-auto z-10 md:relative w-[200px] hidden md:flex flex-col justify-start'>
-      <button><p className='font-raleway text-[25px] text-left'>All products</p></button>
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+    <div
+    className={`bg-green-500 px-6 md:px-0 mx-auto z-20 md:relative py-5  max-w-[250px]  border border-black border-opacity-10 rounded-[20px] md:border-none md:rounded-none md:w-full transition-transform duration-300 ease-in-out ${
+      isMobileFilterOpen ? "fixed top-0 left-0 w-full h-full overflow-y-auto" : "hidden"
+    } md:block`}
+  >
+    <div className="md:hidden flex justify-end mb-4">
+      <button onClick={closeFilter}>
+        <IoMdClose className="w-6 h-6 text-black" />
+      </button>
+    </div>
+      <button onClick={handleAllProductsClick}><p className='font-raleway text-[25px] text-left'>All products</p></button>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>
         <div className="flex justify-between items-center mb-3">
           <p className="text-[22px] font-medium text-[#212121]">Fragrance Family</p>
-          <button onClick={toggleFragranceArrows}>
+          <button onClick={toggleFragranceArrows} >
             {isFragranceOpen ? <IoIosArrowUp className="cursor-pointer" /> : <IoIosArrowDown className="cursor-pointer" />}
           </button>
         </div>
@@ -106,7 +129,7 @@ const Filter = () => {
       {isFragranceOpen && (
          <ul className='flex flex-col items-start gap-3'>
          {fragranceData && fragranceData.map((fragrance) => (
-        <button key={fragrance._id}>
+        <button key={fragrance._id}  onClick={() => handleFilterSelect('fragrancefamily', fragrance.name)}>
           <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{fragrance.name}</li>
         </button>
         ))}
@@ -115,28 +138,29 @@ const Filter = () => {
       </div>
       </div>
 
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>
         <div className="flex justify-between items-center mb-3">
           <p className="text-[22px] font-medium text-[#212121]">Gender</p>
-          <button onClick={toggleGenderArrows}>
+          <button onClick={toggleGenderArrows} >
             {isGenderOpen ? <IoIosArrowUp className="cursor-pointer" /> : <IoIosArrowDown className="cursor-pointer" />}
           </button>
         </div>
         <div>
           {isGenderOpen && (
             <ul className='flex flex-col items-start gap-3'>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Woman</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Man</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Unisex</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Kids</li></button>
+              {['Woman', 'Man', 'Unisex', 'Kids'].map((gender) => (
+            <button key={gender}  onClick={() => handleFilterSelect('gender', gender)}>
+              <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{gender}</li>
+            </button>
+          ))}
             </ul>
           )}
         </div>
       </div>
 
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>
         <div className="flex justify-between items-center mb-3">
@@ -149,7 +173,7 @@ const Filter = () => {
           {isConcentrationOpen && (
             <ul className='flex flex-col items-start gap-3'>
         {concentrationData && concentrationData.map((concentration) => (
-        <button key={concentration._id}>
+        <button key={concentration._id} onClick={() => handleFilterSelect('concentration', concentration.name)}>
           <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{concentration.name}</li>
         </button>
         ))}
@@ -158,7 +182,7 @@ const Filter = () => {
         </div>
       </div>
 
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>
         <div className="flex justify-between items-center mb-3">
@@ -171,7 +195,7 @@ const Filter = () => {
           {isBrandOpen && (
             <ul className='flex flex-col items-start gap-3'>
                {brandData && brandData.map((brand) => (
-        <button key={brand._id}>
+        <button key={brand._id} onClick={() => handleFilterSelect('brand', brand.name)}>
           <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{brand.name}</li>
         </button>
         ))}
@@ -180,7 +204,7 @@ const Filter = () => {
         </div>
       </div>
 
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>
         <div className="flex justify-between items-center mb-3">
@@ -193,7 +217,7 @@ const Filter = () => {
           {isVolumeOpen && (
             <ul className='flex flex-col items-start gap-3'>
                {volumeData && volumeData.map((volume) => (
-        <button key={volume._id}>
+        <button key={volume._id} onClick={() => handleFilterSelect('volume', volume.name)}>
           <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{volume.name}</li>
         </button>
         ))}
@@ -202,7 +226,7 @@ const Filter = () => {
         </div>
       </div>
 
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div>
         <div className="flex justify-between items-center mb-3">
@@ -214,15 +238,18 @@ const Filter = () => {
         <div>
           {isPriceOpen && (
             <ul className='flex flex-col items-start gap-3'>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Under $50</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>$50 - $100</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>$100 - $150</li></button>
-              <button><li className='hover:text-[#dbaf77] text-[18px] font-raleway'>Over $150</li></button>
+
+
+{['Under $50', '$50 - $100', '$100 - $150', 'Over $150'].map((price) => (
+            <button key={price}  onClick={() => handleFilterSelect('price', price)}>
+              <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{price}</li>
+            </button>
+          ))}
             </ul>
           )}
         </div>
       </div>
-      <div className='w-[200px] h-[2px] bg-[#dbaf77] my-3'></div>
+      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
       <div className="flex justify-start items-center mb-3">
         <input

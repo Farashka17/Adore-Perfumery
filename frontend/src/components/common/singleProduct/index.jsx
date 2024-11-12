@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 const SingleProduct = ({name,price,productPic}) => {
   return (
 <Link to={"/product/:id"}> 
- <div className='  mx-auto cursor-pointer '>
-    <div className=' h-[160px] md:h-[324px] bg-[#e9e6ed] flex items-center justify-center'>
-     <div className='w-[90%] h-[90%] border border-black transition-transform duration-300 transform hover:scale-110'>
+ <div className=' mx-auto cursor-pointer '>
+    <div className='w-[250px] h-[160px] md:h-[324px] bg-[#e9e6ed] flex items-center justify-center'>
+     <div className='w-[80%] h-[80%] border border-black transition-transform duration-300 transform hover:scale-125'>
    <img src={productPic} className='h-[100%] w-full'/>
      </div>
     </div>
@@ -21,7 +21,9 @@ const SingleProduct = ({name,price,productPic}) => {
         </span>
       ))}
     </div>
-    <p className='font-raleway  text-[14px] md:text-[20px] font-thin text-[#232323] mt-[19px]'>{name}</p>
+    <p className='font-raleway text-[14px] md:text-[20px] font-thin text-[#232323] mt-[19px] truncate w-[90%] text-center'>
+  {name}
+</p>
     <div className='mt-[26px] flex items-stretch w-full'>
      {/* <Link to={"/cart"}> */}
      <button class="button">

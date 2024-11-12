@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import SingleProduct from '../../common/singleProduct'
-import Pagination from '../pagination'
+import React, { useEffect, useState } from 'react';
+import SingleProduct from '../../common/singleProduct';
+import { useLocation } from 'react-router-dom';
 
 const VisibleProducts = () => {
   const [productData, setProductData] = useState([]);
+  const location = useLocation();
 
   const fetchProductData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/products");
+      // URL parametrelerini oku
+      const query = location.search;
+      const endpoint = query ? `http://localhost:3000/products${query}` : `http://localhost:3000/products`;
+
+      const response = await fetch(endpoint);
       if (!response.ok) throw new Error("Failed to fetch product data.");
       const result = await response.json();
+
+      // Eğer filtreli ürünler varsa, state'e ekle
       setProductData(result.data || []);
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -18,27 +25,27 @@ const VisibleProducts = () => {
 
   useEffect(() => {
     fetchProductData();
-  
-  }, []);
+  }, [location.search]); // URL parametreleri değiştiğinde yeniden çalıştır
+
   return (
     <div>
-    <div className='grid grid-cols-2 lg:grid-cols-3 gap-[30px] mx-auto py-4'>
-    {productData && productData.map((product) => (
-       <SingleProduct 
-       key={product._id}
-       product={product}
-       name ={product.name}
-       price ={product.price}
-       productPic={product.productPic}
-       />
-        ))}
+      <div className='grid grid-cols-2 lg:grid-cols-3 gap-[30px] mx-auto py-4'>
+        {productData.length > 0 ? (
+          productData.map((product) => (
+            <SingleProduct 
+              key={product._id}
+              product={product}
+              name={product.name}
+              price={product.price}
+              productPic={product.productPic}
+            />
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No products found based on the selected filters.</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
-    </div>
-    <div>
-      <Pagination/>
-    </div>
-    </div>
-  )
-}
-
-export default VisibleProducts
+export default VisibleProducts;
