@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SingleBrand from "../SingleBrand";
 import { Link } from "react-router-dom";
 
-const BrandComponent = () => {
+const  BrandComponent = () => {
   const [brandData, setBrandData] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentBrand, setCurrentBrand] = useState(null);

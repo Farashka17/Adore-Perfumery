@@ -197,8 +197,8 @@ const AddProductComponent = () => {
                     required
                 >
                     <option value="">Select Gender</option>
-                    <option value="Male">Man</option>
-                    <option value="Female">Woman</option>
+                    <option value="Woman">Woman</option>
+                    <option value="Man">Man</option>
                     <option value="Unisex">Unisex</option>
                     <option value="Kids">Kids</option>
                 </select>

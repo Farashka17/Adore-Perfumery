@@ -74,11 +74,7 @@ const ProductsComponent = () => {
     setNewProductName(product.name);
     setNewProductPrice(product.price);
     setNewProductStock(product.stock);
-
-    setNewDescription(product.description || ""); // Eğer açıklama varsa düzenlemeye eklenir
-    setNewProductPic(null);
-
-    // Edit için gerekli field'lar
+    setNewDescription(product.description || "");
     setBrand(product.brand || "");
     setRating(product.rating || "");
     setGender(product.gender || "");
@@ -87,6 +83,31 @@ const ProductsComponent = () => {
     setFragranceFamily(product.fragranceFamily || "");
     setNewArrivals(product.newArrivals || false);
     setTopSelling(product.topSelling || false);
+    setNewProductPic(null);
+  };
+
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "erndbi22"); // Preset ismini buraya yazın
+
+    try {
+      const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Image upload failed: ${errorText}`);
+      }
+
+      const data = await response.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return "";
+    }
   };
 
   const productEditHandler = async () => {
@@ -94,11 +115,9 @@ const ProductsComponent = () => {
 
     const formData = new FormData();
     formData.append("name", newProductName);
-    formData.append("description", newDescription); 
-    formData.append("price", newProductPrice); 
-    formData.append("stock", newProductStock); 
-
-    // Diğer form verileri
+    formData.append("description", newDescription);
+    formData.append("price", newProductPrice);
+    formData.append("stock", newProductStock);
     formData.append("brand", brand);
     formData.append("rating", rating);
     formData.append("gender", gender);
@@ -107,7 +126,8 @@ const ProductsComponent = () => {
     formData.append("fragranceFamily", fragranceFamily);
     formData.append("newArrivals", newArrivals);
     formData.append("topSelling", topSelling);
-   
+
+  
     if (newProductPic) {
       const productPicUrl = await uploadImage(newProductPic);
       if (!productPicUrl) {
@@ -116,7 +136,7 @@ const ProductsComponent = () => {
       }
       formData.append("productPic", productPicUrl);
     }
-
+    
     try {
       const response = await fetch(`http://localhost:3000/products/${currentProduct._id}`, {
         method: "PATCH",
@@ -125,8 +145,6 @@ const ProductsComponent = () => {
 
       if (!response.ok) {
         console.log("Failed to edit product. Status:", response.status);
-        const errorData = await response.json();
-        console.log("Error message:", errorData.message);
         return;
       }
 
@@ -136,7 +154,6 @@ const ProductsComponent = () => {
           product._id === currentProduct._id ? updatedProduct : product
         )
       );
-
       setIsEditing(false);
       setCurrentProduct(null);
     } catch (error) {
@@ -255,8 +272,8 @@ const ProductsComponent = () => {
       className="w-full p-2 border rounded mb-4"
     >
       <option value="">Select Gender</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
+      <option value="Woman">Woman</option>
+      <option value="Man">Man</option>
       <option value="Unisex">Unisex</option>
       <option value="Kids">Kids</option>
     </select>
