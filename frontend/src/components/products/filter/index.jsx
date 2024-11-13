@@ -106,7 +106,7 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
 
   return (
     <div
-    className={`bg-green-500 px-6 md:px-0 mx-auto z-20 md:relative py-5  max-w-[250px]  border border-black border-opacity-10 rounded-[20px] md:border-none md:rounded-none md:w-full transition-transform duration-300 ease-in-out ${
+    className={` px-6 md:px-0 mx-auto z-20 md:relative py-5  max-w-[250px]  border border-black border-opacity-10 rounded-[20px] md:border-none md:rounded-none md:w-full transition-transform duration-300 ease-in-out ${
       isMobileFilterOpen ? "fixed top-0 left-0 w-full h-full overflow-y-auto" : "hidden"
     } md:block`}
   >
@@ -129,7 +129,7 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
       {isFragranceOpen && (
          <ul className='flex flex-col items-start gap-3'>
          {fragranceData && fragranceData.map((fragrance) => (
-        <button key={fragrance._id}  onClick={() => handleFilterSelect('fragrancefamily', fragrance.name)}>
+        <button key={fragrance._id}  onClick={() => handleFilterSelect('fragranceFamily', fragrance.name)}>
           <li className='hover:text-[#dbaf77] text-[18px] font-raleway'>{fragrance.name}</li>
         </button>
         ))}

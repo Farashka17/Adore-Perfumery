@@ -45,7 +45,7 @@ const Payment = () => {
         </p>
       </div>
      
-        <div className="flex flex-col gap-1 my-4 justify-between bg-yellow-50 rounded-[30px] p-2 custom-bg ">
+        <div className="flex flex-col gap-1 my-4 justify-between w-50 rounded-[30px] p-2 custom-bg ">
           <div className="w-full">
             <label className="text-[12px] font-extralight font-raleway text-[#232323}">
               Name on Cart
