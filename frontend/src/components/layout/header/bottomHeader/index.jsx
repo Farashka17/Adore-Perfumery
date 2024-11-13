@@ -5,6 +5,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiOutlineUser } from "react-icons/hi2";
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BottomHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +14,7 @@ const BottomHeader = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [isMobile, setIsMobile] = useState(false);
+  const [cartCount, setCartCount] = useState(0); // Sepetteki ürün sayısını takip eden state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +34,10 @@ const BottomHeader = () => {
 
     checkUserStatus();
 
+    // Sepetteki ürün sayısını yerel depolamadan veya API'den al
+    const storedCartCount = localStorage.getItem('cartCount');
+    setCartCount(storedCartCount ? parseInt(storedCartCount, 10) : 0);
+
     window.addEventListener('loginStatusChanged', checkUserStatus);
 
     return () => {
@@ -48,6 +55,37 @@ const BottomHeader = () => {
 
   const toggleMobileMenu = () => {
     setIsMobile((prev) => !prev);
+  };
+
+  const handleCartClick = () => {
+    if (!isLoggedIn) {
+      toast.error("Please login to add something to cart", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+      });
+    } else {
+      navigate('/cart');
+    }
+  };
+
+  const handleWishlistClick = () => {
+    if (!isLoggedIn) {
+      toast.error("Please login to add something to wishlist", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+      });
+    } else {
+      navigate('/wishlist');
+    }
+  };
+
+  // Sepete ürün ekleyen bir fonksiyon (örnek olarak)
+  const addToCart = () => {
+    const newCartCount = cartCount + 1; // Yeni değeri hesapla
+    setCartCount(newCartCount); // Yeni değeri state'e uygula
+    localStorage.setItem('cartCount', newCartCount); // Yeni değeri localStorage'a kaydet
   };
 
   return (
@@ -117,30 +155,23 @@ const BottomHeader = () => {
               )}
             </div>
           </div>
-
-          <Link to={"/wishlist"}>
-            <button className='md:block hidden'>
-              <GoHeart className='w-[23px] h-[23px]' />
-            </button>
-          </Link>
-
-          <button className='relative md:flex hidden'>
-            <Link to={"/cart"}>
-              <HiOutlineShoppingBag className='w-[23px] h-[23px]' />
-              <div className='w-[20px] h-[20px] rounded-full bg-[#c19c60] flex items-center justify-center absolute text-[11px] text-white top-[10px] right-[10px]'>0</div>
-            </Link>
+          <button className='relative md:flex hidden' onClick={handleWishlistClick}>
+            <GoHeart className='w-[23px] h-[23px]' />
           </button>
-
+          <button className='relative md:flex hidden' onClick={handleCartClick}>
+            <HiOutlineShoppingBag className='w-[23px] h-[23px]' />
+            <div className='w-[20px] h-[20px] rounded-full bg-[#c19c60] flex items-center justify-center absolute text-[11px] text-white top-[10px] right-[10px]'>
+              {cartCount} {/* Sepetteki ürün sayısını gösteriyoruz */}
+            </div>
+          </button>
           <button className='md:block hidden'>
             <IoSearchOutline className='w-[23px] h-[23px]' />
           </button>
-
           <button className='lg:hidden md:block' onClick={toggleMobileMenu}>
             <GiHamburgerMenu className='w-[23px] h-[23px]' />
           </button>
-
           {isMobile && (
-            <div className="absolute top-6 right-0 z-20   bg-white flex flex-col items-start p-5 shadow-md">
+            <div className="absolute top-6 right-0 z-20 bg-white flex flex-col items-start p-5 shadow-md">
               <button onClick={toggleMobileMenu} className="self-end mb-4 text-gray-700">
                 Close
               </button>

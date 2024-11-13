@@ -1,9 +1,16 @@
 import React from 'react';
 import BigPerfume from '../../../assets/BigPerfume.svg';
 import { CiHeart } from "react-icons/ci";
+import { useCartStore } from '../../../store/useCartStore';
 
 const Product = ({ product }) => {
   if (!product) return <p>Loading...</p>;
+  const addToCart = useCartStore((state) => state.addToCart);
+
+  const handleAddToCart = () => {
+    const product = { id, name, price, productPic };
+    addToCart(product); // Ürünü sepete ekleme
+  };
 
   return (
     <div className="bg-white md:mx-auto font-nunito ">
@@ -39,7 +46,7 @@ const Product = ({ product }) => {
             <button className='px-3 border border-[#232323] hover:bg-[#eaeaea] flex items-center justify-center'>
               <CiHeart className='w-8 h-8 hover:text-[#dbaf77]' />
             </button>
-            <button className='py-4 border border-[#232323] bg-black text-white hover:bg-[#dbaf77] w-full'>Add to Cart</button>
+            <button className='py-4 border border-[#232323] bg-black text-white hover:bg-[#dbaf77] w-full' onClick={handleAddToCart}>Add to Cart</button>
           </div>
         </div>
       </div>

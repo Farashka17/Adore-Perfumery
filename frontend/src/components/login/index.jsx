@@ -29,6 +29,10 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('userName', data.user.name);
         localStorage.setItem('role', data.user.role);
+        localStorage.setItem('isLogin',true);
+        localStorage.setItem('userId',data.user._id);
+
+
 
 
         // Giriş durumu değişikliği için event tetikle
@@ -86,6 +90,7 @@ const Login = () => {
               <button
                 type="submit"
                 className="bg-[#0E1422] py-3 px-6 w-full justify-center items-center gap-[6px] text-[#FFFFFF] text-[14px] hover:bg-[#dbaf77] font-medium rounded-[4px] flex"
+                
               >
                 Login
               </button>

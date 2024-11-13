@@ -6,6 +6,9 @@ const Wishlist = () => {
     
    <div>
     <PageTitleImageBackground title={title}/>
+    <div>
+      
+    </div>
    </div>
   )
 }

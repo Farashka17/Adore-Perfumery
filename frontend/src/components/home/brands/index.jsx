@@ -33,7 +33,7 @@ const Brands = () => {
 
   return (
     <div className=" mx-auto bg-[#b88e5d] bg-opacity-15 mt-[50px]">
-      <div className=" mx-auto flex flex-col items-center justify-center  h-[50vh]" >
+      <div className=" mx-auto flex flex-col items-center justify-center  h-auto" >
       <div className="overflow-hidden w-full">
     <div
         className="flex transition-transform duration-500"

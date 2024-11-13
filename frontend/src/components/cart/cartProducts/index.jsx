@@ -4,9 +4,14 @@ import SingleProduct from '../../common/singleProduct'
 import { MdOutlineClose } from 'react-icons/md'
 import Perfume from '../../../assets/Perfume.svg'
 import MobileSingleCartProduct from '../mobileSingleCartProduct'
+import { useCartStore } from '../../../store/useCartStore'
 
 
 const CartProducts = () => {
+    const cart = useCartStore((state) => state.cart); // Sepeti al
+
+    
+
   return (
 <div>
     <div className='md:flex flex-col justify-start  hidden '>
@@ -37,17 +42,24 @@ const CartProducts = () => {
             </tr>
         </thead>
         <tbody>
-         <SingleCartProduct/>
+        {cart.map((product, index) => (
+                  <SingleCartProduct key={index} product={product} id={product._id}/>
+                ))}
      
         </tbody>
     </table>
 </div>
 </div>
 </div>
-
-<div className='md:hidden block'>
+<tbody className='md:hidden block'>
+        {cart.map((product, index) => (
+                  <MobileSingleCartProduct key={index} product={product} id={product._id}/>
+                ))}
+     
+        </tbody>
+{/* <div className='md:hidden block'>
     <MobileSingleCartProduct/>
-</div>
+</div> */}
 </div>
   )
 }

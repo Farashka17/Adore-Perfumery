@@ -5,13 +5,13 @@ import AboutCosmetics from './aboutCosmetics'
 import BestSeller from './bestseller'
 import Brands from './brands'
 import NewProducts from './newProducts'
-import { getProducts } from '../../redux/productSlice'
-import {useDispatch} from 'react-redux'
+// import { getProducts } from '../../redux/productSlice'
+// import {useDispatch} from 'react-redux'
 const HomeComponent = () => {
-    const dispatch = useDispatch();
-    useEffect(()=>{
-        dispatch(getProducts())
-    },[dispatch])
+    // const dispatch = useDispatch();
+    // useEffect(()=>{
+    //     dispatch(getProducts())
+    // },[dispatch])
   return (
     <div>
          <Hero/>

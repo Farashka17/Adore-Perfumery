@@ -106,7 +106,7 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
 
   return (
     <div
-    className={` px-6 md:px-0 mx-auto z-20 md:relative py-5  max-w-[250px]  border border-black border-opacity-10 rounded-[20px] md:border-none md:rounded-none md:w-full transition-transform duration-300 ease-in-out ${
+    className={`bg-white px-6 md:px-0 mx-auto z-20 md:relative py-5  max-w-[250px]  border border-black border-opacity-10 rounded-[20px] md:border-none md:rounded-none md:w-full transition-transform duration-300 ease-in-out ${
       isMobileFilterOpen ? "fixed top-0 left-0 w-full h-full overflow-y-auto" : "hidden"
     } md:block`}
   >

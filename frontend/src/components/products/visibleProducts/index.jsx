@@ -29,10 +29,12 @@ const VisibleProducts = () => {
 
   return (
     <div>
-      <div className='grid grid-cols-2 lg:grid-cols-3 gap-[30px] mx-auto py-4'>
+      <div className='grid grid-cols-2 lg:grid-cols-3 gap-[30px] mx-auto py-4 '>
         {productData.length > 0 ? (
           productData.map((product) => (
-            <SingleProduct 
+          
+          <div>
+             <SingleProduct 
              id={product._id}
               key={product._id}
               product={product}
@@ -42,6 +44,7 @@ const VisibleProducts = () => {
               description={product.description}
               productPic={product.productPic}
             />
+            </div>
           ))
         ) : (
           <p className="text-center text-gray-500">No products found based on the selected filters.</p>
