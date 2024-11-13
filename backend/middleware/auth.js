@@ -1,31 +1,22 @@
 import {User} from '../models/user.js';
 import jwt from 'jsonwebtoken';
 
- const authenticationMid = async(req,res,next)=>{
-   const {token}=req.cookies;
-   if(!token){
-     return res.status(500).json({message:"Erisim icin login olun"})
-   }
+export const protect = async (req, res, next) => {
+  let token;
 
-   const decodedData = jwt.verify(token,"SECRETTOKEN")
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
-   if(!decodedData){
-     return res.status(500).json({message:"Erisim tokeni sehvdir"})
-   }
-  req.user = await User.findById(decodedData.id)
-   next()
- }
+  if (!token) {
+    return res.status(401).json({ message: 'Not authorized, no token' });
+  }
 
- const roleChecked =  (...roles) => {
-   return (req,res,next)=>{
-   if(!roles.includes(req.user.role)){
-     return res.status(500).json({message:"Giris icin icazeniz yoxdur"})
-   }
-   next()
-   }
-  
- }
- export {
-   authenticationMid,
-   roleChecked,
- };
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id);
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Not authorized, token failed' });
+  }
+};

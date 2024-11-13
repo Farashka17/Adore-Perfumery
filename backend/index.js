@@ -13,6 +13,8 @@ import brand from './routes/brand.js'
 import fragranceFamily from './routes/fragranceFamily.js'
 import concentration from './routes/concentration.js'
 import volume from './routes/volume.js'
+// import cart from './routes/cart.js'
+import  cart from './routes/cart.js'
 
 
 dotenv.config()
@@ -30,6 +32,9 @@ app.use('/brands',brand)
 app.use('/fragranceFamily',fragranceFamily)
 app.use('/concentrations',concentration)
 app.use('/volumes',volume)
+// app.use('/cart',cart)
+app.use('/cart',cart)
+
 
 
 

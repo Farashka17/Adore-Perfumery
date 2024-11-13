@@ -10,23 +10,23 @@ const register = async (req, res) => {
 
     // Tüm alanların dolu olup olmadığını kontrol et
     if (!name || !lastName || !email || !password || !confirmPassword ) {
-        return res.status(400).json({ message: "Lütfen tüm gerekli alanları doldurun." });
+        return res.status(400).json({ message: "Please fill in all required fields." });
     }
 
     // Şifrelerin eşleşip eşleşmediğini kontrol et
     if (password !== confirmPassword) {
-        return res.status(400).json({ message: "Şifreler eşleşmiyor." });
+        return res.status(400).json({ message: "Passwords do not match." });
     }
 
     // Kullanıcı var mı kontrol et
     const user = await User.findOne({ email });
     if (user) {
-        return res.status(400).json({ message: "Bu kullanıcı zaten mevcut." });
+        return res.status(400).json({ message: "This user already exists." });
     }
 
     // Şifrenin uzunluğunu kontrol et
     if (password.length < 8) {
-        return res.status(400).json({ message: "Şifrenin uzunluğu minimum 8 karakter olmalıdır." });
+        return res.status(400).json({ message: "Password must be at least 8 characters long." });
     }
 
     // Şifreyi hashle
@@ -54,7 +54,7 @@ const register = async (req, res) => {
     return res.status(201)
         .cookie("token", token, cookieOptions)
         .json({
-            message: "Kullanıcı başarıyla oluşturuldu.",
+            message: "User created successfully.",
             user: newUser,
             token,
         });
