@@ -64,52 +64,51 @@ const deleteProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
-      const { id } = req.params;
-      console.log("Starting fragrance family update for ID:", id);
+    const { id } = req.params;
+    console.log("Starting fragrance family update for ID:", id);
 
-      if (!id || id.length !== 24) {
-          console.error("Invalid ID format:", id);
-          return res.status(400).json({ message: "Invalid ID format" });
+    if (!id || id.length !== 24) {
+      console.error("Invalid ID format:", id);
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
+    console.log("Request Body:", req.body);
+    console.log("Request Files:", req.files);
+
+    let updatedData = { ...req.body };
+
+    // If a new image is uploaded, handle the image upload
+    if (req.file) {
+      console.log("Uploading image to Cloudinary...");
+      try {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        updatedData.productPic = result.secure_url;
+        console.log("Image successfully uploaded to Cloudinary:", result.secure_url);
+      } catch (cloudinaryError) {
+        console.error("Cloudinary upload error:", cloudinaryError);
+        return res.status(500).json({ message: "Failed to upload image to Cloudinary." });
       }
+    } else {
+      console.log("No file uploaded for Cloudinary.");
+    }
 
-      console.log("Request Body:", req.body);
-      console.log("Request Files:", req.files);
+    console.log("Updating product in MongoDB...");
+    const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
 
-      let updatedData = { ...req.body };
+    if (!updatedProduct) {
+      console.error("Product not found after update attempt. ID:", id);
+      return res.status(404).json({ message: "Product not found" });
+    }
 
-      // If a new image is uploaded, handle the image upload
-      if (req.file) {
-          console.log("Uploading image to Cloudinary...");
-          try {
-              const result = await cloudinary.uploader.upload(req.file.path);
-              updatedData.productPic = result.secure_url;
-              console.log("Image successfully uploaded to Cloudinary:", result.secure_url);
-          } catch (cloudinaryError) {
-              console.error("Cloudinary upload error:", cloudinaryError);
-              return res.status(500).json({ message: "Failed to upload image to Cloudinary." });
-          }
-      } else {
-          console.log("No file uploaded for Cloudinary.");
-      }
-
-      console.log("Updating product in MongoDB...");
-      const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, {
-          new: true,
-      });
-
-      if (!updatedProduct) {
-          console.error("Product not found after update attempt. ID:", id);
-          return res.status(404).json({ message: "Product not found" });
-      }
-
-      console.log("Product successfully updated:", updatedProduct);
-      res.status(200).json(updatedProduct);
+    console.log("Product successfully updated:", updatedProduct);
+    res.status(200).json(updatedProduct);
   } catch (error) {
-      console.error("Unexpected error:", error.message);
-      res.status(500).json({ message: "An unexpected error occurred. Please try again later." });
+    console.error("Unexpected error:", error.message);
+    res.status(500).json({ message: "An unexpected error occurred. Please try again later." });
   }
 };
-
   const createProduct = async (req, res) => {
     try {
         const { 
