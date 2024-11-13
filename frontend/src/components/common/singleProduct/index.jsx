@@ -1,9 +1,10 @@
 import React from 'react'
 import Perfume from '../../../assets/Perfume.svg'
 import { Link } from 'react-router-dom'
-const SingleProduct = ({name,price,productPic}) => {
+const SingleProduct = ({name,price,productPic,id}) => {
+ 
   return (
-<Link to={"/product/:id"}> 
+<Link to={`/products/${id}`}> 
  <div className=' mx-auto cursor-pointer '>
     <div className='w-[250px] h-[160px] md:h-[324px] bg-[#e9e6ed] flex items-center justify-center'>
      <div className='w-[80%] h-[80%] border border-black transition-transform duration-300 transform hover:scale-125'>

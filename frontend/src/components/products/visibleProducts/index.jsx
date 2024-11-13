@@ -33,10 +33,13 @@ const VisibleProducts = () => {
         {productData.length > 0 ? (
           productData.map((product) => (
             <SingleProduct 
+             id={product._id}
               key={product._id}
               product={product}
               name={product.name}
               price={product.price}
+              volume={product.volume}
+              description={product.description}
               productPic={product.productPic}
             />
           ))

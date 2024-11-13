@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Reviews from './reviews';
 import Description from './description';
 
-const ReviewsAndDescription = () => {
+const ReviewsAndDescription = ({product}) => {
 
   const [selectedTab, setSelectedTab] = useState('description'); 
 
@@ -27,7 +27,7 @@ const ReviewsAndDescription = () => {
   Reviews <span>(1)</span>
 </button>
         </div>
-        {selectedTab === 'description' && <Description />}
+        {selectedTab === 'description' && <Description product={product}/>}
         {selectedTab === 'reviews' && <Reviews />}
        
 
