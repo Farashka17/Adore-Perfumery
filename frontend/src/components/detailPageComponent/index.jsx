@@ -27,7 +27,7 @@ const DetailPageComponent = () => {
   return (
     <div className="bg-white font-nunito">
       <div className="container max-w-[1920px] flex flex-col gap-10 justify-center mx-auto px-10 py-6">
-        <Product product={product} />
+        <Product product={product}  id={product._id}/>
         <ReviewsAndDescription  product={product} />
 
 

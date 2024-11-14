@@ -3,21 +3,22 @@ import BigPerfume from '../../../assets/BigPerfume.svg';
 import { CiHeart } from "react-icons/ci";
 import { useCartStore } from '../../../store/useCartStore';
 
-const Product = ({ product }) => {
+// Product Bileşeni
+const Product = ({ product, id }) => {
   if (!product) return <p>Loading...</p>;
+
   const addToCart = useCartStore((state) => state.addToCart);
 
   const handleAddToCart = () => {
-    const product = { id, name, price, productPic };
-    addToCart(product); // Ürünü sepete ekleme
+    addToCart(id, 1); // Doğru ID'yi gönderdiğimizden emin olun
   };
 
   return (
-    <div className="bg-white md:mx-auto font-nunito ">
-      <div className="container max-w-[1920px] flex flex-col md:flex-row gap-10 justify-center mx-auto md:px-10 py-6 ">
-        <div className="container mx-auto ">
-          <div className='w-full h-auto '>
-            <img src={product.productPic} alt="Perfume" className="w-full h-auto " />
+    <div className="bg-white md:mx-auto font-nunito">
+      <div className="container max-w-[1920px] flex flex-col md:flex-row gap-10 justify-center mx-auto md:px-10 py-6">
+        <div className="container mx-auto">
+          <div className='w-full h-auto'>
+            <img src={product.productPic} alt="Perfume" className="w-full h-auto" />
           </div>
         </div>
         <div className='w-[90%] mx-auto'>
@@ -35,8 +36,6 @@ const Product = ({ product }) => {
             <p>Sizes</p>
             <div className='flex gap-2 items-center'>
               <button className='px-5 py-4 border border-[#232323] hover:bg-[#eaeaea]'>{product.volume}</button>
-              {/* <button className='px-5 py-4 border border-[#232323] hover:bg-[#eaeaea]'>1.6 OZ / 50 ML</button>
-              <button className='px-5 py-4 border border-[#232323] hover:bg-[#eaeaea]'>3 OZ / 90 ML</button> */}
             </div>
           </div>
           <div className='mt-5'>
@@ -52,6 +51,7 @@ const Product = ({ product }) => {
       </div>
     </div>
   );
-}
+};
+
 
 export default Product;

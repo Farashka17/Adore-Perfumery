@@ -1,15 +1,16 @@
 import React from 'react';
-import Perfume from '../../../assets/Perfume.svg';
 import { Link } from 'react-router-dom';
-import { useCartStore } from '../../../store/useCartStore'; // Zustand store importu
+import { useCartStore } from '../../../store/useCartStore'; // Zustand store for cart
 
+// SingleProduct Bileşeni
 const SingleProduct = ({ name, price, productPic, id }) => {
   const addToCart = useCartStore((state) => state.addToCart);
 
   const handleAddToCart = (e) => {
-    e.preventDefault(); // Link yönlendirmesini engelle
-    addToCart({ id, name, price, productPic });
+    e.preventDefault();
+    addToCart(id, 1); // Doğru ID'yi gönderdiğimizden emin olun
   };
+
   return (
     <Link to={`/products/${id}`}>
       <div className='mx-auto cursor-pointer'>
@@ -19,7 +20,7 @@ const SingleProduct = ({ name, price, productPic, id }) => {
           </div>
         </div>
         <div className='flex flex-col justify-center items-center'>
-          <div className="flex ">
+          <div className="flex">
             {[...Array(5)].map((_, index) => (
               <span key={index} className='text-yellow-500'>★</span>
             ))}
@@ -31,12 +32,15 @@ const SingleProduct = ({ name, price, productPic, id }) => {
             <button className="button" onClick={handleAddToCart}>
               <span>ADD TO CART</span>
             </button>
-            <button className='font-raleway text-[10px] md:text-[13px] font-thin w-full py-[19.8px] border border-[#232323]'>{price}$</button>
+            <button className='font-raleway text-[10px] md:text-[13px] font-thin w-full py-[19.8px] border border-[#232323]'>
+              {price}$
+            </button>
           </div>
         </div>
       </div>
     </Link>
   );
 };
+
 
 export default SingleProduct;

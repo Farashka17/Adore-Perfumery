@@ -16,10 +16,11 @@ import CheckoutPage from './pages/checkout/checkoutPage'
 import HomePageAdmin from '../../admin/src/pages/Home/homePage'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+// import { useAuthEffect } from './store/useCartStore'
 // import { useSyncLoginStatus } from './store/useCartStore'
 
 function App() {
-  // useSyncLoginStatus();
+  // useAuthEffect(); // Giriş durumu ve kullanıcı ID'si güncel tutulur
   return (
     <>
       <Header />

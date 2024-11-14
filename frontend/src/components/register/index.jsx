@@ -23,37 +23,35 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Şifrelerin eşleşip eşleşmediğini kontrol et
     if (formData.password !== formData.confirmPassword) {
-      setError('Şifreler eşleşmiyor!');
-      return;
+        setError('Şifreler eşleşmiyor!');
+        return;
     }
 
     try {
-      const response = await fetch('http://localhost:3000/users', {
-       
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+        const response = await fetch('http://localhost:3000/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message);
-        return;
-      }
+        if (!response.ok) {
+            const errorData = await response.json();
+            setError(errorData.message || 'Bir hata oluştu!');
+            return;
+        }
 
-      const result = await response.json();
-      alert(result.message);
-      // Başarılıysa login sayfasına yönlendirilir
-      navigate('/login');
+        const result = await response.json();
+        alert(result.message);
+        navigate('/login');
     } catch (error) {
-      console.error('Kullanıcı kaydı hatası:', error);
-      alert('Kayıt işlemi başarısız oldu, lütfen tekrar deneyin.');
+        console.error('Kullanıcı kaydı hatası:', error);
+        setError('Kayıt işlemi başarısız oldu, lütfen tekrar deneyin.');
     }
-  };
+};
+
 
   return (
     <div className="relative flex items-center justify-center mx-auto">

@@ -10,7 +10,7 @@ import { useCartStore } from '../../../store/useCartStore'
 const CartProducts = () => {
     const cart = useCartStore((state) => state.cart); // Sepeti al
 
-    
+    console.log('Cart Products',cart)
 
   return (
 <div>
