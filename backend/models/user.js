@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   // Kullanıcının eklediği ürünler
-  products: [{
+  cart: [{
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product', // Product modeline referans

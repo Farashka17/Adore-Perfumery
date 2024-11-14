@@ -26,6 +26,14 @@ app.use(bodyParser.json({limit:"50mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:"50mb",extended:true}))
 app.use(cookieParser())
 
+
+// const corsOptions = {
+//     origin: 'http://localhost:5174', // Frontend'in bulunduğu port
+//     methods: ['GET', 'POST','PATCH', 'PUT', 'DELETE'],
+//   };
+//   app.use(cors(corsOptions));
+
+
 app.use('/products',product)
 app.use('/users',user)
 app.use('/brands',brand)

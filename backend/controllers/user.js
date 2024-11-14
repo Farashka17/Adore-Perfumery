@@ -42,7 +42,11 @@ const register = async (req, res) => {
     });
 
     // JWT oluştur
-    const token = jwt.sign({ id: newUser._id }, "SECRETTOKEN", { expiresIn: "1h" });
+    const token = jwt.sign(
+        { id: newUser._id }, // Yeni kullanıcının ID'si
+        process.env.JWT_SECRET, 
+        { expiresIn: '1h' } 
+    );
 
     // Cookie ayarları
     const cookieOptions = {
@@ -77,7 +81,11 @@ const login = async (req, res) => {
     }
   
     // JWT oluştur
-    const token = jwt.sign({ id: user._id }, "SECRETTOKEN", { expiresIn: "1h" });
+    const token = jwt.sign(
+        { id: user._id }, // Kullanıcı bilgileri
+        process.env.JWT_SECRET, // Şifreleme için kullanılan gizli anahtar
+        { expiresIn: '1h' } // Token'ın geçerlilik süresi
+      );
   
     // Yanıtı gönder
     return res.status(200).json({
@@ -155,7 +163,11 @@ const resetPassword = async (req,res)=>{
     user.resetPasswordToken = undefined
 
     await user.save()
-    const token = jwt.sign({id:user._id},"SECRETTOKEN",{expiresIn:"1h"})
+    const token = jwt.sign(
+        { id: user._id }, // Kullanıcı bilgileri
+        process.env.JWT_SECRET, // Şifreleme için kullanılan gizli anahtar
+        { expiresIn: '1h' } // Token'ın geçerlilik süresi
+      );
 
     const cookieOptions = {
         httpOnly: true,
