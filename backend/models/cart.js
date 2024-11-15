@@ -22,6 +22,14 @@
       price: {
         type: Number,
         required: true
+      },
+      name:{
+        type: String,
+        // required: true
+      },
+      productPic:{
+        type: String,
+        // required: true
       }
     }]
   }, { timestamps: true });

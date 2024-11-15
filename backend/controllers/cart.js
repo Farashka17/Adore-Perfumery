@@ -3,6 +3,7 @@ import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 
 // Sepete ürün ekleme
+// Sepete ürün ekleme
 export const addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -13,6 +14,13 @@ export const addToCart = async (req, res) => {
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Eksik alanlar için kontrol
+    if (!product.name || !product.productPic) {
+      return res.status(400).json({
+        message: 'Product name or picture is missing.',
+      });
     }
 
     // Kullanıcı ve Cart kontrolü
@@ -31,7 +39,13 @@ export const addToCart = async (req, res) => {
       cart.products[cartProductIndex].quantity += quantity;
     } else {
       // Sepete yeni ürün ekle
-      cart.products.push({ productId, quantity, price: product.price });
+      cart.products.push({
+        productId,
+        quantity,
+        price: product.price,
+        name: product.name,
+        productPic: product.productPic,
+      });
     }
 
     if (userCartIndex >= 0) {
@@ -52,6 +66,7 @@ export const addToCart = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 // Sepetteki ürünü güncelleme
 // Sepetteki ürünün miktarını güncelleme
