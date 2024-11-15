@@ -54,69 +54,66 @@ export const addToCart = async (req, res) => {
 };
 
 // Sepetteki ürünü güncelleme
+// Sepetteki ürünün miktarını güncelleme
 export const updateCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
     const userId = req.user.id;
 
-    const user = await User.findById(userId);
     const cart = await Cart.findOne({ userId });
+    const user = await User.findById(userId);
 
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const cartProductIndex = cart.products.findIndex(item => item.productId.toString() === productId);
-    const userCartIndex = user.cart.findIndex(item => item.productId.toString() === productId);
+    const cartProduct = cart.products.find(item => item.productId.toString() === productId);
+    const userCartProduct = user.cart.find(item => item.productId.toString() === productId);
 
-    if (cartProductIndex < 0 || userCartIndex < 0) {
-      return res.status(404).json({ message: 'Product not in cart' });
+    if (!cartProduct || !userCartProduct) {
+      return res.status(404).json({ message: 'Product not found in cart' });
     }
 
-    cart.products[cartProductIndex].quantity = quantity;
-    user.cart[userCartIndex].quantity = quantity;
+    cartProduct.quantity = quantity;
+    userCartProduct.quantity = quantity;
 
     await cart.save();
     await user.save();
 
-    res.status(200).json(cart);
+    res.status(200).json({ message: 'Quantity updated successfully', products: cart.products });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
+
+// Sepetten ürünü çıkarma
 // Sepetten ürünü çıkarma
 export const removeFromCart = async (req, res) => {
   try {
-    const { productId } = req.body;
-    const userId = req.user.id;
+    const { productId } = req.body; // Silinecek ürünün ID'si
+    const userId = req.user.id; // Giriş yapan kullanıcının ID'si
 
-    const user = await User.findById(userId);
     const cart = await Cart.findOne({ userId });
+    const user = await User.findById(userId);
 
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const cartProductIndex = cart.products.findIndex(item => item.productId.toString() === productId);
-    const userCartIndex = user.cart.findIndex(item => item.productId.toString() === productId);
-
-    if (cartProductIndex >= 0) {
-      cart.products.splice(cartProductIndex, 1);
-    }
-
-    if (userCartIndex >= 0) {
-      user.cart.splice(userCartIndex, 1);
-    }
+    // Sepet ve kullanıcının sepetinden ürünü kaldır
+    cart.products = cart.products.filter(item => item.productId.toString() !== productId);
+    user.cart = user.cart.filter(item => item.productId.toString() !== productId);
 
     await cart.save();
     await user.save();
 
-    res.status(200).json({ message: 'Product removed from cart' });
+    res.status(200).json({ message: 'Product removed successfully', products: cart.products });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 export const getCart = async (req, res) => {
   try {
