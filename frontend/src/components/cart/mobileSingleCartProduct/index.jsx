@@ -6,15 +6,22 @@ import { useCartStore } from '../../../store/useCartStore';
 
 const MobileSingleCartProduct = ({ product }) => {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const updateCart = useCartStore((state) => state.updateCart);
 
-  const increment = () => updateQuantity(product.id, 1);
-  const decrement = () => updateQuantity(product.id, -1);
+  const increment = () => updateCart(product.productId, product.quantity + 1);
+  const decrement = () => {
+    if (product.quantity > 1) {
+      updateCart(product.productId, product.quantity - 1);
+    } else {
+      removeFromCart(product.productId); // Eğer miktar 1 ise ürünü kaldır
+    }
+  };
+
     
   return (
     <div className='flex flex-col justify-start items-start  gap-y-5 px-5'>
         <div className='border-b w-full border-b-black border-opacity-50'>
-            <button className='w-[30px] h-[30px]' onClick={() => removeFromCart(product.id)}><MdOutlineClose /></button>
+            <button className='w-[30px] h-[30px]' onClick={() => removeFromCart(product.productId)}><MdOutlineClose /></button>
         </div>
         <div className='border-b w-full border-b-black border-opacity-50'>
         <button className='w-[111px] h-[111px] \'>

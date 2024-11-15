@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SingleCartProduct from '../singleCartProduct'
 import SingleProduct from '../../common/singleProduct'
 import { MdOutlineClose } from 'react-icons/md'
@@ -9,8 +9,7 @@ import { useCartStore } from '../../../store/useCartStore'
 
 const CartProducts = () => {
     const cart = useCartStore((state) => state.cart); // Sepeti al
-
-    console.log('Cart Products',cart)
+    
 
   return (
 <div>

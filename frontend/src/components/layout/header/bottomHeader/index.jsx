@@ -7,6 +7,7 @@ import { HiOutlineUser } from "react-icons/hi2";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCartStore } from '../../../../store/useCartStore';
 
 const BottomHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +46,20 @@ const BottomHeader = () => {
     };
   }, []);
 
+  const { cart, getCart, clearCart } = useCartStore();
+
+  // Toplam ürün miktarını hesaplayan fonksiyon
+  const getTotalQuantity = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  useEffect(() => {
+    // Component yüklendiğinde sepeti getirme işlemi
+    getCart();
+  }, [getCart]);
+
   const handleLogout = () => {
+    clearCart();
     localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
@@ -160,9 +174,12 @@ const BottomHeader = () => {
           </button>
           <button className='relative md:flex hidden' onClick={handleCartClick}>
             <HiOutlineShoppingBag className='w-[23px] h-[23px]' />
-            <div className='w-[20px] h-[20px] rounded-full bg-[#c19c60] flex items-center justify-center absolute text-[11px] text-white top-[10px] right-[10px]'>
-              {cartCount} {/* Sepetteki ürün sayısını gösteriyoruz */}
+            {getTotalQuantity() > 0 && (
+             <div className='w-[20px] h-[20px] rounded-full bg-[#c19c60] flex items-center justify-center absolute text-[11px] text-white top-[10px] right-[10px]'>
+               {getTotalQuantity()}
             </div>
+          )}
+
           </button>
           <button className='md:block hidden'>
             <IoSearchOutline className='w-[23px] h-[23px]' />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SingleCartProduct from './singleCartProduct'
 import CartProducts from './cartProducts'
 import PageTitleImageBackground from '../common/pageTitleImageBackground'
@@ -7,6 +7,8 @@ import { useCartStore } from '../../store/useCartStore'
 
 const Cart = () => {
   const cart = useCartStore((state) => state.cart);
+
+
   const subtotal = cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
   // Shipping cost belirleme (200$ altı için 3.99$ kargo ücreti, üstü için ücretsiz)

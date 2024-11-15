@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const NewSingleProduct = ({ id, name, price, productPic }) => {
   return (
     <Link to={`/products/${id}`}>
-      <div className='bg-green-500 max-w-full sm:max-w-[390px] mx-auto flex items-center gap-[20px] overflow-hidden'>
+      <div className=' max-w-full sm:max-w-[390px] mx-auto flex items-center gap-[20px] overflow-hidden'>
         <div className='min-w-[135px] h-[159px] bg-[#e9e6ed] flex items-center justify-center'>
           <div className='w-[80%] h-[80%] border border-black transition-transform duration-300 transform hover:scale-125'>
             <img 

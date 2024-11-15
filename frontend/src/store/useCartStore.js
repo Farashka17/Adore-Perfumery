@@ -105,6 +105,10 @@ export const useCartStore = create((set, get) => ({
   },
   
 
+  clearCart: () => {
+    set({ cart: [] }); // Sepeti sıfırla
+  },
+
   // Sepetteki ürünün miktarını güncelleme fonksiyonu
  updateCart: async (productId, newQuantity) => {
   const token = localStorage.getItem('token');
