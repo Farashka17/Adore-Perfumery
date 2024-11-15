@@ -77,8 +77,6 @@ export const useCartStore = create((set, get) => ({
       return;
     }
   
-    console.log("Silinecek Ürün ID: ", productId);  // Burada productId'yi kontrol edelim
-  
     try {
       const response = await fetch('http://localhost:3000/cart/remove', {
         method: 'DELETE',
@@ -86,52 +84,62 @@ export const useCartStore = create((set, get) => ({
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productId }), // Sadece productId gönder
+        body: JSON.stringify({ productId }),
       });
   
       const data = await response.json();
   
       if (response.ok) {
-        set({ cart: Array.isArray(data.products) ? data.products : [] }); // Sepeti güncelliyoruz
-        toast.success('Ürün sepette başarıyla silindi');
+        // Sadece silinen ürünü kaldır
+        set(state => ({
+          cart: state.cart.filter(item => item.productId !== productId),
+        }));
+        toast.success('Ürün başarıyla sepetten silindi');
       } else {
-        toast.error(data.message || 'Sepetten ürün silinemedi');
+        toast.error(data.message || 'Ürün sepetten silinemedi');
       }
     } catch (error) {
       console.error('İstemci Hatası:', error);
       toast.error('Sepetten ürün silinirken bir hata oluştu');
     }
   },
+  
 
   // Sepetteki ürünün miktarını güncelleme fonksiyonu
-  updateCart: async (productId, quantity) => {
-    const token = localStorage.getItem('token');
-    if (!token || typeof token !== 'string') {
-      toast.error('Lütfen giriş yapın ve ürünü sepette güncelleyin.');
-      return;
+ updateCart: async (productId, newQuantity) => {
+  const token = localStorage.getItem('token');
+  if (!token || typeof token !== 'string') {
+    toast.error('Lütfen giriş yapın ve ürünü güncelleyin.');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/cart/update', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId, quantity: newQuantity }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Ürün miktarını güncelle
+      set(state => ({
+        cart: state.cart.map(item =>
+          item.productId === productId ? { ...item, quantity: newQuantity } : item
+        ),
+      }));
+      toast.success('Ürün miktarı başarıyla güncellendi');
+    } else {
+      toast.error(data.message || 'Ürün miktarı güncellenemedi');
     }
-  
-    try {
-      const response = await fetch('http://localhost:3000/cart/update', {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ productId, quantity }), // Sadece productId ve quantity gönder
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        set({ cart: Array.isArray(data.products) ? data.products : [] }); // Sepeti güncelliyoruz
-        toast.success('Sepetteki ürün başarıyla güncellendi');
-      } else {
-        toast.error(data.message || 'Sepetteki ürün güncellenirken bir hata oluştu');
-      }
-    } catch (error) {
-      console.error('İstemci Hatası:', error);
-      toast.error('Sepetteki ürün güncellenirken bir hata oluştu');
-    }
-  },
+  } catch (error) {
+    console.error('İstemci Hatası:', error);
+    toast.error('Ürün miktarı güncellenirken bir hata oluştu');
+  }
+},
+
 }));

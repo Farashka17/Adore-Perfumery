@@ -4,15 +4,21 @@ import { useCartStore } from '../../../store/useCartStore';
 
 const SingleCartProduct = ({ product }) => {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const updateCart = useCartStore((state) => state.updateCart);
 
-  const increment = () => updateQuantity(product.id, 1);
-  const decrement = () => updateQuantity(product.id, -1);
+  const increment = () => updateCart(product.productId, product.quantity + 1);
+  const decrement = () => {
+    if (product.quantity > 1) {
+      updateCart(product.productId, product.quantity - 1);
+    } else {
+      removeFromCart(product.productId); // Eğer miktar 1 ise ürünü kaldır
+    }
+  };
 
   return (
     <tr className="bg-white dark:bg-gray-800">
       <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        <button className='w-[30px] h-[30px]' onClick={() => removeFromCart(product.id)}>
+        <button className='w-[30px] h-[30px]' onClick={() => removeFromCart(product.productId)}>
           <MdOutlineClose />
         </button>
       </td>
@@ -32,5 +38,6 @@ const SingleCartProduct = ({ product }) => {
     </tr>
   );
 };
+
 
 export default SingleCartProduct;
