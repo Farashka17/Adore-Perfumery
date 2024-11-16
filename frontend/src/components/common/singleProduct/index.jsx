@@ -13,11 +13,12 @@ const SingleProduct = ({ name, price, productPic, id }) => {
 
   return (
     <Link to={`/products/${id}`}>
-      <div className='mx-auto cursor-pointer'>
-        <div className='w-[180px] md:w-[250px] h-[260px] md:h-[324px] bg-[#e9e6ed] mx-auto flex items-center justify-center'>
+      <div className='mx-auto cursor-pointer w-[180px]  md:w-[250px]'>
+        <div className='w-[180px]  md:w-[250px] h-[260px] md:h-[324px] bg-[#e9e6ed] mx-auto flex items-center justify-center'>
           <div className='w-[80%] h-[80%] border border-black transition-transform duration-300 transform hover:scale-125'>
             <img src={productPic} className='h-[100%] w-full' />
           </div>
+          
         </div>
         <div className='flex flex-col justify-center items-center'>
           <div className="flex">
@@ -25,7 +26,7 @@ const SingleProduct = ({ name, price, productPic, id }) => {
               <span key={index} className='text-yellow-500'>★</span>
             ))}
           </div>
-          <p className='font-raleway text-[14px] md:text-[20px] font-thin text-[#232323] mt-[19px] truncate w-[90%] text-center'>
+          <p className='font-raleway text-[14px] md:text-[20px] font-thin text-[#232323] mt-[19px] truncate w-[80%] text-center'>
             {name}
           </p>
           <div className='mt-[26px] flex items-stretch w-full'>

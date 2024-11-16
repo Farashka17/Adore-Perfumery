@@ -2,17 +2,28 @@ import React from 'react';
 import BigPerfume from '../../../assets/BigPerfume.svg';
 import { CiHeart } from "react-icons/ci";
 import { useCartStore } from '../../../store/useCartStore';
+import { useWishlistStore } from '../../../store/useWishlistStore';
+
+// Product Bileşeni
 
 // Product Bileşeni
 const Product = ({ product, id }) => {
   if (!product) return <p>Loading...</p>;
 
   const addToCart = useCartStore((state) => state.addToCart);
+  const { toggleWishlist, wishlist } = useWishlistStore(); // Wishlist store fonksiyonunu ve verisini buradan alıyoruz
+
+  // Wishlist içinde ürün var mı kontrolü
+  const isInWishlist = wishlist.some(item => item.productId === product._id)
 
   const handleAddToCart = () => {
     addToCart(id, 1); // Doğru ID'yi gönderdiğimizden emin olun
   };
-
+  
+  const handleToggleWishlist = () => {
+    toggleWishlist(id); // Wishlist'e ekleme/çıkarma işlemi
+  };
+  
   return (
     <div className="bg-white md:mx-auto font-nunito">
       <div className="container max-w-[1920px] flex flex-col md:flex-row gap-10 justify-center mx-auto md:px-10 py-6">
@@ -42,8 +53,11 @@ const Product = ({ product, id }) => {
             <p className='text-[28px] font-raleway'>Price: ${product.price}</p>
           </div>
           <div className='flex w-full gap-3 mt-4'>
-            <button className='px-3 border border-[#232323] hover:bg-[#eaeaea] flex items-center justify-center'>
-              <CiHeart className='w-8 h-8 hover:text-[#dbaf77]' />
+            <button
+              className={`px-3 border border-[#232323] ${isInWishlist ? 'bg-yellow-500' : 'bg-white'} hover:bg-[#eaeaea] flex items-center justify-center`}
+              onClick={handleToggleWishlist}
+            >
+              <CiHeart className="w-8 h-8 hover:text-[#dbaf77]" />
             </button>
             <button className='py-4 border border-[#232323] bg-black text-white hover:bg-[#dbaf77] w-full' onClick={handleAddToCart}>Add to Cart</button>
           </div>
@@ -52,6 +66,8 @@ const Product = ({ product, id }) => {
     </div>
   );
 };
+
+
 
 
 export default Product;

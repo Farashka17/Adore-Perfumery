@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
 import LoginBackground from '../../assets/LoginBackground.jpg';
 import GirlChanel from '../../assets/GirlChanel.jpg';
+import { useCartStore } from '../../store/useCartStore';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -20,8 +21,9 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
+       
       });
-
+    
       const data = await response.json();
 
       if (response.ok) {
@@ -32,8 +34,11 @@ const Login = () => {
         localStorage.setItem('isLogin',true);
         localStorage.setItem('userId',data.user._id);
 
-
-
+        // const getCart = useCartStore.getState().getCart;
+        // await getCart();
+       
+     
+  
 
         // Giriş durumu değişikliği için event tetikle
         window.dispatchEvent(new Event('loginStatusChanged'));

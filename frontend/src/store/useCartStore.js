@@ -5,35 +5,40 @@ export const useCartStore = create((set, get) => ({
   cart: [],  // Başlangıçta boş bir dizi
 
   // Sepeti almak için fonksiyon
-  getCart: async () => {
-    const token = localStorage.getItem('token');
-    if (!token || typeof token !== 'string') {
-      toast.error('Lütfen sepete erişmek için giriş yapın.');
-      return;
+getCart: async () => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch('http://localhost:3000/cart/getCart', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API Hatası:', errorData);
+      throw new Error(errorData.message || 'API isteği başarısız.');
     }
+
+    const data = await response.json();
+    console.log('Sepet Verisi:', data);
+
+    const totalQuantity = data.products.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = data.products.reduce((sum, item) => sum + item.quantity * item.productId.price, 0);
+
+    set({
+      cart: data.products,
+      totalPrice,
+      totalQuantity,
+    });
+  } catch (error) {
+    console.error('Sepet alınırken hata:', error.message);
+  }
+},
+
   
-    try {
-      const response = await fetch('http://localhost:3000/cart/getCart', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-  
-      if (response.ok) {
-        set({ cart: Array.isArray(data.products) ? data.products : [] }); // Ürünleri güncelliyoruz
-        toast.success('Sepet başarıyla getirildi');
-      } else {
-        console.error('API Hatası:', data);
-        toast.error(data.message || 'Sepet alınamadı');
-      }
-    } catch (error) {
-      console.error('İstemci Hatası:', error);
-      toast.error(`Sepet alınırken bir hata oluştu: ${error.message}`);
-    }
-  },
 
   // Sepete ürün ekleme fonksiyonu
   addToCart: async (productId, quantity) => {
@@ -67,7 +72,9 @@ export const useCartStore = create((set, get) => ({
       console.error('İstemci Hatası:', error);
       toast.error('Sepete ürün eklenirken bir hata oluştu');
     }
+    await getCart();
   },
+  
 
   // Sepetten ürün silme fonksiyonu
   removeFromCart: async (productId) => {

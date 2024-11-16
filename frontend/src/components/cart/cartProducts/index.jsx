@@ -8,8 +8,12 @@ import { useCartStore } from '../../../store/useCartStore'
 
 
 const CartProducts = () => {
-    const cart = useCartStore((state) => state.cart); // Sepeti al
-    
+    const cart = useCartStore((state) => state.cart);
+    const getCart = useCartStore((state) => state.getCart);
+  
+    useEffect(() => {
+      getCart(); // Sepet bilgilerini al
+    }, []);
 
   return (
 <div>

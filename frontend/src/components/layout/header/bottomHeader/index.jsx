@@ -48,6 +48,8 @@ const BottomHeader = () => {
 
   const { cart, getCart, clearCart } = useCartStore();
 
+  // const getCart = useCartStore.getState().getCart;
+    getCart();
   // Toplam ürün miktarını hesaplayan fonksiyon
   const getTotalQuantity = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
