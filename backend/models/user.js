@@ -1,38 +1,5 @@
 import mongoose from 'mongoose';
 
-// Order Schema (Siparişler için)
-const orderSchema = new mongoose.Schema({
-  products: [{
-    productId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product', // Product modeline referans
-      required: true
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    },
-    price: {
-      type: Number,
-      required: true
-    }
-  }],
-  totalAmount: {
-    type: Number,
-    required: true
-  },
-  status: {
-    type: String,
-    default: 'pending', // Sipariş durumu (pending, completed, etc.)
-    enum: ['pending', 'completed', 'cancelled']
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
 // User Schema (Kullanıcılar için)
 const userSchema = new mongoose.Schema({
   name: {
@@ -74,7 +41,36 @@ const userSchema = new mongoose.Schema({
     }
   }],
   // Kullanıcının siparişleri
-  orders: [orderSchema]
+  orders: [{
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order', // Order modeline referans
+      required: true
+    },
+    orderItems: [{
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product', // Product modeline referans
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        min: 1
+      },
+      price: {
+        type: Number,
+        required: true
+      }
+    }]
+  }],
+  wishlist: [  {
+    productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product', // Product modeline referans
+    required: true
+}
+}],
 }, { timestamps: true });
 
 export const User = mongoose.model('User', userSchema);
