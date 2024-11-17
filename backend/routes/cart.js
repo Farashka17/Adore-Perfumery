@@ -14,6 +14,6 @@ router.put('/update', protect, updateCart);
 router.delete('/remove', protect, removeFromCart);
 
 // Kullanıcının sepetini alma
-router.get('/getCart', getCart);
+router.get('/getCart',protect,  getCart);
 
 export default router;

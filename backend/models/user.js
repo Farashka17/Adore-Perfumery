@@ -1,76 +1,52 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-// User Schema (Kullanıcılar için)
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true,
-    minLength: 8
-  },
-  role: {
-    type: String,
-    default: 'user',
-    required: true
-  },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  // Kullanıcının eklediği ürünler
-  cart: [{
-    productId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product', // Product modeline referans
-      required: true
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    }
-  }],
-  // Kullanıcının siparişleri
-  orders: [{
-    orderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Order', // Order modeline referans
-      required: true
-    },
-    orderItems: [{
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, minLength: 8 },
+    role: { type: String, default: "user", required: true },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
+    cart: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: { type: Number, required: true, min: 1 },
+      },
+    ],
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Orders", // Sadece order ID saklanır
+      },
+    ],
+    reviews:[{
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Product modeline referans
-        required: true
-      },
-      quantity: {
-        type: Number,
+        ref: "Product",
         required: true,
-        min: 1
       },
-      price: {
-        type: Number,
-        required: true
-      }
-    }]
-  }],
-  wishlist: [  {
-    productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product', // Product modeline referans
-    required: true
-}
-}],
-}, { timestamps: true });
+      rating: { type: Number, required: true, min: 1, max: 5 },
+      comment: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now },
+      updatedAt: { type: Date, default: Date.now }
+    }],
+    wishlist: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model("User", userSchema);

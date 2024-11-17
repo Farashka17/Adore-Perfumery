@@ -14,6 +14,6 @@ router.post('/addToFav', protect, addToFavorite);
 router.delete('/removefromFav', protect, removeFromFavorite);
 
 // // // Kullanıcının sepetini alma
-router.get('/getFav', getWishlist);
+router.get('/getFav', protect , getWishlist);
 
 export default router;
