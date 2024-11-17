@@ -15,6 +15,8 @@ const BottomHeader = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [isMobile, setIsMobile] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+
   const [cartCount, setCartCount] = useState(0); // Sepetteki ürün sayısını takip eden state
   const navigate = useNavigate();
 
@@ -58,7 +60,7 @@ const BottomHeader = () => {
   useEffect(() => {
     // Component yüklendiğinde sepeti getirme işlemi
     getCart();
-  }, [getCart]);
+  }, []);
 
   const handleLogout = () => {
     clearCart();
@@ -71,6 +73,10 @@ const BottomHeader = () => {
 
   const toggleMobileMenu = () => {
     setIsMobile((prev) => !prev);
+  };
+
+  const toggleUserMenu = () => {
+    setIsUser((prev) => !prev);
   };
 
   const handleCartClick = () => {
@@ -129,12 +135,13 @@ const BottomHeader = () => {
               onMouseEnter={() => setIsOpen(true)}
               onMouseLeave={() => setIsOpen(false)}
             >
-              <button className="text-black flex items-center gap-2">
+              <button className="text-black flex items-center gap-2" onClick={toggleUserMenu}>
                 {isLoggedIn && (
                   <span className="ml-2 text-black">Hello, {userName}</span>
                 )}
                 <HiOutlineUser className="w-6 h-6" />
               </button>
+           
               {isOpen && (
                 <div className="absolute top-full right-0 z-10 rounded-lg shadow w-32 bg-white">
                   <div className="py-2 px-1 flex flex-col gap-1 text-sm text-gray-950 text-left ">
@@ -153,9 +160,9 @@ const BottomHeader = () => {
                           My Account
                         </Link>
                         {userRole === 'admin' && (
-                          <a href="http://localhost:5173"  rel="noopener noreferrer">
+                          <Link to={"http://localhost:5173"}  rel="noopener noreferrer">
                             Admin Dashboard
-                          </a>
+                          </Link>
                         )}
                       </>
                     ) : (
@@ -194,10 +201,10 @@ const BottomHeader = () => {
               <button onClick={toggleMobileMenu} className="self-end mb-4 text-gray-700">
                 Close
               </button>
-              <Link to="/products" className="text-black py-2 hover:text-[#dbaf77]">Products</Link>
-              <Link to="/cart" className="text-black py-2 hover:text-[#dbaf77]">Cart</Link>
-              <Link to="/wishlist" className="text-black py-2 hover:text-[#dbaf77]">Wishlist</Link>
-              <Link to="/contactAndBranches" className="text-black py-2 hover:text-[#dbaf77]">Contact</Link>
+              <Link to="/products"><button className="text-black py-2 hover:text-[#dbaf77]">Products</button></Link>
+            <button className="text-black py-2 hover:text-[#dbaf77]"  onClick={handleCartClick}>Cart</button>
+              <button className="text-black py-2 hover:text-[#dbaf77]"  onClick={handleWishlistClick}> Wishlist</button>
+              <Link to="/contactAndBranches"><button className="text-black py-2 hover:text-[#dbaf77]">Contact</button></Link>
             </div>
           )}
         </div>

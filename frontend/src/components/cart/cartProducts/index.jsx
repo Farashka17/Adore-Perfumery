@@ -13,7 +13,7 @@ const CartProducts = () => {
   
     useEffect(() => {
       getCart(); // Sepet bilgilerini al
-    }, []);
+    }, [ getCart]);
 
   return (
 <div>

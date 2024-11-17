@@ -23,7 +23,7 @@ getCart: async () => {
     }
 
     const data = await response.json();
-    console.log('Sepet Verisi:', data);
+    // console.log('Sepet Verisi:', data);
 
     const totalQuantity = data.products.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = data.products.reduce((sum, item) => sum + item.quantity * item.productId.price, 0);

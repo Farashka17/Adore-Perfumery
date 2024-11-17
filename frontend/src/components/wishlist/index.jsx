@@ -11,7 +11,7 @@ const Wishlist = () => {
   }, [getWishlist]);
   if (!wishlist.length) {
     return( <>
-     <PageTitleImageBackground title={title}/>55555555
+     <PageTitleImageBackground title={title}/>
     <div className="my-8 text-center">
     <p className="text-lg font-thin font-raleway">If you haven't added any perfumes yet, explore our collection and start your wishlist!</p>
     <button

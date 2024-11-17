@@ -3,6 +3,7 @@ import SingleReview from './singleReview';
 import AddReview from './addReview';
 
 const Reviews = () => {
+  
   return (
     <div className="bg-white font-nunito mx-auto">
       <div className="container   max-w-[1120px]  ">

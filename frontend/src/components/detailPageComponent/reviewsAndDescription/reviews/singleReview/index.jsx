@@ -2,7 +2,7 @@ import React from 'react';
 
 const SingleReview = () => {
   return (
-    <div className='flex gap-4 w-[360px] md:w-full bg-gray-100 items-start justify-start p-4 rounded-md'>
+    <div className='flex gap-4 w-full bg-gray-100 items-start justify-start p-4 rounded-md'>
       <div className='flex-shrink-0 w-[70px] h-[70px]'>
         <img 
           src="https://secure.gravatar.com/avatar/c2076d9dc1952386b9401f2dd2a3d95a?s=70&d=mm&r=g" 
