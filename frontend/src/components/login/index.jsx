@@ -4,6 +4,7 @@ import { FaGoogle } from 'react-icons/fa';
 import LoginBackground from '../../assets/LoginBackground.jpg';
 import GirlChanel from '../../assets/GirlChanel.jpg';
 import { useCartStore } from '../../store/useCartStore';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -45,11 +46,11 @@ const Login = () => {
 
         navigate('/'); // Ana sayfaya yönlendir
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Bir hata oluştu, tekrar deneyin.');
+      toast.error('An error occurred, try again.');
     }
   };
 

@@ -3,11 +3,14 @@ import { useWishlistStore } from '../../../store/useWishlistStore';
 import SingleProduct from '../../common/singleProduct'
 
 const WishlistProducts = () => {
-  const { wishlist, getWishlist } = useWishlistStore(); // Wishlist store'u
+  // const userId = localStorage.getItem('userId');  // Kullanıcı ID'sini localStorage'dan alıyoruz
+  const { wishlist, fetchWishlist } = useWishlistStore();
 
   useEffect(() => {
-    getWishlist(); // Sayfa yüklendiğinde wishlist'i al
-  }, [getWishlist]);
+    fetchWishlist(); // Wishlist verilerini component mount edildiğinde çekiyoruz
+  }, [fetchWishlist]);
+
+
 
   if (!wishlist.length) {
     return <p>Your wishlist is empty.</p>;

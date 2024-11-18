@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import LoginBackground from '../../assets/LoginBackground.jpg'
 import GirlChanel from '../../assets/GirlChanel.jpg';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ const Register = () => {
         }
 
         const result = await response.json();
-        alert(result.message);
+        toast.success(result.message);
         navigate('/login');
     } catch (error) {
         console.error('Kullanıcı kaydı hatası:', error);

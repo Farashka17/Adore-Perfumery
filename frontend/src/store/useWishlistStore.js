@@ -1,96 +1,117 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 import { toast } from 'react-toastify';
 
 export const useWishlistStore = create((set, get) => ({
-    wishlist: [],  // Başlangıçta boş bir dizi
+  wishlist: [],  // Başlangıçta boş bir dizi
+
+  // Sepeti almak için fonksiyon
+  fetchWishlist: async () => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch('http://localhost:3000/wishlist', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API Hatası:', errorData);
+      throw new Error(errorData.message || 'API isteği başarısız.');
+    }
+
+    const data = await response.json();
+    // console.log('Sepet Verisi:', data);
+
+ 
+
+    set({
+      wishlist: data.products
+    });
+  } catch (error) {
+    console.error('Sepet alınırken hata:', error.message);
+  }
+},
+
   
-    // Wishlist'i almak için fonksiyon
-    getWishlist: async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await fetch('http://localhost:3000/wishlist/getFav', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+
+  // Sepete ürün ekleme fonksiyonu
+// useWishlistStore.js
+addToWishlist: async (productId) => {
+  const token = localStorage.getItem('token');
+  if (!token || typeof token !== 'string') {
+    toast.error('Lütfen giriş yapın ve ürünü sepete ekleyin.');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/wishlist/add', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API Hatası:', errorData);
+      toast.error(errorData.message || 'Listeye ürün eklenirken bir hata oluştu');
+      return;
+    }
+
+    const data = await response.json();
+    set({ wishlist: data.products }); // Wishlist'i güncelle
+    toast.success('Ürün listeye başarıyla eklendi veya çıkarıldı');
+  } catch (error) {
+    console.error('İstemci Hatası:', error);
+    toast.error('Sepete ürün eklenirken bir hata oluştu');
+  }
+},
+
   
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error('API Hatası:', errorData);
-          throw new Error(errorData.message || 'API isteği başarısız.');
-        }
+
+  // Sepetten ürün silme fonksiyonu
+  removeFromWishlist: async (productId) => {
+    const token = localStorage.getItem('token');
+    if (!token || typeof token !== 'string') {
+      toast.error('Lütfen giriş yapın ve ürünü sepette kaldırın.');
+      return;
+    }
   
-        const data = await response.json();
-        set({ wishlist: data.products });
-      } catch (error) {
-        console.error('Wishlist alınırken hata:', error.message);
-      }
-    },
+    
+      const response = await fetch('http://localhost:3000/wishlist/remove', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId }),
+      });
+      // const data = await response.json();
   
-    // Wishlist'e ürün ekleme veya çıkarma fonksiyonu
-    toggleWishlist: async (productId) => {
-      const token = localStorage.getItem('token');
-      if (!token || typeof token !== 'string') {
-        toast.error('Lütfen giriş yapın ve ürünü listeye ekleyin.');
-        return;
-      }
+    
+if (!response.ok) {
+  const errorData = await response.json();
+  console.error('API Hatası:', errorData);
+  toast.error(errorData.message || 'Ürün listeden silinirken bir hata oluştu');
+  return;
+}
+    const data = await response.json(); // JSON verisini aldık
+set(state => ({
+  wishlist: state.wishlist.filter(item => item.productId !== productId),
+}));
+toast.success('Ürün başarıyla listeden silindi');
+  },
   
-      try {
-        const wishlist = get().wishlist;
-        const productInWishlist = wishlist.some(item => item.productId === productId);
-  
-        let response;
-        if (productInWishlist) {
-          // Ürün wishlist'te varsa çıkar
-          response = await fetch('http://localhost:3000/wishlist/removefromFav', {
-            method: 'DELETE',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ productId}),
-          });
-  
-          if (response.ok) {
-            set(state => ({
-              wishlist: state.wishlist.filter(item => item.productId !== productId),
-            }));
-            toast.success('Ürün wishlist\'ten çıkarıldı');
-          } else {
-            const errorData = await response.json();
-            toast.error(errorData.message || 'Wishlist\'ten ürün çıkarılamadı');
-          }
-        } else {
-          // Ürün wishlist'te yoksa ekle
-          response = await fetch('http://localhost:3000/wishlist/addToFav', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ productId}),
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            set({ wishlist: data.products });
-            toast.success('Ürün wishlist\'e başarıyla eklendi');
-          } else {
-            const errorData = await response.json();
-            toast.error(errorData.message || 'Wishlist\'e ürün eklenemedi');
-          }
-        }
-      } catch (error) {
-        console.error('İstemci Hatası:', error);
-        toast.error('Wishlist\'e ürün eklenirken bir hata oluştu');
-      }
-    },
-  
-    // Wishlist'i sıfırlama
-    clearWishlist: () => {
-      set({ wishlist: [] }); // Wishlist'i sıfırla
-    },
-  }));
-  
+
+  clearWishlist: () => {
+    set({ wishlist: [] }); // Sepeti sıfırla
+  },
+
+
+
+}));
