@@ -16,6 +16,8 @@ import CheckoutPage from './pages/checkout/checkoutPage'
 import HomePageAdmin from '../../admin/src/pages/Home/homePage'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import ForgotPasswordPage from './pages/forgotPassword/forgotPasswordPage'
+import ResetPasswordPage from './pages/resetPassword/resetPassword'
 // import { useAuthEffect } from './store/useCartStore'
 // import { useSyncLoginStatus } from './store/useCartStore'
 
@@ -36,6 +38,9 @@ function App() {
         <Route path="/contactAndBranches" element={<ContactAndBranches />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+        {/* <Route path="/users/reset/:token" component={ResetPasswordPage} /> */}
+
         <Route path="*" element={<HomePage />} />
       </Routes>
       <Footer />

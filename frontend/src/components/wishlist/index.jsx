@@ -9,7 +9,7 @@ const Wishlist = () => {
 
   useEffect(() => {
     fetchWishlist(); // Wishlist verilerini component mount edildiğinde çekiyoruz
-  }, [fetchWishlist]);
+  }, []);
   
   // Wishlist'in bir dizi olup olmadığını ve boş olup olmadığını kontrol et
   if (!Array.isArray(wishlist) || wishlist.length === 0) {

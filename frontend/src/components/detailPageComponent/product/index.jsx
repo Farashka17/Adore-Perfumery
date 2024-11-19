@@ -1,38 +1,36 @@
-import React, { useEffect } from 'react';
-import BigPerfume from '../../../assets/BigPerfume.svg';
+import React, { useEffect, useState } from 'react';
 import { CiHeart } from "react-icons/ci";
 import { useCartStore } from '../../../store/useCartStore';
 import { useWishlistStore } from '../../../store/useWishlistStore';
 
-// Product Bileşeni
 const Product = ({ product, id }) => {
   if (!product) return <p>Loading...</p>;
 
   const addToCart = useCartStore((state) => state.addToCart);
-  const { wishlist, addToWishlist, removeFromWishlist, fetchWishlist } = useWishlistStore(); // Wishlist store fonksiyonlarını ve verilerini buradan alıyoruz
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const { wishlist, fetchWishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
 
   useEffect(() => {
-    fetchWishlist(); // Component mount olduğunda wishlist verilerini çekiyoruz
-  }, [fetchWishlist]);
+    fetchWishlist(); // Wishlist'i güncel tut
+  }, []);
 
-  // Wishlist içinde ürün var mı kontrolü
-  const isInWishlist = Array.isArray(wishlist) && wishlist.some((item) => item.productId === product._id);
+  useEffect(() => {
+    // Wishlist değiştiğinde ürünü kontrol et
+    const inWishlist = wishlist?.some((item) => item.productId === product._id);
+    setIsInWishlist(inWishlist);
+  }, [wishlist, product._id]);
 
   const handleClick = () => {
     if (isInWishlist) {
-      removeFromWishlist(product._id, product.name, product.price, product.productPic); // Favorilerden çıkar
+      removeFromWishlist(product._id); // Favorilerden çıkar
     } else {
-      addToWishlist(product._id, product.name, product.price, product.productPic); // Favorilere ekle
+      addToWishlist(product._id); // Favorilere ekle
     }
   };
 
   const handleAddToCart = () => {
-    addToCart(id, 1); // Doğru ID'yi gönderdiğimizden emin olun
+    addToCart(id, 1);
   };
-
-  useEffect(() => {
-    fetchWishlist(); // Component mount olduğunda wishlist verilerini çekiyoruz
-  }, [fetchWishlist]);
 
   return (
     <div className="bg-white md:mx-auto font-nunito">
@@ -64,12 +62,19 @@ const Product = ({ product, id }) => {
           </div>
           <div className='flex w-full gap-3 mt-4'>
             <button
-              className={`px-3 border border-[#232323] ${isInWishlist ? 'bg-yellow-500' : 'bg-white'} hover:bg-[#eaeaea] flex items-center justify-center`}
+              className={`px-3 border border-[#232323] ${
+                isInWishlist ? 'bg-yellow-500' : 'bg-white'
+              } hover:bg-[#eaeaea] flex items-center justify-center`}
               onClick={handleClick}
             >
               <CiHeart className="w-8 h-8 hover:text-[#dbaf77]" />
             </button>
-            <button className='py-4 border border-[#232323] bg-black text-white hover:bg-[#dbaf77] w-full' onClick={handleAddToCart}>Add to Cart</button>
+            <button
+              className="py-4 border border-[#232323] bg-black text-white hover:bg-[#dbaf77] w-full"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
