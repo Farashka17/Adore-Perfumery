@@ -111,12 +111,12 @@ const forgetPassword = async (req,res)=>{
      if(!user){
         return res.status(500).json({message:"User yoxdur"})
      }
-   const resetToken =  crypto.randomBytes(20).toString('hex')
-   user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-   user.resetPasswordExpire = Date.now()+ 15*60*1000
-   await user.save({validateBeforeSave:false})
+     const resetToken = crypto.randomBytes(20).toString('hex'); // Her seferinde yeni token oluşturuluyor
+     user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 dakika geçerlilik süresi
+     await user.save({ validateBeforeSave: false });
 
-   const  passwordUrl = `${req.proocol}://${req.get('host')}/reset/${resetToken}}`
+   const passwordUrl = `${req.protocol}://${req.get('host')}/users/reset/${resetToken}`;
    const message = `Shifreni deyismek ucun istifade edeceyiniz token : ${passwordUrl}`;
    try {
     const transporter = nodemailer.createTransport({
@@ -125,7 +125,7 @@ const forgetPassword = async (req,res)=>{
         host: "smtp.gmail.com",
            auth: {
                 user: 'farahnv@code.edu.az',
-                pass: 'Farashka1911',
+                pass: 'j m h p j n y o l d k w m e x l',
              },
         secure: true,
         });
@@ -149,35 +149,44 @@ const forgetPassword = async (req,res)=>{
    }
 }
 
-const resetPassword = async (req,res)=>{
-    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest('hex')
+const resetPassword = async (req, res) => {
+    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest('hex');
+
+  
+    // Token'ı ve geçerlilik süresi dolmamış kullanıcıyı buluyoruz
     const user = await User.findOne({
-        resetPasswordToken,
-        resetPasswordExpire:{$gt:Date.now()}
-    })
-    if(!user){
-        return res.status(500).json({message:"Token yanlisdir ya da zaman bitdi"})
+        resetPasswordToken, 
+        resetPasswordExpire: { $gt: Date.now() }
+      });
+  
+    if (!user) {
+      return res.status(400).json({ message: "Token geçersiz veya süresi dolmuş" });
     }
-    user.password = req.body.password
-    user.resetPasswordExpire = undefined
-    user.resetPasswordToken = undefined
-
-    await user.save()
-    const token = jwt.sign(
-        { id: user._id }, // Kullanıcı bilgileri
-        process.env.JWT_SECRET, // Şifreleme için kullanılan gizli anahtar
-        { expiresIn: '1h' } // Token'ın geçerlilik süresi
-      );
-
+  
+    // Yeni şifreyi alıyoruz
+    user.password = req.body.password;
+  
+    // Token'ı ve süresini sıfırlıyoruz
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+  
+    // Şifreyi kaydediyoruz
+    await user.save();
+  
+    // Yeni bir token oluşturuyoruz (isteğe bağlı, hemen giriş yapmak için)
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  
+    // Cookie'ye token ekliyoruz
     const cookieOptions = {
-        httpOnly: true,
-        expires:new Date(Date.now()+5*24*60*60*1000)
-     }
-     res.status(200).cookie("token",token,cookieOptions).json({
-        user,
-        token
-    })
-}
+      httpOnly: true,
+      expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+    };
+  
+    // Yanıtı gönderiyoruz
+    res.status(200).cookie("token", token, cookieOptions).json({ user, token });
+  };
+  
+  
 
 
 const userDetail = async (req,res,next)=>{

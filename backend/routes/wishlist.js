@@ -10,7 +10,7 @@ import { protect } from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/add", protect , addToWishlist); // Favorilere ürün ekle
-router.post("/remove", protect , removeFromWishlist); // Favorilerden ürün çıkar
-router.get("/", getWishlist); // Kullanıcının favori ürünlerini al
+router.delete("/remove", protect , removeFromWishlist); // Favorilerden ürün çıkar
+router.get("/",protect, getWishlist); // Kullanıcının favori ürünlerini al
 
 export default router;

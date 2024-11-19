@@ -84,22 +84,36 @@ export const removeFromWishlist = async (req, res) => {
     const wishlist = await Wishlist.findOne({ userId });
     const user = await User.findById(userId);
 
-    if (!wishlist) return res.status(404).json({ message: 'wishlist not found' });
+    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     // Sepet ve kullanıcının sepetinden ürünü kaldır
-    wishlist.products = wishlist.products.filter(item => item.productId.toString() !== productId);
-    user.wishlist = user.wishlist.filter(item => item.productId.toString() !== productId);
+    const productIndexInWishlist = wishlist.products.findIndex(item => item.productId.toString() === productId);
+    const productIndexInUserWishlist = user.wishlist.findIndex(item => item.productId.toString() === productId);
 
+    if (productIndexInWishlist === -1 || productIndexInUserWishlist === -1) {
+      return res.status(400).json({ message: 'Product not found in wishlist' });
+    }
+
+    // Ürünü sil
+    wishlist.products.splice(productIndexInWishlist, 1);
+    user.wishlist.splice(productIndexInUserWishlist, 1);
+
+    // Veritabanında kaydet
     await wishlist.save();
     await user.save();
 
-    res.status(200).json({ message: 'Product removed successfully', products: wishlist.products });
+    res.status(200).json({
+      message: 'Product removed from wishlist',
+      products: wishlist.products,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
 
 // 3. Kullanıcının wishlist'ini alma
 export const getWishlist = async (req, res) => {
@@ -107,7 +121,7 @@ export const getWishlist = async (req, res) => {
     const userId = req.user.id; // Giriş yapan kullanıcının ID'si
 
     // Kullanıcı ve Cart kontrolü
-    const wishlist = await Wishlist.findOne({ userId }).populate('products.productId'); // Ürün bilgilerini de dahil et
+    const wishlist = await Wishlist.findOne({ userId }).populate('products.productId');
 
     if (!wishlist) {
       return res.status(404).json({ message: 'wishlist not found' });
@@ -119,4 +133,7 @@ export const getWishlist = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+
 
