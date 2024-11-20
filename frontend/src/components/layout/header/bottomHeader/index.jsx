@@ -142,7 +142,7 @@ const BottomHeader = () => {
                 <HiOutlineUser className="w-6 h-6" />
               </button>
            
-              {isOpen && (
+              {isUser && (
                 <div className="absolute top-full right-0 z-10 rounded-lg shadow w-32 bg-white">
                   <div className="py-2 px-1 flex flex-col gap-1 text-sm text-gray-950 text-left ">
                     {isLoggedIn ? (

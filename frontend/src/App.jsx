@@ -40,6 +40,8 @@ function App() {
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         {/* <Route path="/users/reset/:token" component={ResetPasswordPage} /> */}
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+        <Route path="/resetPassword/:token" element={<ResetPasswordPage/>} />
 
         <Route path="*" element={<HomePage />} />
       </Routes>
