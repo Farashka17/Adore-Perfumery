@@ -11,7 +11,7 @@ router.post('/',register)
 router.post('/login',login)
 router.get('/logout',logout)
 router.post('/forgotpassword',forgetPassword)
-router.get('/reset/:token',resetPassword)
+router.post('/reset/:token',resetPassword)
 // router.get('/me',protect,userDetail)
 
 

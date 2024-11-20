@@ -65,35 +65,35 @@ const register = async (req, res) => {
 };
 
 
-const login = async (req, res) => {
-    const { email, password } = req.body;
+// const login = async (req, res) => {
+//     const { email, password } = req.body;
   
-    // Kullanıcıyı bul
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "Bu kullanıcı mevcut değil." });
-    }
+//     // Kullanıcıyı bul
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(404).json({ message: "Bu kullanıcı mevcut değil." });
+//     }
   
-    // Şifreyi karşılaştır
-    const comparePassword = await bcrypt.compare(password, user.password);
-    if (!comparePassword) {
-      return res.status(401).json({ message: "Şifreniz yanlıştır." });
-    }
+//     // Şifreyi karşılaştır
+//     const comparePassword = await bcrypt.compare(password, user.password);
+//     if (!comparePassword) {
+//       return res.status(401).json({ message: "Şifreniz yanlıştır." });
+//     }
   
-    // JWT oluştur
-    const token = jwt.sign(
-        { id: user._id }, // Kullanıcı bilgileri
-        process.env.JWT_SECRET, // Şifreleme için kullanılan gizli anahtar
-        { expiresIn: '1h' } // Token'ın geçerlilik süresi
-      );
+//     // JWT oluştur
+//     const token = jwt.sign(
+//         { id: user._id }, // Kullanıcı bilgileri
+//         process.env.JWT_SECRET, // Şifreleme için kullanılan gizli anahtar
+//         { expiresIn: '1h' } // Token'ın geçerlilik süresi
+//       );
   
-    // Yanıtı gönder
-    return res.status(200).json({
-      message: "Giriş başarılı.",
-      user: user, // Kullanıcı bilgilerini döndürüyoruz
-      token,
-    });
-  };
+//     // Yanıtı gönder
+//     return res.status(200).json({
+//       message: "Giriş başarılı.",
+//       user: user, // Kullanıcı bilgilerini döndürüyoruz
+//       token,
+//     });
+//   };
   
 
 const logout = async (req,res)=>{
@@ -106,85 +106,126 @@ const logout = async (req,res)=>{
     })
 }
 
-const forgetPassword = async (req,res)=>{
-     const user =await User.findOne({email:req.body.email})
-     if(!user){
-        return res.status(500).json({message:"User yoxdur"})
-     }
-     const resetToken = crypto.randomBytes(20).toString('hex'); // Her seferinde yeni token oluşturuluyor
-     user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 dakika geçerlilik süresi
-     await user.save({ validateBeforeSave: false });
+const forgetPassword = async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(500).json({ message: "User yoxdur" });
+  }
 
-   const passwordUrl = `${req.protocol}://${req.get('host')}/users/reset/${resetToken}`;
-   const message = `Shifreni deyismek ucun istifade edeceyiniz token : ${passwordUrl}`;
-   try {
+  const resetToken = crypto.randomBytes(20).toString('hex'); // Yeni token oluşturuluyor
+  user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+  user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 dakika geçerlilik süresi
+  await user.save({ validateBeforeSave: false });
+
+  const passwordUrl = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
+
+  const message = `Shifreni deyismek ucun istifade edeceyiniz token : ${passwordUrl}`;
+
+  try {
     const transporter = nodemailer.createTransport({
-        port: 465,  
-        service:"gmail",
-        host: "smtp.gmail.com",
-           auth: {
-                user: 'farahnv@code.edu.az',
-                pass: 'j m h p j n y o l d k w m e x l',
-             },
-        secure: true,
-        });
-        const mailData = {
-            from: 'farahnv@code.edu.az',  // sender address
-              to: req.body.email,   // list of receivers
-              subject: 'Password sifirlamaq',
-              text: message
-            
-            };
-            await transporter.sendMail(mailData)
-            res.status(200).json({message:"Sifreni deyismek ucun e-mail yollandi"})
-   } 
+      port: 465,
+      service: "gmail",
+      host: "smtp.gmail.com",
+      auth: {
+        user: 'farahnv@code.edu.az',
+        pass: 'j m h p j n y o l d k w m e x l',
+      },
+      secure: true,
+    });
 
-   catch (error) {
-    user.resetPasswordToken = undefined
-    user.resetPasswordExpire = undefined;
+    const mailData = {
+      from: 'farahnv@code.edu.az',
+      to: req.body.email,
+      subject: 'Password sifirlamaq',
+      text: message,
+    };
 
-    await user.save({validateBeforeSave:false})
-    res.status(500).json({message: error.message})
-   }
-}
-
-const resetPassword = async (req, res) => {
-    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest('hex');
-
-  
-    // Token'ı ve geçerlilik süresi dolmamış kullanıcıyı buluyoruz
-    const user = await User.findOne({
-        resetPasswordToken, 
-        resetPasswordExpire: { $gt: Date.now() }
-      });
-  
-    if (!user) {
-      return res.status(400).json({ message: "Token geçersiz veya süresi dolmuş" });
-    }
-  
-    // Yeni şifreyi alıyoruz
-    user.password = req.body.password;
-  
-    // Token'ı ve süresini sıfırlıyoruz
+    await transporter.sendMail(mailData);
+    res.status(200).json({ message: "Sifreni deyismek ucun e-mail yollandi" });
+  } catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
-  
-    // Şifreyi kaydediyoruz
+
+    await user.save({ validateBeforeSave: false });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword, newPasswordConfirm } = req.body;
+
+  if (!newPassword || !newPasswordConfirm) {
+    return res.status(400).json({ message: 'Password fields are required.' });
+  }
+
+  // Şifreler uyuşmuyorsa
+  if (newPassword !== newPasswordConfirm) {
+    return res.status(400).json({ message: 'Passwords do not match!' });
+  }
+
+  try {
+    // Token'ı doğrulama
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpire: { $gt: Date.now() },  // Token'ın süresinin geçmemiş olması gerekiyor
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+
+    // Yeni şifreyi hash'le
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Yeni şifreyi kaydet ve token'ı sıfırla
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
     await user.save();
+
+    res.status(200).json({ message: 'Password reset successful!' });
+
+  } catch (error) {
+    console.error('Error during password reset:', error);
+    res.status(500).json({ message: 'An error occurred while resetting the password.' });
+  }
+
+};
+
+
+
+// Login işlevi
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Kullanıcıyı bul
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ message: "Bu kullanıcı mevcut değil." });
+  }
+
+  // Şifreyi karşılaştır
+  const comparePassword = await bcrypt.compare(password, user.password);
+  if (!comparePassword) {
+    return res.status(401).json({ message: "Şifreniz yanlıştır." });
+  }
+
+  // JWT oluştur
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET,
+    { expiresIn: '1h' }
+  );
+
+  // Yanıtı gönder
+  return res.status(200).json({
+    message: "Giriş başarılı.",
+    user, // Kullanıcı bilgilerini döndürüyoruz
+    token,
+  });
+};
   
-    // Yeni bir token oluşturuyoruz (isteğe bağlı, hemen giriş yapmak için)
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  
-    // Cookie'ye token ekliyoruz
-    const cookieOptions = {
-      httpOnly: true,
-      expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
-    };
-  
-    // Yanıtı gönderiyoruz
-    res.status(200).cookie("token", token, cookieOptions).json({ user, token });
-  };
   
   
 
