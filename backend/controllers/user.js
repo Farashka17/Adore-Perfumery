@@ -159,16 +159,17 @@ const resetPassword = async (req, res) => {
     return res.status(400).json({ message: 'Password fields are required.' });
   }
 
-  // Şifreler uyuşmuyorsa
   if (newPassword !== newPasswordConfirm) {
     return res.status(400).json({ message: 'Passwords do not match!' });
   }
 
   try {
-    // Token'ı doğrulama
+    // Token'ı hash'le ve veritabanında ara
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
     const user = await User.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpire: { $gt: Date.now() },  // Token'ın süresinin geçmemiş olması gerekiyor
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
     });
 
     if (!user) {
@@ -185,12 +186,10 @@ const resetPassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: 'Password reset successful!' });
-
   } catch (error) {
     console.error('Error during password reset:', error);
     res.status(500).json({ message: 'An error occurred while resetting the password.' });
   }
-
 };
 
 
