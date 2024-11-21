@@ -1,33 +1,45 @@
 import { Orders } from "../models/order.js";
 // import { User } from "../models/user.js";  // Eğer kullanıcı verilerini kontrol etmek isterseniz
 // import { Products } from "../models/product.js"; // Eğer ürün verileri gerekirse
-import paypalClient from './paypalClient.js'; // PayPal Client SDK
+import paypalClient from '../config/paypalClient.js'; // PayPal Client SDK
 // import { v4 as uuidv4 } from 'uuid'; // Opsiyonel, her sipariş için benzersiz ID oluşturur
 import checkoutNodeJssdk from '@paypal/checkout-server-sdk';
 
 // Sipariş oluşturma
 export const createOrder = async (req, res) => {
-  try {
-    const { userId, products, totalAmount, address, paymentMethod, date } = req.body;
+  const { userId, products, totalAmount, address, cardInfo } = req.body; // Sipariş detayları
 
-    // Siparişi veritabanına kaydetme
+  try {
+    // Siparişi veritabanına kaydet
     const newOrder = new Orders({
       userId,
       products,
       totalAmount,
       address,
-      paymentMethod,
-      date,
-      status: 'pending',
-      payment: false
+      status: "completed",
+      paymentMethod: "Credit Card", // Ödeme yöntemi
+      payment: true, // Ödeme alındı
+      cardInfo, // Kullanıcı kart bilgileri
+      date: new Date(),
     });
 
     await newOrder.save();
-    res.status(201).json({ message: "Order created successfully", order: newOrder });
 
+    // Kullanıcı siparişini güncelle
+    await User.findByIdAndUpdate(userId, {
+      $push: { orders: newOrder._id },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Siparişiniz başarıyla alındı.",
+      orderDetails: newOrder,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error creating order", error });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 

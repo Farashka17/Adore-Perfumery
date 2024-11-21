@@ -18,7 +18,7 @@ import  cart from './routes/cart.js'
 import wishlist from './routes/wishlist.js'
 import order from './routes/order.js'
 import review from './routes/review.js'
-
+import payment from './routes/payment.js'
 dotenv.config()
 
 const app =  express()
@@ -38,7 +38,7 @@ app.use('/concentrations',concentration)
 app.use('/volumes',volume)
 app.use('/wishlist',wishlist)
 app.use('/orders',order)
-
+app.use('/payment',payment)
 
 // app.use('/cart',cart)
 app.use('/cart',cart)

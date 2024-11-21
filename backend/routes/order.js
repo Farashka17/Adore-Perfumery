@@ -4,13 +4,13 @@ import { createOrder, createPaypalPayment, capturePayment, getOrders, getUserOrd
 const router = express.Router();
 
 // Yeni sipariş oluşturma
-router.post('/create', createOrder);
+router.post('/', createOrder);
 
 // PayPal ödeme oluşturma
-router.post('/paypal/create-payment', createPaypalPayment);
+// router.post('/paypal/create-payment', createPaypalPayment);
 
-// PayPal ödeme başarıyla tamamlandığında
-router.post('/paypal/capture-payment', capturePayment);
+// // PayPal ödeme başarıyla tamamlandığında
+// router.post('/paypal/capture-payment', capturePayment);
 
 // Tüm siparişleri listeleme (admin için)
 router.get('/', getOrders);
