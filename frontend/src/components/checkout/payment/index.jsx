@@ -1,15 +1,117 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrangeShape from "../../../assets/OrangeShape.svg";
 import SingleCheckoutProduct from "../singleCheckoutProduct";
 import { useCartStore } from "../../../store/useCartStore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Payment = ({ subtotal }) => {
+  const navigate = useNavigate();
   const { cart } = useCartStore();
   const total = subtotal;
 
   // Shipping cost logic
   const shippingCost = total > 200 ? 0 : 3.99;
   const isShippingFree = shippingCost === 0;
+
+  const [payPalEnabled, setPayPalEnabled] = useState(false); // PayPal seçeneği
+
+  useEffect(() => {
+    if (window.paypal) {
+      window.paypal.Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: {
+                  value: total.toFixed(2),
+                },
+              },
+            ],
+          });
+        },
+        onApprove: (data, actions) => {
+          return actions.order.capture().then((details) => {
+            alert("Ödeme başarıyla tamamlandı!");
+            handlePlaceOrder();
+          });
+        },
+        onError: (err) => {
+          console.error(err);
+          toast.error("PayPal ile ödeme sırasında bir hata oluştu.");
+        },
+      }).render("#paypal-button-container");
+    }
+  }, [total]);
+  
+
+  const handlePlaceOrder = async () => {
+    try {
+      // Adım 1: createPayment API çağrısı
+      const paymentResponse = await fetch(
+        "http://localhost:3000/payment/create-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            totalAmount: total + shippingCost, // Ödeme miktarı
+            userId: "yourUserIdHere", // Kullanıcı ID'si (doğru kullanıcı ID'sini kullanın)
+            products: cart, // Sepet detayları
+            address: "yourUserAddressHere", // Kullanıcı adresi
+          }),
+        }
+      );
+
+      const paymentData = await paymentResponse.json();
+
+      if (!paymentData.success) {
+        throw new Error("create-payment API başarısız.");
+      }
+
+      const orderId = paymentData.orderId;
+
+      // Adım 2: capturePayment API çağrısı
+      const captureResponse = await fetch(
+        "http://localhost:3000/payment/capture-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+            userId:  localStorage.getItem("userID"),
+            products: cart,
+            address:  localStorage.getItem("fullAddress"),
+          }),
+        }
+      );
+
+      const captureData = await captureResponse.json();
+
+      if (captureData.success) {
+        toast.success("Siparişiniz başarıyla oluşturuldu!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+
+        // Sepeti temizle ve kullanıcıyı yönlendir
+        clearCart(); // Bu fonksiyonun doğru çalıştığından emin olun
+        setTimeout(() => navigate("/"), 3000);
+      } else {
+        throw new Error("capture-payment API başarısız.");
+      }
+    } catch (error) {
+      // Hata yönetimi
+      toast.error(`Error: ${error.message}`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      console.error(error); // Hata detaylarını kontrol edin
+    }
+  };
 
   return (
     <div className="w-[390px] p-6 md:pt-6 md:p-0">
@@ -81,56 +183,8 @@ const Payment = ({ subtotal }) => {
         </p>
       </div>
 
-      <div className="flex flex-col gap-1 my-4 justify-between w-50 rounded-[30px] p-2 custom-bg">
-        <div className="w-full">
-          <label className="text-[12px] font-extralight font-raleway text-[#232323]">
-            Name on Cart
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            className="mt-1 w-full border border-[#E0E0E0] p-2 bg-gray-200 rounded-sm placeholder:text-[#969696] font-raleway"
-            placeholder="Name on Cart"
-          />
-        </div>
-
-        <div className="w-full">
-          <label className="text-[12px] font-extralight font-raleway text-[#232323]">
-            Cart Number
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            className="mt-1 w-full border border-[#E0E0E0] p-2 bg-gray-200 rounded-sm font-raleway placeholder:text-[#969696]"
-            placeholder="Cart Number"
-          />
-        </div>
-
-        <div className="flex flex-row gap-4 mb-4 justify-between">
-          {/* Date */}
-          <div className="w-full">
-            <input
-              type="text"
-              id="firstName"
-              className="mt-1 w-full border border-[#E0E0E0] p-2 bg-gray-200 rounded-sm placeholder:text-[#969696] font-raleway"
-              placeholder="Date"
-            />
-          </div>
-
-          {/* CVV */}
-          <div className="w-full">
-            <input
-              type="text"
-              id="lastName"
-              className="mt-1 w-full border border-[#E0E0E0] p-2 bg-gray-200 rounded-sm placeholder:text-[#969696] font-raleway"
-              placeholder="CVV"
-            />
-          </div>
-        </div>
-      </div>
-      <button className="text-[#232323] font-raleway font-thin text-[13px] text-center py-5 w-full border border-[#232323] mt-6 hover:bg-[#dbaf77]">
-        PLACE ORDER
-      </button>
+      {/* PayPal ödeme butonu */}
+      <div id="paypal-button-container"></div>
     </div>
   );
 };
