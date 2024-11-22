@@ -1,8 +1,11 @@
 import React from 'react'
+import ListOrderComponent from '../../components/listOrders'
 
 const ListPage = () => {
   return (
-    <div>ListPage</div>
+    <div>
+      <ListOrderComponent/>
+    </div>
   )
 }
 

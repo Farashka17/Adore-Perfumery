@@ -131,6 +131,7 @@ const UsersComponent = () => {
       </Link>
       {userData.map((user) => (
         <SingleUser
+          id={user._id}
           key={user._id}
           name={user.name}
           email={user.email}

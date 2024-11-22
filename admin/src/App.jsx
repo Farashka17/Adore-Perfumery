@@ -16,6 +16,7 @@ import ConcentrationPage from './pages/Concentration/concentration'
 import UsersPage from './pages/Users/users'
 import VolumePage from './pages/Volume/volume'
 import AddVolumePage from './pages/AddVolume/addVolume'
+import OrdersAdmin from './components/orders/ordersAdmin'
 // import HomePageAdmin from './pages/Home/homePage'
 
 const App = () => {
@@ -41,9 +42,11 @@ const App = () => {
               <Route path='/list' element={<ListPage />} />
               <Route path='/volume' element={<VolumePage />} />
               <Route path='/orders' element={<OrdersPage />} />
-              <Route path='/users' element={<UsersPage />} />
+              {/* <Route path='/users' element={<UsersPage />} /> */}
               <Route path='/products' element={<ProductsPage />} />
               <Route path="/addProduct" element={<AddProductPage />} />
+              <Route path="/users/:id" element={<OrdersAdmin />} />
+
             </Routes>
           </div>
         </div>

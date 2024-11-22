@@ -94,7 +94,7 @@ const FragranceFamilyComponent = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-[100vh] flex flex-col p-4">
+    <div className="bg-pink-100 min-h-[100vh] flex flex-col p-4">
       <Link to="/addfragrancefamily">
         <button className="border-green-700 border-2 rounded-lg py-1 px-4 bg-green-800 text-white font-bold">
           Add Fragrance Family
