@@ -1,116 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import OrangeShape from "../../../assets/OrangeShape.svg";
 import SingleCheckoutProduct from "../singleCheckoutProduct";
 import { useCartStore } from "../../../store/useCartStore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Payment = ({ subtotal }) => {
+const Payment = ({ subtotal, userDetails }) => {
   const navigate = useNavigate();
-  const { cart } = useCartStore();
+  const { cart, clearCart } = useCartStore(); // clearCart fonksiyonunu import ettik
   const total = subtotal;
 
   // Shipping cost logic
   const shippingCost = total > 200 ? 0 : 3.99;
   const isShippingFree = shippingCost === 0;
 
-  const [payPalEnabled, setPayPalEnabled] = useState(false); // PayPal seçeneği
+  const [isLoading, setIsLoading] = useState(false); // Yükleme durumu
 
-  useEffect(() => {
-    if (window.paypal) {
-      window.paypal.Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  value: total.toFixed(2),
-                },
-              },
-            ],
-          });
-        },
-        onApprove: (data, actions) => {
-          return actions.order.capture().then((details) => {
-            alert("Ödeme başarıyla tamamlandı!");
-            handlePlaceOrder();
-          });
-        },
-        onError: (err) => {
-          console.error(err);
-          toast.error("PayPal ile ödeme sırasında bir hata oluştu.");
-        },
-      }).render("#paypal-button-container");
-    }
-  }, [total]);
-  
-
+  // Sipariş oluşturma işlemi
   const handlePlaceOrder = async () => {
-    try {
-      // Adım 1: createPayment API çağrısı
-      const paymentResponse = await fetch(
-        "http://localhost:3000/payment/create-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            totalAmount: total + shippingCost, // Ödeme miktarı
-            userId: "yourUserIdHere", // Kullanıcı ID'si (doğru kullanıcı ID'sini kullanın)
-            products: cart, // Sepet detayları
-            address: "yourUserAddressHere", // Kullanıcı adresi
-          }),
-        }
-      );
+    setIsLoading(true); // Yükleme başladığında true
+  
+    // Kullanıcı bilgilerini almak için (örneğin: userId)
+    const userId = localStorage.getItem("userId"); // Kullanıcı ID'sini buradan temin edebilirsiniz.
+  
+    // Sipariş verisi
+    const orderData = {
+      userId,
+      products: cart,
+      totalAmount: total + shippingCost,
+      // userDetails'i JSON string formatına çeviriyoruz
+      details: JSON.stringify(userDetails), // Burada JSON.stringify kullanıyoruz
+      paymentMethod: "Cash", // Ödeme yöntemi burada sabit olarak "Cash" olarak ayarlandı
+    };
+  
+   try {
+  const response = await fetch("http://localhost:3000/orders", { 
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(orderData),
+  });
 
-      const paymentData = await paymentResponse.json();
-
-      if (!paymentData.success) {
-        throw new Error("create-payment API başarısız.");
-      }
-
-      const orderId = paymentData.orderId;
-
-      // Adım 2: capturePayment API çağrısı
-      const captureResponse = await fetch(
-        "http://localhost:3000/payment/capture-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderId: orderId,
-            userId:  localStorage.getItem("userID"),
-            products: cart,
-            address:  localStorage.getItem("fullAddress"),
-          }),
-        }
-      );
-
-      const captureData = await captureResponse.json();
-
-      if (captureData.success) {
-        toast.success("Siparişiniz başarıyla oluşturuldu!", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-
-        // Sepeti temizle ve kullanıcıyı yönlendir
-        clearCart(); // Bu fonksiyonun doğru çalıştığından emin olun
-        setTimeout(() => navigate("/"), 3000);
-      } else {
-        throw new Error("capture-payment API başarısız.");
-      }
-    } catch (error) {
-      // Hata yönetimi
-      toast.error(`Error: ${error.message}`, {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      console.error(error); // Hata detaylarını kontrol edin
-    }
+  if (response.ok) {
+    toast.success("Siparişiniz başarıyla alındı.");
+    clearCart(); // Sipariş başarılı olduktan sonra sepetteki ürünleri temizle
+    navigate("/"); // Ana sayfaya yönlendir
+   
+  } else {
+    const errorResponse = await response.json(); // Hata mesajını backend'den al
+    throw new Error(errorResponse.message || "Sipariş oluşturulurken bir hata oluştu.");
+  }
+} catch (error) {
+  toast.error(error.message);
+} finally {
+  setIsLoading(false);
+}
   };
 
   return (
@@ -181,10 +124,18 @@ const Payment = ({ subtotal }) => {
         <p className="font-raleway text-[#232323] text-[24px] font-thin">
           Payment Method
         </p>
+        <p className="font-raleway text-[#232323] text-[24px] font-thin">
+          Cash
+        </p>
       </div>
 
-      {/* PayPal ödeme butonu */}
-      <div id="paypal-button-container"></div>
+      <button
+        className={`font-raleway text-[15px] font-thin w-full justify-center items-center py-5 border border-[#232323] uppercase hover:bg-yellow-500`}
+        onClick={handlePlaceOrder}
+        disabled={isLoading} // Yükleme sırasında butonu devre dışı bırak
+      >
+        {isLoading ? "Processing..." : "Place order"}
+      </button>
     </div>
   );
 };

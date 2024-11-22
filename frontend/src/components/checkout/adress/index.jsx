@@ -2,25 +2,9 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import OrangeShape from "../../../assets/OrangeShape.svg";
 
-const Adress = ({ onAddressChange }) => {  // Yeni prop ekledik
+const Adress = ({ onDetailChange }) => { // setAddressDetails yerine onDetailChange kullanıldı
   const [selectedregion, setSelectedregion] = useState("Select a region");
   const [isOpen, setIsOpen] = useState(false);
-  const [fullAddress, setFullAddress] = useState("");
-
-  useEffect(() => {
-    const storedAddress = localStorage.getItem("fullAddress");
-    if (storedAddress) {
-      setFullAddress(storedAddress);
-    }
-  }, []);
-  
-
-  const handleAddressChange = (e) => {
-    setFullAddress(e.target.value);
-    // Adres her değiştiğinde localStorage'a kaydediyoruz
-    localStorage.setItem("fullAddress", e.target.value);
-  };
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -33,6 +17,22 @@ const Adress = ({ onAddressChange }) => {  // Yeni prop ekledik
     zipCode: "",
     orderNotes: "",
   });
+
+
+  const handleSelect = (region) => {
+    const updatedFormData = { ...formData, region };
+    setFormData(updatedFormData);
+    onDetailChange(updatedFormData); // Güncellenmiş adres detaylarını gönderiyoruz
+    setSelectedregion(region);
+    setIsOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFormData = { ...formData, [name]: value };
+    setFormData(updatedFormData);
+    onDetailChange(updatedFormData); // Güncellenmiş adres detaylarını gönderiyoruz
+  };
 
   const regionlar = [
     "Absheron", "Aghdam", "Aghdash", "Aghjabadi", "Aghstafa", "Aghsu", "Astara",
@@ -47,17 +47,7 @@ const Adress = ({ onAddressChange }) => {  // Yeni prop ekledik
     "Tovuz", "Ujar", "Yardimli", "Yevlakh", "Zangilan", "Zaqatala", "Zardab"
   ];
 
-  const handleSelect = (region) => {
-    setFormData({ ...formData, region });
-    setSelectedregion(region);
-    setIsOpen(false);
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    onAddressChange({ ...formData, [name]: value });  // Güncellenmiş formData'yı gönder
-  };
 
 
   return (
@@ -130,10 +120,10 @@ const Adress = ({ onAddressChange }) => {  // Yeni prop ekledik
         <input
           required
           type="text"
-          name="Adress"
+          name="fullAddress"
           className="mt-1 w-full border border-[#E0E0E0] p-[17.2px] placeholder:text-[#969696] font-nunito"
-          placeholder="Full adress"
-          value={formData.fullAdress}
+          placeholder="Full address"
+          value={formData.fullAddress}
           onChange={handleInputChange}
         />
 

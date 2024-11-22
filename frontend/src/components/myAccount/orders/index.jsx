@@ -1,48 +1,69 @@
 import React, { useEffect, useState } from 'react';
 import SingleOrder from '../singleOrder';
+import {useOrderStore} from '../../../store/useOrderStore';
 
 const OrdersComponent = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true); // Yüklenme durumu için state
-  const [error, setError] = useState(null); // Hata durumu için state
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { clearOrders } = useOrderStore();
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:3000/orders'); // API endpoint
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+          throw new Error('User not logged in');
+        }
+  
+        const response = await fetch(`http://localhost:3000/orders/${userId}`);
         const data = await response.json();
-
-        if (response.ok) {
-          setOrders(data.orders); // Backend'den dönen order'ları state'e kaydet
+  
+        console.log("Gelen siparişler:", data); // Gelen veriyi kontrol edin
+  
+        if (response.ok && data.length > 0) {
+          setOrders(data); // Gelen sipariş verisini set ediyoruz
         } else {
-          throw new Error(data.message || 'Failed to fetch orders');
+          setOrders([]); // Eğer veriler gelmezse boş bir array set ediyoruz
+          setError('No orders found');
         }
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false); // Yüklenme durumunu sona erdir
+        setLoading(false);
       }
     };
-
+  
     fetchOrders();
+
+    window.addEventListener('loginStatusChanged', () => {
+      setOrders([]);
+    });
+
+    return () => {
+      window.removeEventListener('loginStatusChanged', () => {
+        setOrders([]);
+      });
+    };
+
   }, []);
+  
 
   if (loading) {
-    return <div>Loading orders...</div>; // Yükleniyor mesajı
+    return <div>Loading orders...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Hata mesajı
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div className="flex flex-col gap-4">
       {orders && orders.length > 0 ? (
         orders.map((order) => (
-          <SingleOrder key={order._id} order={order} /> // SingleOrder bileşenine order verisi gönder
+          <SingleOrder key={order._id} order={order} />
         ))
       ) : (
-        <div className='text-[40px] font-raleway font-thin'>This user has no orders.</div> // Sipariş yoksa mesaj göster
+        <div className="text-[40px] font-raleway font-thin">This user has no orders.</div>
       )}
     </div>
   );

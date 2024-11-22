@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import OrdersComponent from './orders';
-import AccountInformation from '../accountInformation';
-import Adress from './adress';
 import { useCartStore } from '../../store/useCartStore';
+// import { useOrdersStore } from '../../store/useOrdersStore'; // Orders store importu
+import AccountInformation from './accountInformation';
+import {useOrderStore} from '../../store/useOrderStore';
 
 const MyAccount = () => {
   const [userName, setUserName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
-  const [activeComponent, setActiveComponent] = useState('account'); // Varsayılan olarak "Account Information" açık
+  const [activeComponent, setActiveComponent] = useState('account');
   const { clearCart } = useCartStore();
+  const { clearOrders } = useOrderStore(); // Global state'den clearOrders fonksiyonunu al
 
   useEffect(() => {
     const checkUserStatus = () => {
@@ -37,6 +39,7 @@ const MyAccount = () => {
 
   const handleLogout = () => {
     clearCart();
+    clearOrders(); // Logout sırasında siparişleri sıfırlıyoruz
     localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
@@ -55,9 +58,6 @@ const MyAccount = () => {
           <button onClick={() => setActiveComponent('orders')}>
             <p className="text-[20px] font-raleway font-thin">Orders</p>
           </button>
-          {/* <button onClick={() => setActiveComponent('address')}>
-            <p className="text-[20px] font-raleway font-thin">Address</p>
-          </button> */}
           <button onClick={handleLogout}>
             <p className="text-[20px] font-raleway font-thin">Sign out</p>
           </button>
@@ -67,7 +67,6 @@ const MyAccount = () => {
         <div>
           {activeComponent === 'account' && <AccountInformation />}
           {activeComponent === 'orders' && <OrdersComponent />}
-          {/* {activeComponent === 'address' && <Adress />} */}
         </div>
       </div>
     </div>
