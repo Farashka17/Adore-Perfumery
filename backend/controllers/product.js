@@ -116,7 +116,7 @@ const editProduct = async (req, res) => {
             volume, fragranceFamily, productPic, newArrivals, topSelling 
         } = req.body;
 
-        console.log("Backend'e gelen veriler:", { 
+        console.log("Data coming to the backend:", { 
             name, description, price, stock, brand, rating, gender, concentration, 
             volume, fragranceFamily, productPic, newArrivals, topSelling 
         });
@@ -129,7 +129,7 @@ const editProduct = async (req, res) => {
         await newProduct.save();
         res.status(201).json(newProduct);
     } catch (error) {
-        console.error("Veritabanına kaydedilemedi:", error);
+        console.error("Failed to save to database:", error);
         res.status(400).json({ message: error.message });
     }
 };

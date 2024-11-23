@@ -52,7 +52,7 @@ const productSchema = new mongoose.Schema({
     ],
     gender: {
         type: String,
-        enum: ['Woman', 'Man', 'Unisex','Kids'],  // örnek değerler
+        enum: ['Woman', 'Man', 'Unisex','Kids'], 
         required: true
     },
     concentration: {
@@ -60,11 +60,11 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     volume: {
-        type: String,  // Örneğin mililitre cinsinden saklanabilir
+        type: String,  
         required: true
     },
     fragranceFamily: {
-        type: String,  // Örneğin "Floral", "Woody", "Citrus" gibi değerler
+        type: String,  
         required: true
     },
     newArrivals:{

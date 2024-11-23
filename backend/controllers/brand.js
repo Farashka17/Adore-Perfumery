@@ -11,7 +11,7 @@ cloudinary.v2.config({
       const brands = await Brand.find();
       res.status(200).json({ message: "Brands found", data: brands });
     } catch (error) {
-      console.error("Error fetching brands:", error); // Hata mesajını konsola yazdır
+      console.error("Error fetching brands:", error); 
       res.status(500).json({ message: error.message });
     }
   };
@@ -32,18 +32,18 @@ const getSingleBrand = async (req, res) => {
 const deleteBrand = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("Attempting to delete brand with ID:", id); // Hata ayıklama için log ekleyin
+    console.log("Attempting to delete brand with ID:", id); 
     const data = await Brand.findByIdAndDelete(id);
 
     if (!data) {
-      console.error("Brand not found for ID:", id); // Hata ayıklama için log ekleyin
+      console.error("Brand not found for ID:", id); 
       return res.status(404).json({ message: "Brand not found" });
     }
 
-    console.log("Brand deleted successfully:", data); // Hata ayıklama için log ekleyin
+    console.log("Brand deleted successfully:", data); 
     res.status(200).json({ message: "Brand deleted successfully", data });
   } catch (error) {
-    console.error("Error deleting brand:", error.message); // Hata ayıklama için log ekleyin
+    console.error("Error deleting brand:", error.message); 
     res.status(500).json({ message: error.message });
   }
 };
@@ -53,19 +53,19 @@ const editBrand = async (req, res) => {
     const { id } = req.params;
     console.log("Starting brand update for ID:", id);
 
-    // ID'nin doğruluğunu kontrol edelim
-    if (!id || id.length !== 24) { // 24 karakter olması, ObjectId formatına uygunluk kontrolü
+ 
+    if (!id || id.length !== 24) { 
       console.error("Invalid ID format:", id);
       return res.status(400).json({ message: "Invalid ID format" });
     }
     
-    // Gelen veriyi loglayarak kontrol edelim
+    
     console.log("Request Body:", req.body);
     console.log("Request Files:", req.files);
 
     let updatedData = { ...req.body };
 
-    // Dosya yüklendiyse, Cloudinary'e gönder
+    
     if (req.file) {
       console.log("Uploading image to Cloudinary...");
       try {
@@ -82,7 +82,7 @@ const editBrand = async (req, res) => {
       console.log("No file uploaded for Cloudinary.");
     }
 
-    // Brand'ı güncelleme işlemi
+   
     console.log("Updating brand in MongoDB...");
     const updatedBrand = await Brand.findByIdAndUpdate(id, updatedData, {
       new: true,
@@ -107,7 +107,7 @@ const editBrand = async (req, res) => {
 const addBrand = async (req, res) => {
   try {
     const { name, brandPic } = req.body;
-    console.log("Backend'e gelen veriler:", { name, brandPic });
+    console.log("Data coming to the backend:", { name, brandPic });
 
     const newBrand = new Brand({
       name,
@@ -117,7 +117,7 @@ const addBrand = async (req, res) => {
     await newBrand.save();
     res.status(201).json(newBrand);
   } catch (error) {
-    console.error("Veritabanına kaydedilemedi:", error);
+    console.error("Failed to save to database:", error);
     res.status(400).json({ message: error.message });
   }
 };

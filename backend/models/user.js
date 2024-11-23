@@ -46,9 +46,9 @@ const userSchema = new mongoose.Schema(
         userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
         totalAmount: Number,
-        details: Object, // Burada orderDetails nesnesini direkt saklayacağız
+        details: Object, 
         paymentMethod: String,
-        _id: mongoose.Schema.Types.ObjectId, // Eğer isterseniz
+        _id: mongoose.Schema.Types.ObjectId, 
       },
     ],
     reviews:[{

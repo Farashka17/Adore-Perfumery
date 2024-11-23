@@ -102,7 +102,7 @@ const editConcentration = async (req, res) => {
 const addConcentration = async (req, res) => {
   try {
     const { name, concentrationPic,description } = req.body;
-    console.log("Backend'e gelen veriler:", { name, concentrationPic, description });
+    console.log("Data coming to the backend:", { name, concentrationPic, description });
 
     const newConcentration = new Concentrations({
       name,
@@ -113,7 +113,7 @@ const addConcentration = async (req, res) => {
     await newConcentration.save();
     res.status(201).json(newConcentration);
   } catch (error) {
-    console.error("Veritabanına kaydedilemedi:", error);
+    console.error("Failed to save to database:", error);
     res.status(400).json({ message: error.message });
   }
 };

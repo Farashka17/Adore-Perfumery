@@ -3,22 +3,23 @@ import {
     addReview,
     getProductReviews,
     getUserReviews,
-    deleteReview,
+    // deleteReview,
 } from '../controllers/review.js';
 import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Yeni bir inceleme ekle
-router.post('/',protect, addReview);
 
-// Bir ürünün incelemelerini al
-router.get('/product/:productId',protect, getProductReviews);
+router.post('/add', protect, addReview);
 
-// Bir kullanıcının incelemelerini al
+
+
+router.get('/:productId/reviews',protect, getProductReviews);
+
+
 router.get('/user/:userId',protect, getUserReviews);
 
-// Bir incelemeyi sil
-router.delete('/:reviewId', deleteReview);
+
+// router.delete('/:reviewId', deleteReview);
 
 export default router;

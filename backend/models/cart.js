@@ -1,17 +1,17 @@
   import mongoose from 'mongoose';
 
-  // Cart Schema (Sepet için)
+ 
   const cartSchema = new mongoose.Schema({
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // User modeline referans
+      ref: 'User', 
       required: true,
-      unique: true // Her kullanıcı sadece bir sepete sahip olabilir
+      unique: true 
     },
     products: [{
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Product modeline referans
+        ref: 'Product', 
         required: true
       },
       quantity: {

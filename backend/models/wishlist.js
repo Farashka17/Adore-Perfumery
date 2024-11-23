@@ -5,14 +5,14 @@ import mongoose from "mongoose";
 const wishlistSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // User modeline referans
+    ref: 'User', 
     required: true,
-    unique: true, // Her kullanıcı için tek bir wishlist
+    unique: true, 
   },
   products: [{
     productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Product modeline referans
+        ref: 'Product', 
         required: true
       },
       price: {
@@ -28,7 +28,7 @@ const wishlistSchema = new mongoose.Schema({
         // required: true
       }
 }]
-}, { timestamps: true }); // Oluşturma ve güncelleme zamanlarını otomatik ekler
+}, { timestamps: true }); 
 
 export const Wishlist = mongoose.model('Wishlist', wishlistSchema);
 

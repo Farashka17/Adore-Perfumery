@@ -7,7 +7,6 @@ import {
   deleteFragranceFamily 
 } from "../controllers/fragranceFamily.js";
 
-// const upload = multer({ dest: 'uploads/' }); // Eğer yükleme yapmak isterseniz uncomment edebilirsiniz.
 const router = express.Router();
 
 router.post("/", addFragranceFamily);

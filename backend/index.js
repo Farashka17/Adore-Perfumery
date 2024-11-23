@@ -7,18 +7,17 @@ import db from './config/db.js';
 import product from './routes/product.js';
 import user from './routes/user.js';
 import expressFileUpload from 'express-fileupload'
-// import brand from './routes/brand.js'
-// import brand from './routes/brand.js'
+
 import brand from './routes/brand.js'
 import fragranceFamily from './routes/fragranceFamily.js'
 import concentration from './routes/concentration.js'
 import volume from './routes/volume.js'
-// import cart from './routes/cart.js'
+
 import  cart from './routes/cart.js'
 import wishlist from './routes/wishlist.js'
 import order from './routes/order.js'
 import review from './routes/review.js'
-import payment from './routes/payment.js'
+
 dotenv.config()
 
 const app =  express()
@@ -38,9 +37,7 @@ app.use('/concentrations',concentration)
 app.use('/volumes',volume)
 app.use('/wishlist',wishlist)
 app.use('/orders',order)
-app.use('/payment',payment)
 
-// app.use('/cart',cart)
 app.use('/cart',cart)
 app.use('/reviews',review)
 

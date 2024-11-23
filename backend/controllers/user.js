@@ -1,6 +1,6 @@
 import {User} from '../models/user.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'; // jwt doğru kütüphane ismi 'jsonwebtoken'
+import jwt from 'jsonwebtoken'; 
 import cloudinary from 'cloudinary';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
@@ -8,31 +8,31 @@ import nodemailer from 'nodemailer';
 const register = async (req, res) => {
     const { name, lastName, email, password, confirmPassword, role } = req.body;
 
-    // Tüm alanların dolu olup olmadığını kontrol et
+    
     if (!name || !lastName || !email || !password || !confirmPassword ) {
         return res.status(400).json({ message: "Please fill in all required fields." });
     }
 
-    // Şifrelerin eşleşip eşleşmediğini kontrol et
+   
     if (password !== confirmPassword) {
         return res.status(400).json({ message: "Passwords do not match." });
     }
 
-    // Kullanıcı var mı kontrol et
+   
     const user = await User.findOne({ email });
     if (user) {
         return res.status(400).json({ message: "This user already exists." });
     }
 
-    // Şifrenin uzunluğunu kontrol et
+   
     if (password.length < 8) {
         return res.status(400).json({ message: "Password must be at least 8 characters long." });
     }
 
-    // Şifreyi hashle
+   
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Yeni kullanıcı oluştur
+    
     const newUser = await User.create({
         name,
         lastName,
@@ -41,20 +41,20 @@ const register = async (req, res) => {
         role,
     });
 
-    // JWT oluştur
+
     const token = jwt.sign(
-        { id: newUser._id }, // Yeni kullanıcının ID'si
+        { id: newUser._id }, 
         process.env.JWT_SECRET, 
         { expiresIn: '1h' } 
     );
 
-    // Cookie ayarları
+    
     const cookieOptions = {
         httpOnly: true,
         expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
     };
 
-    // Yanıtı gönder
+ 
     return res.status(201)
         .cookie("token", token, cookieOptions)
         .json({
@@ -64,37 +64,6 @@ const register = async (req, res) => {
         });
 };
 
-
-// const login = async (req, res) => {
-//     const { email, password } = req.body;
-  
-//     // Kullanıcıyı bul
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(404).json({ message: "Bu kullanıcı mevcut değil." });
-//     }
-  
-//     // Şifreyi karşılaştır
-//     const comparePassword = await bcrypt.compare(password, user.password);
-//     if (!comparePassword) {
-//       return res.status(401).json({ message: "Şifreniz yanlıştır." });
-//     }
-  
-//     // JWT oluştur
-//     const token = jwt.sign(
-//         { id: user._id }, // Kullanıcı bilgileri
-//         process.env.JWT_SECRET, // Şifreleme için kullanılan gizli anahtar
-//         { expiresIn: '1h' } // Token'ın geçerlilik süresi
-//       );
-  
-//     // Yanıtı gönder
-//     return res.status(200).json({
-//       message: "Giriş başarılı.",
-//       user: user, // Kullanıcı bilgilerini döndürüyoruz
-//       token,
-//     });
-//   };
-  
 
 const logout = async (req,res)=>{
     const cookieOptions = {
@@ -109,17 +78,17 @@ const logout = async (req,res)=>{
 const forgetPassword = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(500).json({ message: "User yoxdur" });
+    return res.status(500).json({ message: "User not found" });
   }
 
-  const resetToken = crypto.randomBytes(20).toString('hex'); // Yeni token oluşturuluyor
+  const resetToken = crypto.randomBytes(20).toString('hex'); 
   user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-  user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 dakika geçerlilik süresi
+  user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; 
   await user.save({ validateBeforeSave: false });
 
   const passwordUrl = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
 
-  const message = `Shifreni deyismek ucun istifade edeceyiniz token : ${passwordUrl}`;
+  const message = `The token you will use to change your password : ${passwordUrl}`;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -136,12 +105,12 @@ const forgetPassword = async (req, res) => {
     const mailData = {
       from: 'farahnv@code.edu.az',
       to: req.body.email,
-      subject: 'Password sifirlamaq',
+      subject: 'Reset Password',
       text: message,
     };
 
     await transporter.sendMail(mailData);
-    res.status(200).json({ message: "Sifreni deyismek ucun e-mail yollandi" });
+    res.status(200).json({ message: "An e-mail has been sent to change your password." });
   } catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
@@ -164,7 +133,7 @@ const resetPassword = async (req, res) => {
   }
 
   try {
-    // Token'ı hash'le ve veritabanında ara
+   
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     const user = await User.findOne({
@@ -176,10 +145,10 @@ const resetPassword = async (req, res) => {
       return res.status(400).json({ message: 'Invalid or expired token' });
     }
 
-    // Yeni şifreyi hash'le
+   
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Yeni şifreyi kaydet ve token'ı sıfırla
+  
     user.password = hashedPassword;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
@@ -193,34 +162,32 @@ const resetPassword = async (req, res) => {
 };
 
 
-
-// Login işlevi
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  // Kullanıcıyı bul
+
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(404).json({ message: "Bu kullanıcı mevcut değil." });
+    return res.status(404).json({ message: "This user does not exist." });
   }
 
-  // Şifreyi karşılaştır
+
   const comparePassword = await bcrypt.compare(password, user.password);
   if (!comparePassword) {
-    return res.status(401).json({ message: "Şifreniz yanlıştır." });
+    return res.status(401).json({ message: "Your password is incorrect." });
   }
 
-  // JWT oluştur
+ 
   const token = jwt.sign(
     { id: user._id },
     process.env.JWT_SECRET,
     { expiresIn: '1h' }
   );
 
-  // Yanıtı gönder
+
   return res.status(200).json({
-    message: "Giriş başarılı.",
-    user, // Kullanıcı bilgilerini döndürüyoruz
+    message: "Login successful.",
+    user, 
     token,
   });
 };
@@ -246,41 +213,19 @@ export {
   };
 
 
-
-//   export const addUser = async(request,response)=>{
-//     const {name, email, password, role} = request.body
-
-//     if(!name || !email || !password || !role){
-//         response.status(500).send({message:"Please fill al required fields"})
-//         return;
-//     }
-//      const existedUser = await User.findOne({email:email,name:name})
-//     if(existedUser){
-//     response.status(400).send({message:"User already exists"})
-//         return;
-//    }
-//     const newUser = await User.create(request.body)
-    
-//     if(!newUser){
-//         response.status(500).send({message:"User not created"})
-//         return;
-//     }
-//     response.status(201).send({message:"User created successfully",data:newUser})
-// }
-
-    export const getAllUsers = async (req, res) => {
-        try {
+export const getAllUsers = async (req, res) => {
+     try {
             const users = await User.find();
 
-            // Kullanıcı bulunmadıysa
+        
             if (!users || users.length === 0) {
                 return res.status(404).json({ message: "No users found" });
             }
 
-            // Kullanıcılar bulunduysa
+            
             return res.status(200).json({ message: "Users found", data: users });
         } catch (error) {
-            // Hata durumunda
+            
             console.error(error);
             return res.status(500).json({ message: "An error occurred while fetching users." });
         }
@@ -316,10 +261,10 @@ export const editUser = async (request, response) => {
             return response.status(404).send({ message: "User not found" });
         }
 
-        // Kullanıcıyı güncelle
-        updateUser.set(request.body); // request.body'deki tüm veriyi kullanıcıya uygula
+        
+        updateUser.set(request.body); 
 
-        await updateUser.save(); // Güncellenmiş kullanıcıyı kaydet
+        await updateUser.save(); 
 
         return response.status(200).send({
             message: "User updated successfully",

@@ -7,7 +7,6 @@ import {
     addVolume
 } from "../controllers/volume.js";
 
-// const upload = multer({ dest: 'uploads/' }); // Eğer yükleme yapmak isterseniz uncomment edebilirsiniz.
 const router = express.Router();
 
 router.post("/", addVolume);

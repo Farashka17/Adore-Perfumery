@@ -102,7 +102,7 @@ const editFragranceFamily = async (req, res) => {
 const addFragranceFamily = async (req, res) => {
   try {
     const { name, fragrancePic,description } = req.body;
-    console.log("Backend'e gelen veriler:", { name, fragrancePic, description });
+    console.log("Data coming to the backend:", { name, fragrancePic, description });
 
     const newFamily = new FragranceFamily({
       name,
@@ -113,7 +113,7 @@ const addFragranceFamily = async (req, res) => {
     await newFamily.save();
     res.status(201).json(newFamily);
   } catch (error) {
-    console.error("Veritabanına kaydedilemedi:", error);
+    console.error("Failed to save to database:", error);
     res.status(400).json({ message: error.message });
   }
 };

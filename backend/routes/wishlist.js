@@ -1,4 +1,4 @@
-// routes/wishlistRoutes.js
+
 import express from "express";
 import {
   addToWishlist,
@@ -9,8 +9,8 @@ import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/add", protect , addToWishlist); // Favorilere ürün ekle
-router.delete("/remove", protect , removeFromWishlist); // Favorilerden ürün çıkar
-router.get("/",protect, getWishlist); // Kullanıcının favori ürünlerini al
+router.post("/add", protect , addToWishlist); 
+router.delete("/remove", protect , removeFromWishlist); 
+router.get("/",protect, getWishlist); 
 
 export default router;

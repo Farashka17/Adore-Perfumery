@@ -57,25 +57,10 @@ const editVolume = async (req, res) => {
     }
 
     console.log("Request Body:", req.body);
-    // console.log("Request Files:", req.files);
+    
 
     let updatedData = { ...req.body };
 
-    // if (req.file) {
-    //   console.log("Uploading image to Cloudinary...");
-    //   try {
-    //     const result = await cloudinary.uploader.upload(req.file.path, {
-    //       folder: "volumes",
-    //     });
-    //     updatedData.volumePic = result.secure_url;
-    //     console.log("Image successfully uploaded to Cloudinary:", result.secure_url);
-    //   } catch (cloudinaryError) {
-    //     console.error("Cloudinary upload error:", cloudinaryError);
-    //     return res.status(500).json({ message: "Failed to upload image to Cloudinary." });
-    //   }
-    // } else {
-    //   console.log("No file uploaded for Cloudinary.");
-    // }
 
     console.log("Updating volume in MongoDB...");
     const updatedVolume = await Volumes.findByIdAndUpdate(volumeId, updatedData, {
@@ -98,7 +83,7 @@ const editVolume = async (req, res) => {
 const addVolume = async (req, res) => {
   try {
     const { name } = req.body;
-    console.log("Backend'e gelen veriler:", { name });
+    console.log("Data coming to the backend:", { name });
 
     const newVolume = new Volumes({
       name
@@ -107,7 +92,7 @@ const addVolume = async (req, res) => {
     await newVolume.save();
     res.status(201).json(newVolume);
   } catch (error) {
-    console.error("Veritabanına kaydedilemedi:", error);
+    console.error("Failed to save to database:", error);
     res.status(400).json({ message: error.message });
   }
 };
