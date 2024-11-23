@@ -2,7 +2,7 @@ import { Product } from "../models/product.js";
 
 const getProducts = async (req, res) => {
   try {
-    const { brand, volume, concentration, fragranceFamily, gender } = req.query;
+    const { brand, volume, concentration, fragranceFamily, gender,topSelling,newArrivals } = req.query;
 
     const query = {};
 
@@ -10,6 +10,10 @@ const getProducts = async (req, res) => {
     if (volume) query.volume = volume;
     if (concentration) query.concentration = concentration;
     if (fragranceFamily) query.fragranceFamily = fragranceFamily;
+    if (topSelling) query.topSelling = topSelling;
+    if (newArrivals) query.newArrivals = newArrivals;
+
+
     if (gender) query.gender = gender; // Bu kısmı unutmayın!
 
     const products = await Product.find(query);
@@ -46,21 +50,7 @@ const deleteProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// const editProduct = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
-//       new: true,
-//     });
 
-//     if (!updatedProduct)
-//       return res.status(404).json({ message: "Product not found" });
-
-//     res.status(200).json(updatedProduct);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
 
 const editProduct = async (req, res) => {
   try {
