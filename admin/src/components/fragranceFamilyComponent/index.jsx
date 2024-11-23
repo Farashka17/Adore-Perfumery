@@ -7,7 +7,7 @@ const FragranceFamilyComponent = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentFragrance, setCurrentFragrance] = useState(null);
   const [newFragranceName, setNewFragranceName] = useState("");
-  const [newDescription, setNewDescription] = useState(""); // Yeni description alanı
+  const [newDescription, setNewDescription] = useState(""); 
   const [newFragrancePic, setNewFragrancePic] = useState(null);
 
   const fetchFragrances = async () => {
@@ -46,7 +46,7 @@ const FragranceFamilyComponent = () => {
     setIsEditing(true);
     setCurrentFragrance(fragrance);
     setNewFragranceName(fragrance.name);
-    setNewDescription(fragrance.description || ""); // Eğer açıklama varsa düzenlemeye eklenir
+    setNewDescription(fragrance.description || ""); 
     setNewFragrancePic(null);
   };
 
@@ -55,7 +55,7 @@ const FragranceFamilyComponent = () => {
 
     const formData = new FormData();
     formData.append("name", newFragranceName);
-    formData.append("description", newDescription); // Yeni description alanı gönderiliyor
+    formData.append("description", newDescription); 
 
     if (newFragrancePic) {
       const fragrancePicUrl = await uploadImage(newFragrancePic);
@@ -106,7 +106,7 @@ const FragranceFamilyComponent = () => {
           key={fragrance._id}
           name={fragrance.name}
           id={fragrance._id}
-          description={fragrance.description} // Yeni alan ekleniyor
+          description={fragrance.description} 
           fragrancePic={fragrance.fragrancePic}
           deleteFragrance={() => fragranceDeleteHandler(fragrance._id)}
           editFragrance={() => startEditHandler(fragrance)}

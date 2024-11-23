@@ -56,7 +56,7 @@ const AddConcentrationComponent = () => {
 
     const concentrationData = {
       name: formData.name,
-      concentrationPic: concentrationPicUrl || "", // Cloudinary URL boş değilse gönderiyoruz
+      concentrationPic: concentrationPicUrl || "", 
       description: formData.description,
     };
 
@@ -65,10 +65,10 @@ const AddConcentrationComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": `Bearer ${localStorage.getItem("token")}`
+        
         },
         body: JSON.stringify(concentrationData),
-        // credentials: "include" 
+      
       });
 
       if (!response.ok) {

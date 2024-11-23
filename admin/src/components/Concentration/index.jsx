@@ -7,7 +7,7 @@ const ConcentrationComponent = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentConcentration, setCurrentConcentration] = useState(null);
   const [newConcentrationName, setNewConcentrationName] = useState("");
-  const [newDescription, setNewDescription] = useState(""); // Yeni description alanı
+  const [newDescription, setNewDescription] = useState(""); 
   const [newConcentrationPic, setNewConcentrationPic] = useState(null);
 
   const fetchConcentrations= async () => {
@@ -46,7 +46,7 @@ const ConcentrationComponent = () => {
     setIsEditing(true);
     setCurrentConcentration(concentration);
     setNewConcentrationName(concentration.name);
-    setNewDescription(concentration.description || ""); // Eğer açıklama varsa düzenlemeye eklenir
+    setNewDescription(concentration.description || ""); 
     setNewConcentrationPic(null);
   };
 
@@ -55,7 +55,7 @@ const ConcentrationComponent = () => {
 
     const formData = new FormData();
     formData.append("name", newConcentrationName);
-    formData.append("description", newDescription); // Yeni description alanı gönderiliyor
+    formData.append("description", newDescription); 
 
 
 
@@ -99,7 +99,7 @@ const ConcentrationComponent = () => {
           key={concentration._id}
           name={concentration.name}
           id={concentration._id}
-          description={concentration.description} // Yeni alan ekleniyor
+          description={concentration.description} 
           concentrationPic={concentration.concentrationPic}
           deleteConcentration={() => concentrationDeleteHandler(concentration._id)}
           editConcentration={() => startEditHandler(concentration)}

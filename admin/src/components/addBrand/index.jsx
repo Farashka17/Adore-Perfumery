@@ -64,9 +64,9 @@ const AddbrandComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //  "Authorization": `Bearer ${localStorage.getItem("token")}`
+          
         },
-        //  credentials: "include",
+       
         body: JSON.stringify(brandData),
       });
 
@@ -114,9 +114,9 @@ const AddbrandComponent = () => {
         </button>
       </form>
 
-      <div className="absolute top-2 right-2">
+      <div className="absolute top-24 right-2">
         <Link to="/brand">
-          <button className="border-blue-700 border-2 rounded-lg py-1 px-4 bg-blue-800 text-black font-bold">
+          <button className="border-blue-700 border-2 rounded-lg py-1 px-4  bg-blue-800 text-black font-bold">
             Back
           </button>
         </Link>

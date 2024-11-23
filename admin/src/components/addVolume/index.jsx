@@ -17,42 +17,10 @@ const AddVolumeComponent = () => {
     }));
   };
 
-//   const uploadImage = async (file) => {
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     formData.append("upload_preset", "erndbi22");
-
-//     try {
-//       const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!response.ok) {
-//         const errorText = await response.text();
-//         throw new Error(`Image upload failed: ${errorText}`);
-//       }
-
-//       const data = await response.json();
-//       return data.secure_url;
-//     } catch (error) {
-//       console.error("Error uploading image:", error);
-//       return "";
-//     }
-    // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // let volumePicUrl = "";
-
-    // if (formData.volumePic) {
-    //   volumePicUrl = await uploadImage(formData.volumePic);
-    //   if (!volumePicUrl) {
-    //     alert("Image upload failed. Please try again.");
-    //     return;
-    //   }
-    // }
 
     const volumeData = {
       name: formData.name
@@ -63,10 +31,8 @@ const AddVolumeComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //  "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify(volumeData),
-        //  credentials: "include"
         
       });
 
@@ -100,10 +66,6 @@ const AddVolumeComponent = () => {
             onChange={handleChange}
           />
         </div>
-
-     
-     
-
         <button
           type="submit"
           className="py-2 bg-pink-700 rounded-lg text-black text-[24px] font-bold"

@@ -72,10 +72,10 @@ const AddProductComponent = () => {
   
       const productData = {
           ...formData,
-          productPic: productPicUrl, // Image URL'si
+          productPic: productPicUrl, 
       };
   
-      console.log("Product Data to send:", productData); // Gönderilecek veriyi logluyoruz
+      console.log("Product Data to send:", productData); 
   
       try {
           const response = await fetch("http://localhost:3000/products", {

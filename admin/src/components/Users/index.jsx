@@ -52,13 +52,13 @@ const UsersComponent = () => {
     setCurrentUser(user);
     setNewUserName(user.name);
     setNewUserRole(user.role);
-    setNewUserPic(null); // Yeni fotoğraf seçilmesini bekliyoruz
+    setNewUserPic(null); 
   };
 
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "erndbi22"); // Preset ismini buraya yazın
+    formData.append("upload_preset", "erndbi22"); 
 
     try {
       const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
@@ -124,11 +124,11 @@ const UsersComponent = () => {
 
   return (
     <div className="bg-pink-100 min-h-[100vh] flex flex-col p-4">
-      <Link to="/addUser">
+      {/* <Link to="/addUser">
         <button className="border-green-700 border-2 rounded-lg py-1 px-4 bg-green-800 text-white font-bold">
           Add User
         </button>
-      </Link>
+      </Link> */}
       {userData.map((user) => (
         <SingleUser
           id={user._id}
@@ -136,13 +136,13 @@ const UsersComponent = () => {
           name={user.name}
           email={user.email}
           userRole={user.role}
-          userPic={user.userPic} // Kullanıcı fotoğrafını ekledim
+          userPic={user.userPic}
           userDeleteHandler={() => userDeleteHandler(user._id)}
           editBrand={() => startEditHandler(user)}
         />
       ))}
 
-      {/* Edit Modal */}
+   
       {isEditing && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg w-1/3">
@@ -157,7 +157,7 @@ const UsersComponent = () => {
               type="text"
               className="w-full p-2 border rounded mb-4"
               value={newUserRole}
-              onChange={(e) => setNewUserRole(e.target.value)} // Hata düzeltildi
+              onChange={(e) => setNewUserRole(e.target.value)} 
             />
             <input
               type="file"

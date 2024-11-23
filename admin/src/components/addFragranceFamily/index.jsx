@@ -6,7 +6,7 @@ const AddFragranceFamilyComponent = () => {
   const [formData, setFormData] = useState({
     name: "",
     fragrancePic: null,
-    description: "", // Yeni alan
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -57,7 +57,7 @@ const AddFragranceFamilyComponent = () => {
     const fragranceData = {
       name: formData.name,
       fragrancePic: fragrancePicUrl,
-      description: formData.description, // Yeni alanın verisi
+      description: formData.description, 
     };
 
     try {
@@ -65,10 +65,10 @@ const AddFragranceFamilyComponent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": `Bearer ${localStorage.getItem("token")}`
+        
         },
         body: JSON.stringify(fragranceData),
-        //  credentials: "include"
+     
       });
 
       if (!response.ok) {

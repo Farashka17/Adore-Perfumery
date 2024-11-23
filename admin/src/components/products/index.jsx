@@ -13,20 +13,20 @@ const ProductsComponent = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [newProductName, setNewProductName] = useState("");
-  const [newDescription, setNewDescription] = useState(""); // Yeni description alanı
-  const [newProductPrice, setNewProductPrice] = useState(""); // Yeni description alanı
-  const [newProductStock, setNewProductStock] = useState(""); // Yeni description alanı
+  const [newDescription, setNewDescription] = useState(""); 
+  const [newProductPrice, setNewProductPrice] = useState(""); 
+  const [newProductStock, setNewProductStock] = useState(""); 
   const [newProductPic, setNewProductPic] = useState(null);
 
-  // Edit için gerekli useState'ler
-  const [brand, setBrand] = useState(""); // Brand seçimi için
-  const [rating, setRating] = useState(""); // Rating için
-  const [gender, setGender] = useState(""); // Gender için
-  const [concentration, setConcentration] = useState(""); // Concentration için
-  const [volume, setVolume] = useState(""); // Volume için
-  const [fragranceFamily, setFragranceFamily] = useState(""); // Fragrance Family için
-  const [newArrivals, setNewArrivals] = useState(false); // New Arrivals checkbox'ı için
-  const [topSelling, setTopSelling] = useState(false); // Top Selling checkbox'ı için
+ 
+  const [brand, setBrand] = useState(""); 
+  const [rating, setRating] = useState(""); 
+  const [gender, setGender] = useState(""); 
+  const [concentration, setConcentration] = useState(""); 
+  const [volume, setVolume] = useState(""); 
+  const [fragranceFamily, setFragranceFamily] = useState(""); 
+  const [newArrivals, setNewArrivals] = useState(false);
+  const [topSelling, setTopSelling] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -89,7 +89,7 @@ const ProductsComponent = () => {
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "erndbi22"); // Preset ismini buraya yazın
+    formData.append("upload_preset", "erndbi22"); 
 
     try {
       const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
@@ -248,7 +248,6 @@ const ProductsComponent = () => {
       onChange={(e) => setNewProductStock(e.target.value)}
     />
 
-    {/* Brand, Gender, Concentration, Volume, Fragrance Family Dropdowns */}
     <label>Product Brand</label>
     <select
       name="brand"
@@ -323,7 +322,7 @@ const ProductsComponent = () => {
       ))}
     </select>
 
-    {/* Checkboxes for New Arrivals and Top Selling */}
+  
     <div className="flex items-center">
       <label className="mr-2">New Arrivals</label>
       <input

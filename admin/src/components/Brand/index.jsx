@@ -49,13 +49,13 @@ const  BrandComponent = () => {
     setIsEditing(true);
     setCurrentBrand(brand);
     setNewBrandName(brand.name);
-    setNewBrandPic(null); // Yeni fotoğraf seçilmesini bekliyoruz
+    setNewBrandPic(null); 
   };
 
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "erndbi22"); // Preset ismini buraya yazın
+    formData.append("upload_preset", "erndbi22");
 
     try {
       const response = await fetch("https://api.cloudinary.com/v1_1/doulwj7fu/image/upload", {
@@ -137,7 +137,7 @@ const  BrandComponent = () => {
         />
       ))}
 
-      {/* Edit Modal */}
+     
       {isEditing && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg w-1/3">
