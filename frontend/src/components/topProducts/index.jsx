@@ -9,7 +9,7 @@ const TopProductsComponent = () => {
       const fetchTopSellerProducts = async () => {
         try {
       
-          const response = await fetch('http://localhost:3000/products?topSeller=true');
+          const response = await fetch('http://localhost:3000/products?topSelling=true');
           const data = await response.json();
          
           setTopSellerProducts(data.data);
