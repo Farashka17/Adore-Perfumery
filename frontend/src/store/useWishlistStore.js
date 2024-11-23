@@ -69,7 +69,7 @@ toggleWishlist: async (productId) => {
 addToWishlist: async (productId) => {
   const token = localStorage.getItem('token');
   if (!token || typeof token !== 'string') {
-    toast.error('Please log in and add the product to your cart.');
+    toast.error('Please log in and add the product to your wishlist.');
     return;
   }
 
