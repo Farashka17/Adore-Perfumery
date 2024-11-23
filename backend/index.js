@@ -16,7 +16,7 @@ import volume from './routes/volume.js'
 import  cart from './routes/cart.js'
 import wishlist from './routes/wishlist.js'
 import order from './routes/order.js'
-import review from './routes/review.js'
+
 
 dotenv.config()
 
@@ -39,7 +39,7 @@ app.use('/wishlist',wishlist)
 app.use('/orders',order)
 
 app.use('/cart',cart)
-app.use('/reviews',review)
+
 
 
 
