@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SingleProduct from '../../common/singleProduct';
+import { Link } from 'react-router-dom';
 
 const BestSeller = () => {
   const [topSellerProducts, setTopSellerProducts] = useState([]);
@@ -7,10 +8,10 @@ const BestSeller = () => {
   useEffect(() => {
     const fetchTopSellerProducts = async () => {
       try {
-        // Backend'de topSeller=true olan ürünleri çekmek için API isteği
+    
         const response = await fetch('http://localhost:3000/products?topSeller=true');
         const data = await response.json();
-        // API sonucu filtrelenmiş olarak geldiği varsayılıyor
+       
         setTopSellerProducts(data.data);
       } catch (error) {
         console.error("Top seller products fetching error:", error);
@@ -42,7 +43,9 @@ const BestSeller = () => {
             />
           ))}
         </div>
-        <button className='border border-[#232323] font-raleway text-[13px] px-10 py-[19px] mt-[50px]'>Explore More</button>
+  <Link to={"/topProducts"}>   
+    <button className='border border-[#232323] font-raleway text-[13px] px-10 py-[19px] mt-[50px]'>Explore More</button>
+    </Link> 
       </div>
     </div>
   );

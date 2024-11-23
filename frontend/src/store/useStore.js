@@ -4,25 +4,25 @@ const useStore = create((set) => ({
   selectedFilters: {},
   products: [],
   
-  // Filtre ayarlama fonksiyonu
+
   setFilter: (filterType, value) => set((state) => {
     const updatedFilters = { ...state.selectedFilters };
 
     if (value) {
-      updatedFilters[filterType] = value; // Değer varsa filtreyi ekliyoruz
+      updatedFilters[filterType] = value; 
     } else {
-      delete updatedFilters[filterType]; // Değer yoksa, filtreyi siliyoruz
+      delete updatedFilters[filterType]; 
     }
 
-    return { selectedFilters: updatedFilters }; // Güncellenmiş filtreleri state'e kaydediyoruz
+    return { selectedFilters: updatedFilters }; 
   }),
   
-  // Filtrelere göre ürünleri çekme fonksiyonu
+  
   fetchFilteredProducts: async () => {
     const { selectedFilters } = useStore.getState();
     const queryParams = new URLSearchParams();
   
-    // Adding selected filters to the query parameters
+  
     Object.keys(selectedFilters).forEach((filterType) => {
       queryParams.set(filterType, selectedFilters[filterType]);
     });
@@ -33,15 +33,15 @@ const useStore = create((set) => ({
         throw new Error('Failed to fetch filtered products');
       }
       const data = await response.json();
-      set({ products: data.data || [] }); // Store the fetched products
+      set({ products: data.data || [] }); 
     } catch (error) {
       console.error('Error fetching filtered products:', error);
     }
   },
 
-  // Filtreleri temizleme fonksiyonu
+ 
   clearFilters: () => set({
-    selectedFilters: {}, // selectedFilters'ı sıfırlıyoruz
+    selectedFilters: {}, 
   }),
 }));
 

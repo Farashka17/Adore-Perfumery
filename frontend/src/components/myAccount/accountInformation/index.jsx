@@ -4,14 +4,11 @@ const AccountInformation = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
-  // const [phone, setPhone] = useState("");
-  // const [birthDate, setBirthDate] = useState({ day: "", month: "", year: "" });
-
-  // Kullanıcı bilgilerini backend'den getirme
+  
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userId = localStorage.getItem("userId"); // LocalStorage'dan kullanıcı ID'sini al
+        const userId = localStorage.getItem("userId"); 
         if (!userId) throw new Error("User ID not found.");
   
         const response = await fetch(`http://localhost:3000/users/${userId}`);
@@ -29,12 +26,12 @@ const AccountInformation = () => {
   }, []);
   
 
-  // Formu gönderme işlemi
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3000/users/${userId}`, {
-        method: "PATCH", // Güncelleme işlemi
+        method: "PATCH", 
         headers: {
           "Content-Type": "application/json",
         },
@@ -42,8 +39,7 @@ const AccountInformation = () => {
           name,
           surname,
           email
-          // phone,
-          // birthDate,
+          
         }),
       });
 
@@ -93,16 +89,7 @@ const AccountInformation = () => {
               placeholder="Enter your email"
             />
           </label>
-          {/* <label className="block mb-3">
-            Phone Number
-            <input
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:text-[#fca36f] focus:outline-none"
-              placeholder="Enter your phone number"
-            />
-          </label> */}
+       
           <button
             type="submit"
             className="w-full py-2 px-4 bg-[#fca36f] text-white rounded-md hover:bg-orange-500 transition-colors"

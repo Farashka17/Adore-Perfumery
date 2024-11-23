@@ -11,7 +11,7 @@ const MyAccount = () => {
   const [userRole, setUserRole] = useState('');
   const [activeComponent, setActiveComponent] = useState('account');
   const { clearCart } = useCartStore();
-  const { clearOrders } = useOrderStore(); // Global state'den clearOrders fonksiyonunu al
+  const { clearOrders } = useOrderStore(); 
 
   useEffect(() => {
     const checkUserStatus = () => {
@@ -39,7 +39,7 @@ const MyAccount = () => {
 
   const handleLogout = () => {
     clearCart();
-    clearOrders(); // Logout sırasında siparişleri sıfırlıyoruz
+    clearOrders(); 
     localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
@@ -63,7 +63,7 @@ const MyAccount = () => {
           </button>
         </div>
 
-        {/* Aktif Component */}
+       
         <div>
           {activeComponent === 'account' && <AccountInformation />}
           {activeComponent === 'orders' && <OrdersComponent />}

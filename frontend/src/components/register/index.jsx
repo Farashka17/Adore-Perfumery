@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
-    lastName: '',   // Last Name ekledim
+    lastName: '',   
     email: '',
     password: '',
-    confirmPassword: '',  // Confirm Password ekledim
+    confirmPassword: '', 
   });
   const navigate = useNavigate();
 
-  const [error, setError] = useState('');  // Hata mesajı için bir state ekledim
+  const [error, setError] = useState('');  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,7 +78,7 @@ const Register = () => {
                 className="py-[10px] px-[15px] mb-[15px] w-full border border-[#E6E7E8] rounded-[6px] font-dancing"
               />
               
-              {/* Last Name Input */}
+             
               <input
                 type="text"
                 id="lastName"
@@ -109,7 +109,7 @@ const Register = () => {
                 className="py-[10px] px-[15px] mb-[15px] w-full border border-[#E6E7E8] rounded-[6px] font-dancing"
               />
               
-              {/* Confirm Password Input */}
+             
               <input
                 type="password"
                 id="confirmPassword"
@@ -120,7 +120,7 @@ const Register = () => {
                 className="py-[10px] px-[15px] mb-[15px] w-full border border-[#E6E7E8] rounded-[6px] font-dancing"
               />
 
-              {/* Hata mesajı */}
+             
               {error && <p className="text-red-500 text-sm">{error}</p>}
 
               <button className="bg-[#0E1422] py-3 px-6 w-full justify-center items-center gap-[6px] text-[#FFFFFF] text-[14px] hover:bg-[#dbaf77] font-medium rounded-[4px] flex ">

@@ -18,12 +18,12 @@ const OrdersComponent = () => {
         const response = await fetch(`http://localhost:3000/orders/${userId}`);
         const data = await response.json();
   
-        console.log("Gelen siparişler:", data); // Gelen veriyi kontrol edin
+        console.log("Gelen siparişler:", data); 
   
         if (response.ok && data.length > 0) {
-          setOrders(data); // Gelen sipariş verisini set ediyoruz
+          setOrders(data); 
         } else {
-          setOrders([]); // Eğer veriler gelmezse boş bir array set ediyoruz
+          setOrders([]); 
           setError('No orders found');
         }
       } catch (err) {
@@ -57,7 +57,7 @@ const OrdersComponent = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col-reverse gap-4">
       {orders && orders.length > 0 ? (
         orders.map((order) => (
           <SingleOrder key={order._id} order={order} />

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SingleCheckoutProduct = ({ product, removeProduct }) => {
-  // Eğer removeProduct fonksiyonu geçilmişse, ürün kaldırma işlemi yapılabilir
+ 
   return (
     <div className='flex justify-between items-center mt-4'>
       <div className='w-[60px] h-[60px]'>

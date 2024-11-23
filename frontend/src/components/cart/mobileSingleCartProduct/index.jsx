@@ -13,7 +13,7 @@ const MobileSingleCartProduct = ({ product }) => {
     if (product.quantity > 1) {
       updateCart(product.productId, product.quantity - 1);
     } else {
-      removeFromCart(product.productId); // Eğer miktar 1 ise ürünü kaldır
+      removeFromCart(product.productId); 
     }
   };
 

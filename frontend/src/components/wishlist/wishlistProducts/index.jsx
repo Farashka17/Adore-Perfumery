@@ -6,7 +6,7 @@ const WishlistProducts = () => {
   const { wishlist, fetchWishlist } = useWishlistStore();
 
   useEffect(() => {
-    fetchWishlist(); // Wishlist verilerini component mount edildiğinde çekiyoruz
+    fetchWishlist(); 
   }, [fetchWishlist]);
 
   if (!wishlist.length) {
@@ -19,10 +19,10 @@ const WishlistProducts = () => {
       <div className="container max-w-[1150px] mx-auto gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {wishlist.map((product) => (
           <SingleProduct
-          key={product.productId._id || product._id}  // Doğru id'yi kullandığınızdan emin olun
+          key={product.productId._id || product._id}  
           product={product}
           name={product.name}
-          id={product.productId._id || product._id}  // productId veya id'yi doğru şekilde kullanıyoruz
+          id={product.productId._id || product._id}  
           productPic={product.productPic}
           price={product.price}
           />

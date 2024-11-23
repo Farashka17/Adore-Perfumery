@@ -8,7 +8,7 @@ const VisibleProducts = () => {
 
   const fetchProductData = async () => {
     try {
-      // URL parametrelerini oku
+      
       const query = location.search;
       const endpoint = query ? `http://localhost:3000/products${query}` : `http://localhost:3000/products`;
 
@@ -16,7 +16,7 @@ const VisibleProducts = () => {
       if (!response.ok) throw new Error("Failed to fetch product data.");
       const result = await response.json();
 
-      // Eğer filtreli ürünler varsa, state'e ekle
+      
       setProductData(result.data || []);
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -25,11 +25,11 @@ const VisibleProducts = () => {
 
   useEffect(() => {
     fetchProductData();
-  }, [location.search]); // URL parametreleri değiştiğinde yeniden çalıştır
+  }, [location.search]); 
 
   return (
     <div>
-      <div className='grid grid-cols-2 lg:grid-cols-3 gap-[30px] mx-auto py-4 '>
+      <div className='grid grid-cols-2 md:grid-cols-3 gap-[30px] mx-auto py-4 '>
         {productData.length > 0 ? (
           productData.map((product) => (
           

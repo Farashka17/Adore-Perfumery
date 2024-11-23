@@ -24,7 +24,7 @@ const Sort = () => {
 
   return (
     <div className="md:mx-auto font-nunito w-full">
-      {/* Masaüstü görünüm */}
+     
       <div className="hidden container max-w-[1150px] items-center justify-between md:flex mx-auto px-5">
         <div >
           <p className="text-[#232323] font-semibold text-[16px] font-raleway">
@@ -47,7 +47,7 @@ const Sort = () => {
         </div>
       </div>
 
-      {/* Mobilde Filtre İkonu */}
+     
       <div className="flex gap-6">
       <button
         className="md:hidden items-center  flex gap-2 ml-2"
@@ -82,7 +82,7 @@ const Sort = () => {
         
       </button>
       </div>
-      {/* Mobilde Açılan Filter Bileşeni */}
+      
    {   isMobileFilterOpen &&   <Filter isMobileFilterOpen={isMobileFilterOpen} closeFilter={toggleFilter} />}
                   
 { isMobileSearchOpen &&

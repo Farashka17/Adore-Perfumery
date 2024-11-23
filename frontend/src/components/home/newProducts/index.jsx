@@ -11,10 +11,10 @@ const NewProducts = () => {
   useEffect(() => {
     const fetchNewProducts = async () => {
       try {
-        // Backend'de topSeller=true olan ürünleri çekmek için API isteği
+   
         const response = await fetch('http://localhost:3000/products?newArrivals=true');
         const data = await response.json();
-        // API sonucu filtrelenmiş olarak geldiği varsayılıyor
+       
         setNewProducts(data.data);
       } catch (error) {
         console.error("New products fetching error:", error);

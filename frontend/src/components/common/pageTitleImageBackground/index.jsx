@@ -1,7 +1,7 @@
 import React from 'react';
 import TitleBackground from '../../../assets/TitleBackground.jpg';
 
-const PageTitleImageBackground = ({ title }) => { // Destructuring ile props'u al
+const PageTitleImageBackground = ({ title }) => { 
   return (
     <div className='w-full mx-auto'>
     <div className=" container max-w-[1920px] relative w-full h-auto mx-auto  items-center">

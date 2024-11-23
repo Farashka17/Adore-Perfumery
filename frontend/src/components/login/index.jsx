@@ -28,23 +28,17 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Token ve kullanıcı adını kaydediyoruz
+        
         localStorage.setItem('token', data.token);
         localStorage.setItem('userName', data.user.name);
         localStorage.setItem('role', data.user.role);
         localStorage.setItem('isLogin',true);
         localStorage.setItem('userId',data.user._id);
 
-        // const getCart = useCartStore.getState().getCart;
-        // await getCart();
-       
-     
-  
-
-        // Giriş durumu değişikliği için event tetikle
+      
         window.dispatchEvent(new Event('loginStatusChanged'));
 
-        navigate('/'); // Ana sayfaya yönlendir
+        navigate('/'); 
       } else {
         toast.error(data.message);
       }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Star from '../../../../../assets/Star.svg'
 const AddReview = () => {
-    const [rating, setRating] = useState(0); // Seçili yıldız sayısını saklar
-  const [hover, setHover] = useState(0);   // Üzerinde durulan yıldız sayısını saklar
+    const [rating, setRating] = useState(0); 
+  const [hover, setHover] = useState(0);   
   const  totalStars=5
   return (
 

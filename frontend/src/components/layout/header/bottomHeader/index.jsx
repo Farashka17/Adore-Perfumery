@@ -17,7 +17,7 @@ const BottomHeader = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isUser, setIsUser] = useState(false);
 
-  const [cartCount, setCartCount] = useState(0); // Sepetteki ürün sayısını takip eden state
+  const [cartCount, setCartCount] = useState(0); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const BottomHeader = () => {
 
     checkUserStatus();
 
-    // Sepetteki ürün sayısını yerel depolamadan veya API'den al
+
     const storedCartCount = localStorage.getItem('cartCount');
     setCartCount(storedCartCount ? parseInt(storedCartCount, 10) : 0);
 
@@ -50,15 +50,15 @@ const BottomHeader = () => {
 
   const { cart, getCart, clearCart } = useCartStore();
 
-  // const getCart = useCartStore.getState().getCart;
+ 
     getCart();
-  // Toplam ürün miktarını hesaplayan fonksiyon
+
   const getTotalQuantity = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
   useEffect(() => {
-    // Component yüklendiğinde sepeti getirme işlemi
+    
     getCart();
   }, []);
 
@@ -103,11 +103,11 @@ const BottomHeader = () => {
     }
   };
 
-  // Sepete ürün ekleyen bir fonksiyon (örnek olarak)
+  
   const addToCart = () => {
-    const newCartCount = cartCount + 1; // Yeni değeri hesapla
-    setCartCount(newCartCount); // Yeni değeri state'e uygula
-    localStorage.setItem('cartCount', newCartCount); // Yeni değeri localStorage'a kaydet
+    const newCartCount = cartCount + 1; 
+    setCartCount(newCartCount); 
+    localStorage.setItem('cartCount', newCartCount); 
   };
 
   return (

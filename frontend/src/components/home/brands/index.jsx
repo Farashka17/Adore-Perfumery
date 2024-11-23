@@ -20,13 +20,13 @@ const Brands = () => {
 
     ];
   
-    const extendedImages = [...images, ...images]; // Görüntüleri iki kez ekleyin
+    const extendedImages = [...images, ...images]; 
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % extendedImages.length);
-        }, 2000); // 2 saniye
+        }, 2000); 
 
         return () => clearInterval(interval);
     }, [extendedImages.length]);
@@ -37,7 +37,7 @@ const Brands = () => {
       <div className="overflow-hidden w-full">
     <div
         className="flex transition-transform duration-500"
-        style={{ transform: `translateX(-${currentIndex * (100 / (window.innerWidth >= 392 ? 4 : 1))}%)` }} // 4 görüntü görünür
+        style={{ transform: `translateX(-${currentIndex * (100 / (window.innerWidth >= 392 ? 4 : 1))}%)` }} 
     >
         {extendedImages.map((image, index) => (
             <button key={index} className="w-full md:w-1/4 flex-shrink-0">

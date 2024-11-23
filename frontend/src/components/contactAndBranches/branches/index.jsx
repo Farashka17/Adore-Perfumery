@@ -49,7 +49,7 @@ const Branches = () => {
           ))}
         </div>
 
-        {/* Seçilen adresin haritası */}
+  
         <div className="w-full mt-8">
           {selectedBranch ? (
             <iframe

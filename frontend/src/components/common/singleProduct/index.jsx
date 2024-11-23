@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useCartStore } from '../../../store/useCartStore'; // Zustand store for cart
+import { useCartStore } from '../../../store/useCartStore'; 
 
-// SingleProduct Bileşeni
 const SingleProduct = ({ name, price, productPic, id }) => {
   const addToCart = useCartStore((state) => state.addToCart);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    addToCart(id, 1); // Doğru ID'yi gönderdiğimizden emin olun
+    addToCart(id, 1); 
   };
 
   return (

@@ -18,11 +18,11 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ForgotPasswordPage from './pages/forgotPassword/forgotPasswordPage'
 import ResetPasswordPage from './pages/resetPassword/resetPassword'
-// import { useAuthEffect } from './store/useCartStore'
-// import { useSyncLoginStatus } from './store/useCartStore'
+import TopProductsPage from './pages/topProducts/topProductsPage'
+
 
 function App() {
-  // useAuthEffect(); // Giriş durumu ve kullanıcı ID'si güncel tutulur
+ 
   return (
     <>
       <Header />
@@ -39,7 +39,8 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-        {/* <Route path="/users/reset/:token" component={ResetPasswordPage} /> */}
+        <Route path="/topProducts" element={<TopProductsPage />} />
+
         <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route path="/resetPassword/:token" element={<ResetPasswordPage/>} />
 

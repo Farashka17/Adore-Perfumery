@@ -1,19 +1,19 @@
 import React from 'react';
-import Perfume from '../../../assets/Perfume.svg'; // Örnek olarak bir görsel ekledim
+import Perfume from '../../../assets/Perfume.svg'; 
 
 const SingleOrderProduct = ({ product }) => {
   return (
     <div className="flex gap-12 items-center bg-[#f7f7f6] px-5 py-3">
-      <p className="flex flex-col font-raleway">
+      <p className="flex flex-col font-raleway font-semibold">
         Name:
-        <span>{product.name}</span> {/* Dinamik ürün ismi */}
+        <span className='font-normal'>{product.name}</span> 
       </p>
-      <p className="flex flex-col font-raleway">
+      <p className="flex flex-col font-raleway font-semibold">
         Price:
-        <span>${product.price}</span> {/* Dinamik ürün fiyatı */}
+        <span  className='font-normal'>${product.price}</span> 
       </p>
       <div className="w-[111px] h-[111px]">
-        <img src={product.productPic || Perfume} className="bg-cover w-[100%] h-[111px]" /> {/* Dinamik ürün görseli */}
+        <img src={product.productPic || Perfume} className="bg-cover w-[100%] h-[111px]" /> 
       </div>
     </div>
   );

@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import GirlChanel from '../../assets/GirlChanel.jpg';
 
-import LoginBackground from '../../assets/LoginBackground.jpg'; // Bu dosyayı kendiniz eklemeniz gerekebilir.
+import LoginBackground from '../../assets/LoginBackground.jpg'; 
 
 const ResetPasswordComponent = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { token } = useParams(); // URL'den token'ı alıyoruz
+  const { token } = useParams(); 
   const navigate = useNavigate();
 
   const handleResetPassword = async (e) => {
@@ -30,7 +30,7 @@ const ResetPasswordComponent = () => {
 
         if (response.ok) {
             toast.success('Password reset successful!');
-            navigate('/login'); // Login sayfasına yönlendirme
+            navigate('/login'); 
         } else {
             toast.error(data.message || 'Failed to reset password');
         }

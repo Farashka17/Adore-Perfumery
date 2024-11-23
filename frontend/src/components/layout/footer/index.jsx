@@ -6,18 +6,7 @@ import { GrAppleAppStore } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
-  // const company = [
-  //   { title: "About Us", href: "/aboutUs" },
-  //   { title: "Contact", href: "/contact" },
-  //   { title: "Terms of Use", href: "/termsOfUse" },
-  //   { title: "Customer Service", href: "/customerService"}
-  // ];
-  // const help = [
-  //   { title: "FAQ", href: "/faq" },
-  //   { title: "Delivery", href: "/delivery" },
-  //   { title: "Cancellation of the order", href: "/cancellationOfTheOrder" },
-  //   { title: "Don't go back", href: "/dontGoBack" },
-  // ];
+
   return (
     <div className="bg-[black]  md:mx-auto font-nunito w-full">
     <div className="container max-w-[1120px]  flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mx-auto md:px-10 py-[25px] px-[15px]">

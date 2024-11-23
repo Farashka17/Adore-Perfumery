@@ -4,7 +4,7 @@ import SingleFragranceType from './SingleFragrance';
 const Category = () => {
   const [fragranceData, setFragranceData] = useState([]);
 
-  // Veritabanından fragrance verilerini çekme fonksiyonu
+ 
   const fetchFragranceData = async () => {
     try {
       const response = await fetch("http://localhost:3000/fragranceFamily");
@@ -29,7 +29,7 @@ const Category = () => {
           <p className="text-[#9A9A9A] font-nunito font-extralight text-[18px] mt-[10px]">The stylish and organized cosmetic products</p>
         </div>
         <div className="flex gap-[50px] mx-auto flex-col md:flex-row text-center mt-12">
-          {/* fragranceData'yı map ederek her bir fragrance'i SingleFragranceType bileşenine gönderiyoruz */}
+     
           {fragranceData.slice(0, 4).map((fragrance) => (
             <SingleFragranceType
               key={fragrance._id}

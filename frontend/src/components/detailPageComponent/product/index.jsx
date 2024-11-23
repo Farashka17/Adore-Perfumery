@@ -11,20 +11,20 @@ const Product = ({ product, id }) => {
   const { wishlist, fetchWishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
 
   useEffect(() => {
-    fetchWishlist(); // Wishlist'i güncel tut
+    fetchWishlist(); 
   }, []);
 
   useEffect(() => {
-    // Wishlist değiştiğinde ürünü kontrol et
+    
     const inWishlist = wishlist?.some((item) => item.productId === product._id);
     setIsInWishlist(inWishlist);
   }, [wishlist, product._id]);
 
   const handleClick = () => {
     if (isInWishlist) {
-      removeFromWishlist(product._id); // Favorilerden çıkar
+      removeFromWishlist(product._id); 
     } else {
-      addToWishlist(product._id); // Favorilere ekle
+      addToWishlist(product._id); 
     }
   };
 

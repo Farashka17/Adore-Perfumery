@@ -8,10 +8,10 @@ const Wishlist = () => {
   const { wishlist, fetchWishlist } = useWishlistStore();
 
   useEffect(() => {
-    fetchWishlist(); // Wishlist verilerini component mount edildiğinde çekiyoruz
+    fetchWishlist(); 
   }, []);
   
-  // Wishlist'in bir dizi olup olmadığını ve boş olup olmadığını kontrol et
+ 
   if (!Array.isArray(wishlist) || wishlist.length === 0) {
     return (
       <>
@@ -33,7 +33,7 @@ const Wishlist = () => {
     <div>
       <PageTitleImageBackground title={title} />
       <WishlistProducts />
-      {/* Extra Content or Footer */}
+   
     </div>
   );
 };

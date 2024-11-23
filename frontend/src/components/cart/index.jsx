@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import SingleCartProduct from './singleCartProduct'
+
 import CartProducts from './cartProducts'
 import PageTitleImageBackground from '../common/pageTitleImageBackground'
 import OrderButton from './orderButton'
@@ -11,7 +11,7 @@ const Cart = () => {
 
   const subtotal = cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
-  // Shipping cost belirleme (200$ altı için 3.99$ kargo ücreti, üstü için ücretsiz)
+  
   const shippingCost = subtotal < 200 ? 3.99 : 0;
 
     const title="Cart of Fragrancies"

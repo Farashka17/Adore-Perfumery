@@ -18,7 +18,7 @@ const AboutCosmetics = () => {
       
     }, 10); 
 
-    // Temizleme fonksiyonu
+   
     return () => clearInterval(interval);
   }, []);
 
@@ -32,12 +32,12 @@ const AboutCosmetics = () => {
           return prevYears + 1;
         } else {
           clearInterval(interval);
-          return prevYears; // 24'e ulaştığında dur
+          return prevYears; 
         }
       });
-    }, 100); // 1 saniyede bir artır
+    }, 100); 
 
-    // Temizleme fonksiyonu
+   
     return () => clearInterval(interval);
   }, []);
 
@@ -63,8 +63,7 @@ const AboutCosmetics = () => {
             <button className='font-raleway text-[13px] font-thin py-5 px-10 border border-black mt-10 '>Explore More</button>
           </div>
           </div>
- {/* width="560" 
-                height="315" */}
+ 
           {/* sag */}
           <div className='md:ml-10 mt-5 md:mt-0'>
           <div >

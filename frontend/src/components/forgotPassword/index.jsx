@@ -19,7 +19,7 @@ const ForgotPasswordComponent = () => {
       });
   
       const data = await response.json();
-      console.log(data); // Backend'den gelen yanıtı kontrol edin.
+      console.log(data); 
       if (response.ok) {
         toast.success(data.message);
       } else {

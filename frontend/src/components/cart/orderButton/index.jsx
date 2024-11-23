@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCartStore } from '../../../store/useCartStore';
 
 const OrderButton = ({ subtotal, shippingCost }) => {
-  const { cart } = useCartStore(); // Cart'tan ürünleri al
+  const { cart } = useCartStore(); 
   const isEmptyCart = subtotal === 0;
   const total = isEmptyCart ? 0 : subtotal + (shippingCost === 0 ? 0 : 3.99);
 

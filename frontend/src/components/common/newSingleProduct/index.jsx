@@ -10,7 +10,7 @@ const NewSingleProduct = ({ id, name, price, productPic }) => {
             <img 
               src={productPic} 
               alt={name} 
-              className='h-full w-full object-cover' // object-fit: cover kullanıldı
+              className='h-full w-full object-cover' 
             />
           </div>
         </div>

@@ -4,14 +4,14 @@ import { create } from 'zustand';
 
 const useReviewStore = create((set) => ({
   user: null,
-  token: localStorage.getItem('token') || null, // localStorage'dan token al
-  reviews: [], // İncelemeler
+  token: localStorage.getItem('token') || null, 
+  reviews: [], 
   setUser: (user, token) => {
-    localStorage.setItem('token', token); // Token'ı localStorage'a kaydet
+    localStorage.setItem('token', token); 
     set({ user, token });
   },
   logout: () => {
-    localStorage.removeItem('token'); // Token'ı localStorage'dan sil
+    localStorage.removeItem('token'); 
     set({ user: null, token: null, reviews: [] });
   },
   setReviews: (reviews) => set({ reviews }),
@@ -21,14 +21,14 @@ const useReviewStore = create((set) => ({
       reviews: state.reviews.filter((review) => review._id !== reviewId),
     })),
 
-  // Review Ekleme İşlemi
+
   addReviewToProduct: async (reviewData, productId) => {
     const { token, user, addReview } = useStore.getState();
 
-    // Eğer kullanıcı giriş yapmamışsa
+    
     if (!user || !token) {
       toast.error('You must be logged in to add a review.');
-      window.location.href = '/login'; // Kullanıcıyı login sayfasına yönlendir
+      window.location.href = '/login'; 
       return;
     }
 
@@ -37,7 +37,7 @@ const useReviewStore = create((set) => ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, // Token'ı Authorization header'ında gönder
+          'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({ ...reviewData, productId }),
       });
@@ -46,7 +46,7 @@ const useReviewStore = create((set) => ({
 
       if (response.ok) {
         toast.success(data.message);
-        addReview(data.review); // Yeni incelemeyi store'a ekle
+        addReview(data.review); 
       } else {
         toast.error(data.message);
       }
@@ -55,12 +55,12 @@ const useReviewStore = create((set) => ({
     }
   },
 
-  // Ürün incelemelerini getirme
+ 
   getProductReviews: async (productId) => {
     const { token, setReviews } = useStore.getState();
 
     if (!token) {
-      return; // Eğer token yoksa, incelemeleri getirmiyoruz
+      return; 
     }
 
     try {
@@ -73,7 +73,7 @@ const useReviewStore = create((set) => ({
 
       const data = await response.json();
       if (response.ok) {
-        setReviews(data.reviews); // Backend'den gelen incelemeleri store'a kaydet
+        setReviews(data.reviews); 
       } else {
         toast.error(data.message);
       }
@@ -82,7 +82,7 @@ const useReviewStore = create((set) => ({
     }
   },
 
-  // Kullanıcı incelemelerini getirme
+  
   getUserReviews: async () => {
     const { token, user } = useStore.getState();
     if (!user || !token) {
@@ -99,7 +99,7 @@ const useReviewStore = create((set) => ({
 
       const data = await response.json();
       if (response.ok) {
-        setReviews(data.reviews); // Kullanıcının incelemelerini store'a kaydet
+        setReviews(data.reviews); 
       } else {
         toast.error(data.message);
       }
@@ -108,7 +108,7 @@ const useReviewStore = create((set) => ({
     }
   },
 
-  // İnceleme silme işlemi
+
   deleteReview: async (reviewId) => {
     const { token, removeReview } = useStore.getState();
     
@@ -128,7 +128,7 @@ const useReviewStore = create((set) => ({
       const data = await response.json();
       if (response.ok) {
         toast.success('Review deleted successfully.');
-        removeReview(reviewId); // İncelemeyi store'dan sil
+        removeReview(reviewId); 
       } else {
         toast.error(data.message);
       }

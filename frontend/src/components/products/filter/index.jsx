@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import useStore from '../../../store/useStore';
 
 const Filter = ({ isMobileFilterOpen, closeFilter }) => {
-  const { setFilter, fetchFilteredProducts, clearFilters } = useStore();  // clearFilters'ı import ediyoruz
+  const { setFilter, fetchFilteredProducts, clearFilters } = useStore();  
   const [isFragranceOpen, setIsFragranceOpen] = useState(false);
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [isGenderOpen, setIsGenderOpen] = useState(false);
@@ -32,16 +32,16 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
   const handleFilterSelect = (filterType, value, displayValue) => {
     const searchParams = new URLSearchParams(location.search);
   
-    // Seçili filtreyi URL'ye ekle
+   
     searchParams.set(filterType, value);
   
-    // State'e seçili filtreyi ekle
+   
     setSelectedFilters((prev) => ({
       ...prev,
       [filterType]: displayValue
     }));
   
-    // Fetch filtered products
+    
     fetchFilteredProducts();
   
     navigate(`?${searchParams.toString()}`);
@@ -97,11 +97,11 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
     fetchBrandData();
   }, []);
 
-  // "All Products" butonuna tıklandığında filtreleri temizle
+ 
   const handleAllProductsClick = () => {
-    clearFilters();  // filtreleri temizliyoruz
-    fetchFilteredProducts(); // Fetch all products
-    navigate("/products");   // Ana sayfaya yönlendiriyoruz
+    clearFilters();  
+    navigate("/products");  
+    fetchFilteredProducts(); 
   };
 
   return (
@@ -228,7 +228,7 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
 
       <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
 
-      <div>
+      {/* <div>
         <div className="flex justify-between items-center mb-3">
           <p className="text-[22px] font-medium text-[#212121]">Price</p>
           <button onClick={togglePriceArrows}>
@@ -248,10 +248,10 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
             </ul>
           )}
         </div>
-      </div>
-      <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div>
+      </div> */}
+      {/* <div className='w-full h-[2px] bg-[#dbaf77] my-3'></div> */}
 
-      <div className="flex justify-start items-center mb-3">
+      {/* <div className="flex justify-start items-center mb-3">
         <input
           type="checkbox"
           checked={isOnSale}
@@ -259,7 +259,7 @@ const Filter = ({ isMobileFilterOpen, closeFilter }) => {
           className="mr-2 cursor-pointer"
         />
         <p className="text-[22px] font-medium text-[#212121]">On Sale</p>
-      </div>
+      </div> */}
 
     </div>
   );

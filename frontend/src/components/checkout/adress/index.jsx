@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import OrangeShape from "../../../assets/OrangeShape.svg";
 
-const Adress = ({ onDetailChange }) => { // setAddressDetails yerine onDetailChange kullanıldı
+const Adress = ({ onDetailChange }) => { 
   const [selectedregion, setSelectedregion] = useState("Select a region");
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const Adress = ({ onDetailChange }) => { // setAddressDetails yerine onDetailCha
   const handleSelect = (region) => {
     const updatedFormData = { ...formData, region };
     setFormData(updatedFormData);
-    onDetailChange(updatedFormData); // Güncellenmiş adres detaylarını gönderiyoruz
+    onDetailChange(updatedFormData); 
     setSelectedregion(region);
     setIsOpen(false);
   };
@@ -31,20 +31,29 @@ const Adress = ({ onDetailChange }) => { // setAddressDetails yerine onDetailCha
     const { name, value } = e.target;
     const updatedFormData = { ...formData, [name]: value };
     setFormData(updatedFormData);
-    onDetailChange(updatedFormData); // Güncellenmiş adres detaylarını gönderiyoruz
+    onDetailChange(updatedFormData); 
   };
 
   const regionlar = [
-    "Absheron", "Aghdam", "Aghdash", "Aghjabadi", "Aghstafa", "Aghsu", "Astara",
-    "Babek","Baku", "Balakan", "Barda", "Beylagan", "Bilasuvar", "Dashkasan", "Fuzuli", 
-    "Gadabay", "Ganja", "Goranboy", "Goychay", "Goygol", "Hajigabul", "Imishli", 
-    "Ismayilli", "Jabrayil", "Jalilabad", "Kalbajar", "Khachmaz", "Khizi", 
-    "Khojavend", "Kangarli", "Kurdamir", "Lachin", "Lankaran", "Lerik", 
-    "Masalli", "Mingachevir", "Naftalan", "Nakhchivan", "Neftchala", "Oghuz", 
-    "Ordubad", "Qabala", "Qakh", "Qazakh", "Quba", "Qubadli", "Qusar", 
-    "Saatly", "Sabirabad", "Salyan", "Samukh", "Shabran", "Shahbuz", "Shaki", 
-    "Shamakhi", "Shamkir", "Sharur", "Shirvan", "Siazan", "Sumgayit", "Tartar", 
-    "Tovuz", "Ujar", "Yardimli", "Yevlakh", "Zangilan", "Zaqatala", "Zardab"
+    "Binagadi",
+    "Garadagh",
+    "Khatai",
+    "Khazar",
+    "Narimanov",
+    "Nasimi",
+    "Nizami",
+    "Pirallahi",
+    "Sabail",
+    "Sabunchu",
+    "Surakhani",
+    "Yasamal",
+    "Bilgah",
+    "Mərdəkan",
+    "Şüvəlan",
+    "Buzovna",
+    "Maştağa",
+    "Zabrat",
+    "Hovsan"
   ];
 
 

@@ -7,54 +7,50 @@ import { toast } from "react-toastify";
 
 const Payment = ({ subtotal, userDetails }) => {
   const navigate = useNavigate();
-  const { cart, clearCart } = useCartStore(); // clearCart fonksiyonunu import ettik
+  const { cart, clearCart } = useCartStore();
   const total = subtotal;
 
-  // Shipping cost logic
   const shippingCost = total > 200 ? 0 : 3.99;
   const isShippingFree = shippingCost === 0;
 
-  const [isLoading, setIsLoading] = useState(false); // Yükleme durumu
+  const [isLoading, setIsLoading] = useState(false); 
 
-  // Sipariş oluşturma işlemi
+  
   const handlePlaceOrder = async () => {
-    setIsLoading(true); // Yükleme başladığında true
+    setIsLoading(true);
+    
+    const userId = localStorage.getItem("userId");
   
-    // Kullanıcı bilgilerini almak için (örneğin: userId)
-    const userId = localStorage.getItem("userId"); // Kullanıcı ID'sini buradan temin edebilirsiniz.
-  
-    // Sipariş verisi
     const orderData = {
       userId,
       products: cart,
       totalAmount: total + shippingCost,
-      // userDetails'i JSON string formatına çeviriyoruz
-      details: JSON.stringify(userDetails), // Burada JSON.stringify kullanıyoruz
-      paymentMethod: "Cash", // Ödeme yöntemi burada sabit olarak "Cash" olarak ayarlandı
+      details: JSON.stringify(userDetails),
+      paymentMethod: "Cash",
     };
   
-   try {
-  const response = await fetch("http://localhost:3000/orders", { 
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(orderData),
-  });
-
-  if (response.ok) {
-    toast.success("Siparişiniz başarıyla alındı.");
-    clearCart(); // Sipariş başarılı olduktan sonra sepetteki ürünleri temizle
-    navigate("/"); // Ana sayfaya yönlendir
-   
-  } else {
-    const errorResponse = await response.json(); // Hata mesajını backend'den al
-    throw new Error(errorResponse.message || "Sipariş oluşturulurken bir hata oluştu.");
-  }
-} catch (error) {
-  toast.error(error.message);
-} finally {
-  setIsLoading(false);
-}
+    try {
+      const response = await fetch("http://localhost:3000/orders", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+  
+      if (response.ok) {
+        toast.success("Your order has been successfully received.");
+        clearCart(); 
+        navigate("/"); 
+      } else {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || "An error occurred while creating the order.");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
 
   return (
     <div className="w-[390px] p-6 md:pt-6 md:p-0">
@@ -92,7 +88,7 @@ const Payment = ({ subtotal, userDetails }) => {
           </p>
         </div>
 
-        {/* Shipping Cost */}
+   
         <div className="flex justify-between items-center">
           <p className="text-[18px] font-extralight font-nunito text-[#232323]">
             Shipping Cost
@@ -125,14 +121,14 @@ const Payment = ({ subtotal, userDetails }) => {
           Payment Method
         </p>
         <p className="font-raleway text-[#232323] text-[24px] font-thin">
-          Cash
+        Paycash at the door
         </p>
       </div>
 
       <button
         className={`font-raleway text-[15px] font-thin w-full justify-center items-center py-5 border border-[#232323] uppercase hover:bg-yellow-500`}
         onClick={handlePlaceOrder}
-        disabled={isLoading} // Yükleme sırasında butonu devre dışı bırak
+        disabled={isLoading} 
       >
         {isLoading ? "Processing..." : "Place order"}
       </button>

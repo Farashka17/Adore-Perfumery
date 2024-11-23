@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const Hero = () => {
 
         const settings = {
-        //   dots: true,
+ 
           infinite: true,
           speed: 1000,
           slidesToShow: 1,

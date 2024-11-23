@@ -12,7 +12,7 @@ const CartProducts = () => {
     const getCart = useCartStore((state) => state.getCart);
   
     useEffect(() => {
-      getCart(); // Sepet bilgilerini al
+      getCart(); 
     }, [ getCart]);
 
   return (
